@@ -8,6 +8,7 @@ public class PlayerTest
 {
 	public static void main(String[] args)
 	{
+		//TESTING PLAYER, FRAME, AND POOL
 		Pool p = new Pool();
 		
 		System.out.println("POOL TESTS\n");
