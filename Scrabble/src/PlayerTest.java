@@ -30,14 +30,15 @@ public class PlayerTest
 		System.out.println("PLAYER TESTS\n");
 		try 
 		{
-			Player po = new Player("Carlo");
-			System.out.println("Expected:\nCarlo\nhis score being 100000000000,\nand his frame.");
+			Player po = new Player("Carlo", p);
+			System.out.println("Expected:\nCarlo\nhis score being 0,\nand his frame.");
 			System.out.println("\nGot:\n" + po.getName() + "\n" + po.getScore() + "\n" + po.toString());
 			
-			Player po1 = new Player("Adam");
+			Player po1 = new Player("Adam", p);
 			System.out.println("Expected:\nAdam\nhis score being 0,\nand his frame.");
 			System.out.println("\nGot:\n" + po1.getName() + "\n" + po1.getScore() + "\n" + po1.toString());
 			System.out.println("Does the frame contain G?: " + po1.frame.checkLettersFrame('G'));
+			p.reset();
 		} catch(RuntimeException r2)
 		{
 			throw new RuntimeException("Error in player class");
@@ -47,7 +48,7 @@ public class PlayerTest
 		
 		try (Scanner in = new Scanner(System.in))
 		{
-			Player play = new Player("Karol");
+			Player play = new Player("Karol", p);
 			System.out.println("\nGot:\n" + play.getName() + "\n" + play.getScore() + "\n" + play.toString());
 			System.out.println("Pick a letter you want to remove: ");
 			char letter = in.nextLine().charAt(0);
@@ -66,7 +67,7 @@ public class PlayerTest
 			System.out.println("Name: " + play.getName() + "\nScore: " + play.getScore() + "\nFrame: \n" + play.toString());
 			System.out.println("Reset the player value, enter the new name for the player: ");
 			String newName = in.next();
-			play.resetPlayer(newName);
+			play.resetPlayer(newName, p);
 			System.out.println("Name: " + play.getName() + "\nScore: " + play.getScore() + "\nFrame: \n" + play.toString());
 		} catch (RuntimeException r3)
 		{

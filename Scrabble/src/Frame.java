@@ -10,13 +10,12 @@ import java.util.ArrayList;
 public class Frame 
 {
 	ArrayList<Tile> theFrameArray;
-	Pool p;
+	Pool gamePool;
 	
 	//Frame Constructor
-	public Frame()
+	public Frame(Pool p)
 	{
 		theFrameArray = new ArrayList<Tile>();
-		p = new Pool();
 		
 		refillFrame(p);
 	}

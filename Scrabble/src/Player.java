@@ -11,25 +11,25 @@ public class Player
 	private int score = 0; // variable to hold score
 	Frame frame; // variable to store the players frame
 	
-	public Player(String name)
+	public Player(String name, Pool p)
 	{
 		setName(name); // sets the name for the player
 		setScore(0); // sets the intial score for the player
-		setFrame(); // assigns a frame to the player
+		setFrame(p); // assigns a frame to the player
 	}
 	
 	//resets player varaibles
-	public void resetPlayer(String name)
+	public void resetPlayer(String name, Pool p)
 	{
 		setName(name);
 		setScore(0);
-		setFrame();
+		setFrame(p);
 	}
 	
 	//assigns a new frame to the player
-	private void setFrame()
+	private void setFrame(Pool p)
 	{
-		this.frame = new Frame();
+		this.frame = new Frame(p);
 	}
 	
 	
