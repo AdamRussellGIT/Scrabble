@@ -10,7 +10,6 @@ import java.util.ArrayList;
 public class Frame 
 {
 	ArrayList<Tile> theFrameArray;
-	
 	Pool p;
 	
 	//Frame Constructor
