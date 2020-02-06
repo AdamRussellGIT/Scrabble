@@ -5,5 +5,17 @@
 
 public class Board 
 {
-
+	char board[][];
+	
+	public Board()
+	{
+		
+	}
+	
+	public String toString()
+	{
+		String gameBoard = "";
+		
+		return gameBoard;
+	}
 }
