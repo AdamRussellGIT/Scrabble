@@ -12,6 +12,7 @@ public class Board
 		board = new Tile[15][15];
 	}
 	
+	//need params
 	public Tile[][] placeWord()
 	{
 		return board;
