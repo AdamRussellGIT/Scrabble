@@ -5,7 +5,7 @@
 
 public class Board 
 {
-	char board[][];
+	Tile board[][];
 	
 	public Board()
 	{
