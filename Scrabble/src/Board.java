@@ -71,17 +71,34 @@ public class Board
 			}
 		}
 	}
-	
-	
-	public void wordPlacementCheck()
-	{
-		//Check if the tile is out of bounds
+
+
+	public boolean wordPlacementCheck(int row, int col, char dir, String word, Player p){
+
+		if(dir!='A' && dir!='a' && dir!='D' && dir!='d') {
+			return false;
+		}
+		//Checks if the tile is out of bounds
+		if(row>14||row<0||col<0||col>14){
+			return false;
+		}
 		//Check if there is an existing tile already in the position
+		for(int i=0;i<word.length();i++) {
+			if(dir=='a'||dir=='A') {
+				if(board[row+i][col]!=null) {
+					return false;
+				}
+			}
+			if(board[row][col+i]!=null) {
+				return false;
+			}
+		}
 		//if first word whether it's in the centre of the board
 		//if not first word if it's connected to another word on the board
 		//if the player has the necessary letters
 		//if the word conflicts with existing letters
 		//if placement uses at least one letter from rack
+		return true;
 	}
 	public String toString()
 	{
