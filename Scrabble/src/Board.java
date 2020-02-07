@@ -4,21 +4,19 @@
 //		   Karol Wojcik - 18322146
 
 public class Board 
-{
+{	
 	Tile[][] board;
+	private int row;
+	private int column;
+	private char direction;
+	private String word;
 	
 	public Board()
 	{
 		board = new Tile[15][15];
 	}
 	
-	//need params
-	public Tile[][] placeWord()
-	{
-		return board;
-	}
-	
-	public Tile[][] resetBoard()
+	public void resetBoard()
 	{
 		for(int i = 0;i < board.length;i++)
 		{
@@ -27,7 +25,12 @@ public class Board
 				board[i][j] = null;
 			}
 		}
-		return board;
+	}
+	
+	//need params
+	public void placeWord()
+	{
+		
 	}
 	
 	
@@ -47,7 +50,7 @@ public class Board
 	{
 		String gameBoard = "  ";
 		
-		for (int i = 1; i <= board.length; i++)
+		for (int i = 0; i < board.length; i++)
 		{
 			gameBoard += (i + "\t");
 		}
@@ -56,14 +59,14 @@ public class Board
 		
 		for (int j = 0; j < board.length; j++)
 		{
-			if (j < 9)
+			if (j < 10)
 			{
-				gameBoard += ((j + 1) + "  ");
+				gameBoard += (j + "  ");
 			}
 			
 			else
 			{
-				gameBoard += ((j + 1) + " ");
+				gameBoard += (j + " ");
 			}
 			
 			for (int k = 0; k < board.length; k++)
