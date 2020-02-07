@@ -50,8 +50,6 @@ public class Board
 	
 	public void wordPlacementCheck()
 	{
-		
-		
 		//Check if the tile is out of bounds
 		//Check if there is an existing tile already in the position
 		//if first word whether it's in the centre of the board
