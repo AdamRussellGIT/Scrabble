@@ -40,10 +40,36 @@ public class Board
 		}
 	}
 	
-	//need params
-	public void placeWord()
+	public void placeWord(int row, int column, char direction, String word, Player p)
 	{
-		
+		char[] wordToChar = new char[7];
+			
+		for (int i = 0; i < word.length(); i++)
+		{
+			wordToChar[i] = word.charAt(i);
+		}
+			
+		if (direction == 'A' || direction == 'a')
+		{
+			int j = row;
+			int counter = 0;
+				
+			for (int k = column; k < word.length(); k++)
+			{
+				board[j][k] = p.frame.removeLettersFrame(wordToChar[counter++]);
+			}
+		}
+			
+		else
+		{
+			int k = column;
+			int counter = 0;
+			
+			for (int j = row; j < word.length(); j++)
+			{
+				board[j][k] = p.frame.removeLettersFrame(wordToChar[counter++]);
+			}
+		}
 	}
 	
 	

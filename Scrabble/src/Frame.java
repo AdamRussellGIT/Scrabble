@@ -72,7 +72,7 @@ public class Frame
 	public void refillFrame(Pool p)
 	{	
 		//Runs while the Frame has less than 7 Tiles
-		while(theFrameArray.size() != 7)
+		while(theFrameArray.size() != 7 && p.poolSize() > 0)
 		{
 			//Calling draw class from the Pool class in order to draw a new Tile into the Frame from the Pool
 			theFrameArray.add(p.draw());	
