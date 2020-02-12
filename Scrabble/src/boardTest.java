@@ -6,6 +6,9 @@ public class boardTest
     public static void main(String[] args)
     {
         Board board = new Board();
+        Pool pool = new Pool();
+        Player p1 = new Player("Adam", pool);
+        Player p2 = new Player("Carlo", pool);
 
         //placeWord TEST
         System.out.println("placeWord TEST");
@@ -13,8 +16,11 @@ public class boardTest
         try
         {
             System.out.println("Adding a word to the board");
-
-            board.placeWord(0,0,' ',"", null);
+            System.out.println(p1.toString());
+            Scanner in = new Scanner(System.in);
+            String word = in.nextLine();
+            board.placeWord(2,2,'D', word, p1);
+            System.out.println(board.toString());
         }
         catch(RuntimeException r)
         {

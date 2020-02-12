@@ -42,11 +42,12 @@ public class Board
 	
 	public void placeWord(int row, int column, char direction, String word, Player p)
 	{
+		String upperWord = word.toUpperCase();
 		char[] wordToChar = new char[7];
 			
 		for (int i = 0; i < word.length(); i++)
 		{
-			wordToChar[i] = word.charAt(i);
+			wordToChar[i] = upperWord.charAt(i);
 		}
 			
 		if (direction == 'A' || direction == 'a')
@@ -54,7 +55,7 @@ public class Board
 			int j = row;
 			int counter = 0;
 				
-			for (int k = column; k < word.length(); k++)
+			for (int k = column; k < (word.length() + column); k++)
 			{
 				board[j][k] = p.frame.removeLettersFrame(wordToChar[counter++]);
 			}
@@ -65,7 +66,7 @@ public class Board
 			int k = column;
 			int counter = 0;
 			
-			for (int j = row; j < word.length(); j++)
+			for (int j = row; j < (word.length() + row); j++)
 			{
 				board[j][k] = p.frame.removeLettersFrame(wordToChar[counter++]);
 			}
@@ -102,7 +103,7 @@ public class Board
 	}
 	public String toString()
 	{
-		String gameBoard = "  ";
+		String gameBoard = "\t";
 		
 		for (int i = 0; i < board.length; i++)
 		{
@@ -144,10 +145,11 @@ public class Board
 	
 	public static void main(String[] args)
 	{
+		Pool pool = new Pool();
+		Player p1 = new Player("Adam", pool);
+		p1.toString();
 		Board theBoard = new Board();
-		theBoard.board[3][4] = new Tile('S', 3);
-		theBoard.board[3][5] = new Tile('E', 5);
-		theBoard.board[3][6] = new Tile('X', 8);
-		System.out.println(theBoard.toString());
+		theBoard.placeWord(2, 2, 'A', "h", p1);
+		//System.out.println(theBoard.toString());
 	}
 }
