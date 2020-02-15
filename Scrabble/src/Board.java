@@ -5,7 +5,7 @@
 
 public class Board 
 {	
-	Tile[][] board;
+	Tile[][][] board;
 	private int row;
 	private int column;
 	private char direction;
@@ -26,8 +26,53 @@ public class Board
 	
 	public Board()
 	{
-		board = new Tile[15][15];
+		board = new Tile[15][15][2];
+
+		this.setUpBoard();
 	}
+
+	public void setUpBoard()
+    {
+        for (int i = 0; i < board.length; i++)
+        {
+            for (int j = 0; j < board.length; j++)
+            {
+                //create tripleWord Square
+                if (((i % 7 == 0) && (j % 7 == 0)) && ((i != 7) || (j != 7)))
+                {
+                    this.board[i][j][1] = new Tile('$', 3);
+                }
+
+                //creat doubleWord Square
+                else if (((i==1)&&(j==1)) || ((i==1)&&(j==13)) || ((i==2)&&(j==2)) || ((i==2)&&(j==12)) || ((i==3)&&(j==3)) || ((i==3)&&(j==11)) || ((i==4)&&(j==4)) || ((i==4)&&(j==10)) ||
+                        ((i==7)&&(j==7)) || ((i==10)&&(j==4)) || ((i==10)&&(j==10)) || ((i==11)&&(j==3)) || ((i==11)&&(j==11)) || ((i==12)&&(j==2)) || ((i==12)&&(j==12)) || ((i==13)&&(j==1)) ||
+                        ((i==13)&&(j==13)))
+                {
+                    this.board[i][j][1] = new Tile('!', 2);
+                }
+
+                //create tripleLetter Square
+                else if (((i==1)&&(j==5)) || ((i==1)&&(j==9)) || ((i==5)&&(j==1)) || ((i==5)&&(j==5)) || ((i==5)&&(j==9)) || ((i==5)&&(j==13)) || ((i==9)&&(j==1)) || ((i==9)&&(j==5)) ||
+                        ((i==9)&&(j==9)) || ((i==9)&&(j==13)) || ((i==13)&&(j==5)) || ((i==13)&&(j==9)))
+                {
+                    this.board[i][j][1] = new Tile('@', 3);
+                }
+
+                //create doublrLetter Square
+                else if (((i==0)&&(j==3)) || ((i==0)&&(j==11)) || ((i==2)&&(j==6)) || ((i==2)&&(j==8)) || ((i==3)&&(j==0)) || ((i==3)&&(j==7)) || ((i==3)&&(j==14)) || ((i==6)&&(j==2)) ||
+                        ((i==6)&&(j==6)) || ((i==6)&&(j==8)) || ((i==6)&&(j==12)) || ((i==7)&&(j==3)) || ((i==7)&&(j==11)) || ((i==8)&&(j==2)) || ((i==8)&&(j==6)) || ((i==8)&&(j==8)) ||
+                        ((i==8)&&(j==12)) || ((i==11)&&(j==0)) || ((i==11)&&(j==7)) || ((i==11)&&(j==14)) || ((i==12)&&(j==6)) || ((i==12)&&(j==8)) || ((i==14)&&(j==3)) || ((i==14)&&(j==11)))
+                {
+                    this.board[i][j][1] = new Tile('#', 2);
+                }
+
+                else
+                {
+                    this.board[i][j][1] = null;
+                }
+            }
+        }
+    }
 	
 	public void resetBoard()
 	{
@@ -35,7 +80,7 @@ public class Board
 		{
 			for(int j = 0;j < board.length;j++)
 			{
-				board[i][j] = null;
+				board[i][j][0] = null;
 			}
 		}
 	}
@@ -57,7 +102,7 @@ public class Board
 				
 			for (int k = column; k < (word.length() + column); k++)
 			{
-				board[j][k] = p.frame.removeLettersFrame(wordToChar[counter++]);
+				board[j][k][0] = p.frame.removeLettersFrame(wordToChar[counter++]);
 			}
 		}
 			
@@ -68,7 +113,7 @@ public class Board
 			
 			for (int j = row; j < (word.length() + row); j++)
 			{
-				board[j][k] = p.frame.removeLettersFrame(wordToChar[counter++]);
+				board[j][k][0] = p.frame.removeLettersFrame(wordToChar[counter++]);
 			}
 		}
 	}
@@ -126,14 +171,14 @@ public class Board
 			
 			for (int k = 0; k < board.length; k++)
 			{
-				if (board[j][k] == null)
+				if (board[j][k][0] == null)
 				{
 					gameBoard += ("_\t");
 				}
 				
 				else
 				{
-					gameBoard += ((board[j][k].getLetter()) + "\t");
+					gameBoard += ((board[j][k][0].getLetter()) + "\t");
 				}
 			}
 			
@@ -147,9 +192,9 @@ public class Board
 	{
 		Pool pool = new Pool();
 		Player p1 = new Player("Adam", pool);
-		p1.toString();
+		System.out.println(p1.toString());
 		Board theBoard = new Board();
-		theBoard.placeWord(2, 2, 'A', "h", p1);
-		//System.out.println(theBoard.toString());
+		System.out.println(theBoard.board[0][0][1].getValue());
+        System.out.println(theBoard.board[2][6][1].getLetter());
 	}
 }
