@@ -180,7 +180,7 @@ public class Board
 					}
 				}
 			}
-			else if(dir=='D' || dir=='d'){
+			else if(dir=='A' || dir=='a'){
 				if(board[row][col-1][0]!=null || board[row][col+word.length()+1][0]!=null){
 					connected=true;
 				}
