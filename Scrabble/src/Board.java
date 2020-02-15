@@ -3,7 +3,9 @@
 //		   Carlo Motteran - 18717341
 //		   Karol Wojcik - 18322146
 
-public class Board 
+import java.util.ArrayList;
+
+public class Board
 {	
 	Tile[][][] board;
 	private int row;
@@ -58,7 +60,7 @@ public class Board
                     this.board[i][j][1] = new Tile('@', 3);
                 }
 
-                //create doublrLetter Square
+                //create doubleLetter Square
                 else if (((i==0)&&(j==3)) || ((i==0)&&(j==11)) || ((i==2)&&(j==6)) || ((i==2)&&(j==8)) || ((i==3)&&(j==0)) || ((i==3)&&(j==7)) || ((i==3)&&(j==14)) || ((i==6)&&(j==2)) ||
                         ((i==6)&&(j==6)) || ((i==6)&&(j==8)) || ((i==6)&&(j==12)) || ((i==7)&&(j==3)) || ((i==7)&&(j==11)) || ((i==8)&&(j==2)) || ((i==8)&&(j==6)) || ((i==8)&&(j==8)) ||
                         ((i==8)&&(j==12)) || ((i==11)&&(j==0)) || ((i==11)&&(j==7)) || ((i==11)&&(j==14)) || ((i==12)&&(j==6)) || ((i==12)&&(j==8)) || ((i==14)&&(j==3)) || ((i==14)&&(j==11)))
@@ -121,30 +123,117 @@ public class Board
 
 	public boolean wordPlacementCheck(int row, int col, char dir, String word, Player p){
 
+		//checks for a valid directional input
 		if(dir!='A' && dir!='a' && dir!='D' && dir!='d') {
 			return false;
 		}
+
 		//Checks if the tile is out of bounds
 		if(row>14||row<0||col<0||col>14){
 			return false;
 		}
-		//Check if there is an existing tile already in the position
+
+		//Check if there is an existing conflicting tile already in the position
 		for(int i=0;i<word.length();i++) {
 			if(dir=='a'||dir=='A') {
-				if(board[row+i][col]!=null) {
+				if(board[row+i][col][0]!=null && board[row+i][col][0].getLetter()!=word.charAt(i)) {
 					return false;
 				}
 			}
-			if(board[row][col+i]!=null) {
+			if(board[row][col+i][0]!=null && board[row][col+i][0].getLetter()!=word.charAt(i)) {
 				return false;
 			}
 		}
+
+		//finds out if the word is the first word on the board
+		boolean first = true;
+		for(int i =0; i<15; i++){
+			for (int j=0; j<15; j++){
+				if(board[i][j][0]!=null){
+					first=false;
+				}
+			}
+		}
+
 		//if first word whether it's in the centre of the board
+		if(first){
+			if((dir=='A' || dir=='a') && (row!=7 || col+word.length()<7 || col>7)){
+				return false;
+			}
+			if((dir=='D' || dir=='d') && (col!=7 || row+word.length()<7 || row>7)){
+				return false;
+			}
+		}
+
 		//if not first word if it's connected to another word on the board
+		boolean connected = false;
+		if(!first){
+			if(dir=='D' || dir=='d'){
+				if(board[row-1][col][0]!=null || board[row+word.length()+1][col][0]!=null){
+					connected=true;
+				}
+				else {
+					for (int i = 0; i < word.length(); i++) {
+						if (board[row + i][col - 1][0] != null || board[row + i][col + 1][0] != null) {
+							connected = true;
+						}
+					}
+				}
+			}
+			else if(dir=='D' || dir=='d'){
+				if(board[row][col-1][0]!=null || board[row][col+word.length()+1][0]!=null){
+					connected=true;
+				}
+				else{
+					for(int i=0; i<word.length(); i++){
+						if(board[row-1][col+i][0]!=null || board[row+1][col+i][0]!=null){
+							connected = true;
+						}
+					}
+				}
+			}
+			return connected;
+		}
+
 		//if the player has the necessary letters
-		//if the word conflicts with existing letters
+		ArrayList<Tile> tmp = null;
+		for(int i=0; i<word.length();i++) {
+			if (dir == 'A' || dir == 'a') {
+				if (word.charAt(i) != board[row][col + i][0].getLetter()) {
+					if (!p.frame.checkLettersFrame(word.charAt(i))) {
+						return false;
+					}
+					tmp.add(p.frame.removeLettersFrame(word.charAt(i)));
+				}
+			}
+			else if(dir == 'D' || dir=='d'){
+				if (word.charAt(i) != board[row + i][col][0].getLetter()) {
+					if (!p.frame.checkLettersFrame(word.charAt(i))) {
+						return false;
+					}
+					tmp.add(p.frame.removeLettersFrame(word.charAt(i)));
+				}
+			}
+		}
+		for(int j=0; j<word.length();j++){
+			p.frame.theFrameArray.add(tmp.remove(j));
+		}
+
 		//if placement uses at least one letter from rack
-		return true;
+		boolean usesRack = false;
+		for(int i=0; i<word.length(); i++){
+			if(dir=='A' || dir=='a'){
+				if(board[row][col+i][0]==null){
+					usesRack = true;
+				}
+			}
+			else if(dir=='D' || dir=='d'){
+				if(board[row+i][col][0]==null){
+					usesRack = true;
+				}
+			}
+		}
+		return usesRack;
 	}
 	public String toString()
 	{
