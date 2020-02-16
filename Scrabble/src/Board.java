@@ -201,7 +201,10 @@ public class Board
 			if (dir == 'A' || dir == 'a') {
 				if (word.charAt(i) != board[row][col + i][0].getLetter()) {
 					if (!p.frame.checkLettersFrame(word.charAt(i))) {
-						return false;
+						for(i=0;i<tmp.size();i++){
+						    p.frame.theFrameArray.add(tmp.remove(i));
+                        }
+					    return false;
 					}
 					tmp.add(p.frame.removeLettersFrame(word.charAt(i)));
 				}
@@ -209,6 +212,9 @@ public class Board
 			else if(dir == 'D' || dir=='d'){
 				if (word.charAt(i) != board[row + i][col][0].getLetter()) {
 					if (!p.frame.checkLettersFrame(word.charAt(i))) {
+                        for(i=0;i<tmp.size();i++){
+                            p.frame.theFrameArray.add(tmp.remove(i));
+                        }
 						return false;
 					}
 					tmp.add(p.frame.removeLettersFrame(word.charAt(i)));
