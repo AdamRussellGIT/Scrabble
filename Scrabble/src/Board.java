@@ -192,32 +192,57 @@ public class Board
 					}
 				}
 			}
-			return connected;
+			if(!connected) {
+				return connected;
+			}
 		}
 
 		//if the player has the necessary letters
 		ArrayList<Tile> tmp = null;
-		for(int i=0; i<word.length();i++) {
+		public boolean useSpace=false;
+ 		for(int i=0; i<word.length();i++) {
 			if (dir == 'A' || dir == 'a') {
 				if (word.charAt(i) != board[row][col + i][0].getLetter()) {
 					if (!p.frame.checkLettersFrame(word.charAt(i))) {
-						for(i=0;i<tmp.size();i++){
-						    p.frame.theFrameArray.add(tmp.remove(i));
-                        }
-					    return false;
+						if(!p.frame.checkLettersFrame(' ')) {
+							for (i = 0; i < tmp.size(); i++) {
+								p.frame.theFrameArray.add(tmp.remove(i));
+							}
+							return false;
+						}
+						else{
+							useSpace=true;
+						}
 					}
-					tmp.add(p.frame.removeLettersFrame(word.charAt(i)));
+					if(!useSpace) {
+						tmp.add(p.frame.removeLettersFrame(word.charAt(i)));
+					}
+					else{
+						tmp.add(p.frame.removeLettersFrame(' '));
+						useSpace=false;
+					}
 				}
 			}
 			else if(dir == 'D' || dir=='d'){
 				if (word.charAt(i) != board[row + i][col][0].getLetter()) {
 					if (!p.frame.checkLettersFrame(word.charAt(i))) {
-                        for(i=0;i<tmp.size();i++){
-                            p.frame.theFrameArray.add(tmp.remove(i));
-                        }
-						return false;
+						if(!p.frame.checkLettersFrame(' ')) {
+							for (i = 0; i < tmp.size(); i++) {
+								p.frame.theFrameArray.add(tmp.remove(i));
+							}
+							return false;
+						}
+						else{
+							useSpace=true;
+						}
 					}
-					tmp.add(p.frame.removeLettersFrame(word.charAt(i)));
+					if(!useSpace) {
+						tmp.add(p.frame.removeLettersFrame(word.charAt(i)));
+					}
+					else{
+						tmp.add(p.frame.removeLettersFrame(' '));
+						useSpace=false;
+					}
 				}
 			}
 		}
