@@ -22,4 +22,14 @@ public class Tile
 	{
 		return this.letter;
 	}
+
+	public void setValue(int val)
+	{
+		this.value = val;
+	}
+
+	public void setLetter(char let)
+	{
+		this.letter = let;
+	}
 }

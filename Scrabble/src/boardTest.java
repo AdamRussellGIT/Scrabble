@@ -19,8 +19,15 @@ public class boardTest
             System.out.println(p1.toString());
             Scanner in = new Scanner(System.in);
             String word = in.nextLine();
-            board.placeWord(2,2,'D', word, p1);
+            board.placeWord(7,7,'D', word, p1);
+            p1.frame.refillFrame(pool);
             System.out.println(board.toString());
+            System.out.println(p1.toString());
+            word = in.nextLine();
+            board.placeWord(8, 9, 'A', word, p1);
+            p1.frame.refillFrame(pool);
+            System.out.println(board.toString());
+
         }
         catch(RuntimeException r)
         {
