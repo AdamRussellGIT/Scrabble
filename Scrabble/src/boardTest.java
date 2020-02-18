@@ -13,8 +13,8 @@ public class boardTest
         //placeWord TEST
         System.out.println("placeWord TEST");
 
-        try
-        {
+        //try
+        //{
             System.out.println("Adding a word to the board");
             System.out.println(p1.toString());
             Scanner in = new Scanner(System.in);
@@ -24,15 +24,15 @@ public class boardTest
             System.out.println(board.toString());
             System.out.println(p1.toString());
             word = in.nextLine();
-            board.placeWord(8, 9, 'A', word, p1);
+            board.placeWord(9, 4, 'A', word, p1);
             p1.frame.refillFrame(pool);
             System.out.println(board.toString());
 
-        }
-        catch(RuntimeException r)
-        {
-            throw new RuntimeException("ERROR inside placeWord");
-        }
+        //}
+        //catch(RuntimeException r)
+        //{
+        //    throw new RuntimeException("ERROR inside placeWord");
+        //}
 
 
         //resetBoard TEST

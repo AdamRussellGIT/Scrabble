@@ -87,63 +87,167 @@ public class Board
 		}
 	}
 	
-	public void placeWord(int row, int column, char direction, String word, Player p)
-	{
-		String upperWord = word.toUpperCase();
-		char[] wordToChar = new char[7];
-			
-		for (int i = 0; i < word.length(); i++)
-		{
-			wordToChar[i] = upperWord.charAt(i);
-		}
-			
-		if (direction == 'A' || direction == 'a')
-		{
-			int j = row;
-			int counter = 0;
-				
-			for (int k = column; k < (word.length() + column); k++)
-			{
-				board[j][k][0] = p.frame.removeLettersFrame(wordToChar[counter++]);
-			}
-		}
-			
-		else
-		{
-			int k = column;
-			int counter = 0;
-			
-			for (int j = row; j < (word.length() + row); j++)
-			{
-				board[j][k][0] = p.frame.removeLettersFrame(wordToChar[counter++]);
-			}
-		}
-	}
+	public void placeWord(int row, int column, char direction, String word, Player p) {
+        if (wordPlacementCheck(row, column, direction, word, p)) {
+            String upperWord = word.toUpperCase();
+            char[] wordToChar = new char[7];
+
+            for (int i = 0; i < word.length(); i++) {
+                wordToChar[i] = upperWord.charAt(i);
+            }
+
+            if (direction == 'A' || direction == 'a') {
+                int j = row;
+                int counter = 0;
+
+                for (int k = column; k < (word.length() + column); k++) {
+                	if (board[j][k][0] == null)
+					{
+						board[j][k][0] = p.frame.removeLettersFrame(wordToChar[counter++]);
+					}
+
+                	else
+					{
+						counter++;
+					}
+                }
+            }
+            else {
+                int k = column;
+                int counter = 0;
+
+                for (int j = row; j < (word.length() + row); j++) {
+                	if (board[j][k][0] == null)
+					{
+						board[j][k][0] = p.frame.removeLettersFrame(wordToChar[counter++]);
+					}
+
+                	else
+					{
+						counter++;
+					}
+                }
+            }
+        } else {
+            System.out.println("ERROR, FAILED PLACEMENT CHECK");
+        }
+    }
 
 
 	public boolean wordPlacementCheck(int row, int col, char dir, String word, Player p){
-
+		word = word.toUpperCase();
 		//checks for a valid directional input
 		if(dir!='A' && dir!='a' && dir!='D' && dir!='d') {
 			return false;
 		}
 
 		//Checks if the tile is out of bounds
-		if(row>14||row<0||col<0||col>14){
+		if(row>14||row<0||col<0||col>14||((dir=='a'||dir=='A') && row + word.length() > 14) || ((dir=='d' || dir=='D') && col+word.length()>14)){
 			return false;
 		}
+		System.out.println("Testing if I got barely anywhere!");
 
-		//Check if there is an existing conflicting tile already in the position
-		for(int i=0;i<word.length();i++) {
-			if(dir=='a'||dir=='A') {
-				if(board[row+i][col][0]!=null && board[row+i][col][0].getLetter()!=word.charAt(i)) {
-					return false;
+		//if necessary tiles are either in frame or on board
+		ArrayList<Tile> temp = new ArrayList<Tile>();
+		for (int i = 0; i < word.length(); i++)
+        {
+            if (dir == 'A' || dir == 'a')
+            {
+                if (board[row][col+i][0] != null)
+                {
+                    if (board[row][col+i][0].getLetter() != word.charAt(i)) {
+                    	System.out.println("Am I here in lol");
+                        for (int j = 0; j < temp.size(); j++) {
+							p.frame.theFrameArray.add(temp.remove(j));
+						}
+                        return false;
+                    }
+                }
+
+                else
+                {
+                    if (p.frame.checkLettersFrame(word.charAt(i)))
+                    {
+                        temp.add(p.frame.removeLettersFrame(word.charAt(i)));
+                    }
+
+                    else
+                    {
+                        if (p.frame.checkLettersFrame(' '))
+                        {
+                            temp.add(p.frame.removeLettersFrame(' '));
+                        }
+
+                        else
+                        {
+                            for (int j = 0; j < temp.size(); j++)
+                            {
+                                p.frame.theFrameArray.add(temp.remove(j));
+                            }
+                            return false;
+                        }
+                    }
+                }
+            }
+
+            else
+			{
+				if (board[row+i][col][0] != null)
+				{
+					if (board[row+i][col][0].getLetter() != word.charAt(i)) {
+						for (int j = 0; j < temp.size(); j++)
+						{
+							p.frame.theFrameArray.add(temp.remove(j));
+						}
+						return false;
+					}
+				}
+
+				else
+				{
+					if (p.frame.checkLettersFrame(word.charAt(i)))
+					{
+						temp.add(p.frame.removeLettersFrame(word.charAt(i)));
+					}
+
+					else
+					{
+						if (p.frame.checkLettersFrame(' '))
+						{
+							temp.add(p.frame.removeLettersFrame(' '));
+						}
+
+						else
+						{
+							for (int j = 0; j < temp.size(); j++)
+							{
+								p.frame.theFrameArray.add(temp.remove(j));
+							}
+							return false;
+						}
+					}
 				}
 			}
-			if(board[row][col+i][0]!=null && board[row][col+i][0].getLetter()!=word.charAt(i)) {
-				return false;
-			}
-		}
+        }
+
+		for (int a = 0; a < temp.size(); a++)
+        {
+            p.frame.theFrameArray.add(temp.get(a));
+        }
+		temp.clear();
+
+		System.out.println("Do I get here?");
+		//Check if there is an existing conflicting tile already in the position
+		//for(int i=0;i<word.length();i++) {
+		//	if(dir=='a'||dir=='A') {
+		//		if(board[row+i][col][0]!=null && board[row+i][col][0].getLetter()!=word.charAt(i)) {
+		//			return false;
+		//		}
+		//	}
+		//	if(board[row][col+i][0]!=null && board[row][col+i][0].getLetter()!=word.charAt(i)) {
+		//		return false;
+		//	}
+		//}
 
 		//finds out if the word is the first word on the board
 		boolean first = true;
@@ -192,62 +296,10 @@ public class Board
 					}
 				}
 			}
+			System.out.println("Connected is : " + connected);
 			if(!connected) {
 				return connected;
 			}
-		}
-
-		//if the player has the necessary letters
-		ArrayList<Tile> tmp = null;
-		public boolean useSpace=false;
- 		for(int i=0; i<word.length();i++) {
-			if (dir == 'A' || dir == 'a') {
-				if (word.charAt(i) != board[row][col + i][0].getLetter()) {
-					if (!p.frame.checkLettersFrame(word.charAt(i))) {
-						if(!p.frame.checkLettersFrame(' ')) {
-							for (i = 0; i < tmp.size(); i++) {
-								p.frame.theFrameArray.add(tmp.remove(i));
-							}
-							return false;
-						}
-						else{
-							useSpace=true;
-						}
-					}
-					if(!useSpace) {
-						tmp.add(p.frame.removeLettersFrame(word.charAt(i)));
-					}
-					else{
-						tmp.add(p.frame.removeLettersFrame(' '));
-						useSpace=false;
-					}
-				}
-			}
-			else if(dir == 'D' || dir=='d'){
-				if (word.charAt(i) != board[row + i][col][0].getLetter()) {
-					if (!p.frame.checkLettersFrame(word.charAt(i))) {
-						if(!p.frame.checkLettersFrame(' ')) {
-							for (i = 0; i < tmp.size(); i++) {
-								p.frame.theFrameArray.add(tmp.remove(i));
-							}
-							return false;
-						}
-						else{
-							useSpace=true;
-						}
-					}
-					if(!useSpace) {
-						tmp.add(p.frame.removeLettersFrame(word.charAt(i)));
-					}
-					else{
-						tmp.add(p.frame.removeLettersFrame(' '));
-						useSpace=false;
-					}
-				}
-			}
-		}
-		for(int j=0; j<word.length();j++){
-			p.frame.theFrameArray.add(tmp.remove(j));
 		}
 
 		//if placement uses at least one letter from rack

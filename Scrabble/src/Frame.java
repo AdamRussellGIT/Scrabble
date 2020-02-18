@@ -31,7 +31,7 @@ public class Frame
 		{
 			//Checks if the chosen letter to remove is equal to
 			//any letter present within the Frame
-			if(theFrameArray.get(i).letter == ch)
+			if(theFrameArray.get(i).getLetter() == ch)
 			{
 				r = theFrameArray.get(i);
 				theFrameArray.remove(i);
