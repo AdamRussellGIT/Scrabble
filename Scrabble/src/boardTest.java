@@ -11,18 +11,23 @@ public class boardTest
         Player p2 = new Player("Carlo", pool);
 
         //placeWord TEST
-        System.out.println("placeWord TEST");
+        System.out.println("placeWord TEST\n\n");
+        System.out.println("This is player 1's current frame of tiles : ");
         System.out.println(p1.toString());
+
         Scanner in = new Scanner(System.in);
-        String word = in.nextLine();
-        board.placeWord(7,7,'D', word, p1);
+        System.out.println("Enter row for first word, and after pressing return, enter the column : ");
+        int row = in.nextInt();
+        int col = in.nextInt();
+        System.out.println("Enter A (or a) or D (or d) to indicate which direction you want your word to go : ");
+        String sdir = in.next();
+        char dir = sdir.charAt(0);
+        System.out.println("Enter the word you want to place : ");
+        String word = in.next();
+        board.placeWord(row, col, dir, word, p1);
         p1.frame.refillFrame(pool);
         System.out.println(board.toString());
-        System.out.println(p1.toString());
-        word = in.nextLine();
-        board.placeWord(7, 8, 'A', word, p1);
-        p1.frame.refillFrame(pool);
-        System.out.println(board.toString());
+
 
         //resetBoard TEST
         System.out.println("resetBoard TEST");
