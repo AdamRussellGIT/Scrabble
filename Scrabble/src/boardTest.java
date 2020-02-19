@@ -12,28 +12,17 @@ public class boardTest
 
         //placeWord TEST
         System.out.println("placeWord TEST");
-
-        //try
-        //{
-            System.out.println("Adding a word to the board");
-            System.out.println(p1.toString());
-            Scanner in = new Scanner(System.in);
-            String word = in.nextLine();
-            board.placeWord(7,7,'D', word, p1);
-            p1.frame.refillFrame(pool);
-            System.out.println(board.toString());
-            System.out.println(p1.toString());
-            word = in.nextLine();
-            board.placeWord(9, 4, 'A', word, p1);
-            p1.frame.refillFrame(pool);
-            System.out.println(board.toString());
-
-        //}
-        //catch(RuntimeException r)
-        //{
-        //    throw new RuntimeException("ERROR inside placeWord");
-        //}
-
+        System.out.println(p1.toString());
+        Scanner in = new Scanner(System.in);
+        String word = in.nextLine();
+        board.placeWord(7,7,'D', word, p1);
+        p1.frame.refillFrame(pool);
+        System.out.println(board.toString());
+        System.out.println(p1.toString());
+        word = in.nextLine();
+        board.placeWord(7, 8, 'A', word, p1);
+        p1.frame.refillFrame(pool);
+        System.out.println(board.toString());
 
         //resetBoard TEST
         System.out.println("resetBoard TEST");

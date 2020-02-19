@@ -8,23 +8,6 @@ import java.util.ArrayList;
 public class Board
 {	
 	Tile[][][] board;
-	private int row;
-	private int column;
-	private char direction;
-	private String word;
-	
-	int[][] tripleWord = new int[][] {	{0,0},{0,7},{0,14},{7,0},{7,14},{14,0},{14,7},{14,14}};
-
-	int[][] doubleWord = new int[][] {	{1,1},{1,13},{2,2},{2,12},{3,3},{3,11},
-										{4,4},{4,10},{7,7},{10,4},{10,10},{11,3},
-										{11,11},{12,2},{12,12},{13,1},{13,13}};
-
-	int[][] tripleLetter = new int[][]{	{1,5},{1,9},{5,1},{5,5},{5,9},{5,13},
-										{9,1},{9,5},{9,9},{9,13},{13,5},{13,9}};
-		
-	int[][] doubleLetter = new int[][]{	{0,3},{0,11},{2,6},{2,8},{3,0},{3,7},{3,14},{6,2},{6,6},
-										{6,8},{6,12},{7,3},{7,11},{8,2},{8,6},{8,8},{8,12},{11,0},
-										{11,7},{11,14},{12,6},{12,8},{14,3},{14,11}};
 	
 	public Board()
 	{
@@ -90,20 +73,27 @@ public class Board
 	public void placeWord(int row, int column, char direction, String word, Player p) {
         if (wordPlacementCheck(row, column, direction, word, p)) {
             String upperWord = word.toUpperCase();
-            char[] wordToChar = new char[7];
-
-            for (int i = 0; i < word.length(); i++) {
-                wordToChar[i] = upperWord.charAt(i);
-            }
 
             if (direction == 'A' || direction == 'a') {
                 int j = row;
                 int counter = 0;
 
-                for (int k = column; k < (word.length() + column); k++) {
+                for (int k = column; k < (upperWord.length() + column); k++) {
                 	if (board[j][k][0] == null)
 					{
-						board[j][k][0] = p.frame.removeLettersFrame(wordToChar[counter++]);
+						if (p.frame.checkLettersFrame(upperWord.charAt(counter)))
+						{
+							board[j][k][0] = p.frame.removeLettersFrame(upperWord.charAt(counter++));
+						}
+
+						else
+						{
+							Tile alter = p.frame.removeLettersFrame(' ');
+							alter.setLetter(upperWord.charAt(counter));
+							alter.setValue(0);
+							board[j][k][0] = alter;
+							counter++;
+						}
 					}
 
                 	else
@@ -116,10 +106,22 @@ public class Board
                 int k = column;
                 int counter = 0;
 
-                for (int j = row; j < (word.length() + row); j++) {
+                for (int j = row; j < (upperWord.length() + row); j++) {
                 	if (board[j][k][0] == null)
 					{
-						board[j][k][0] = p.frame.removeLettersFrame(wordToChar[counter++]);
+						if (p.frame.checkLettersFrame(upperWord.charAt(counter)))
+						{
+							board[j][k][0] = p.frame.removeLettersFrame(upperWord.charAt(counter++));
+						}
+
+						else
+						{
+							Tile alter = p.frame.removeLettersFrame(' ');
+							alter.setLetter(upperWord.charAt(counter));
+							alter.setValue(0);
+							board[j][k][0] = alter;
+							counter++;
+						}
 					}
 
                 	else
@@ -145,7 +147,6 @@ public class Board
 		if(row>14||row<0||col<0||col>14||((dir=='a'||dir=='A') && row + word.length() > 14) || ((dir=='d' || dir=='D') && col+word.length()>14)){
 			return false;
 		}
-		System.out.println("Testing if I got barely anywhere!");
 
 		//if necessary tiles are either in frame or on board
 		ArrayList<Tile> temp = new ArrayList<Tile>();
@@ -156,7 +157,6 @@ public class Board
                 if (board[row][col+i][0] != null)
                 {
                     if (board[row][col+i][0].getLetter() != word.charAt(i)) {
-                    	System.out.println("Am I here in lol");
                         for (int j = 0; j < temp.size(); j++) {
 							p.frame.theFrameArray.add(temp.remove(j));
 						}
@@ -236,19 +236,6 @@ public class Board
         }
 		temp.clear();
 
-		System.out.println("Do I get here?");
-		//Check if there is an existing conflicting tile already in the position
-		//for(int i=0;i<word.length();i++) {
-		//	if(dir=='a'||dir=='A') {
-		//		if(board[row+i][col][0]!=null && board[row+i][col][0].getLetter()!=word.charAt(i)) {
-		//			return false;
-		//		}
-		//	}
-		//	if(board[row][col+i][0]!=null && board[row][col+i][0].getLetter()!=word.charAt(i)) {
-		//		return false;
-		//	}
-		//}
-
 		//finds out if the word is the first word on the board
 		boolean first = true;
 		for(int i =0; i<15; i++){
@@ -296,7 +283,6 @@ public class Board
 					}
 				}
 			}
-			System.out.println("Connected is : " + connected);
 			if(!connected) {
 				return connected;
 			}
