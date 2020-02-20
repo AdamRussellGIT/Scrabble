@@ -348,14 +348,4 @@ public class Board
 		
 		return gameBoard;
 	}
-	
-	public static void main(String[] args)
-	{
-		Pool pool = new Pool();
-		Player p1 = new Player("Adam", pool);
-		System.out.println(p1.toString());
-		Board theBoard = new Board();
-		System.out.println(theBoard.board[0][0][1].getValue());
-        System.out.println(theBoard.board[2][6][1].getLetter());
-	}
 }
