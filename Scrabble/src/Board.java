@@ -144,7 +144,7 @@ public class Board
 		}
 
 		//Checks if the tile is out of bounds
-		if(row>14||row<0||col<0||col>14||((dir=='a'||dir=='A') && row + word.length() > 14) || ((dir=='d' || dir=='D') && col+word.length()>14)){
+		if(row>14||row<0||col<0||col>14||((dir=='a'||dir=='A') && col + word.length() > 14) || ((dir=='d' || dir=='D') && row+word.length()>14)){
 			return false;
 		}
 
@@ -158,8 +158,9 @@ public class Board
                 {
                     if (board[row][col+i][0].getLetter() != word.charAt(i)) {
                         for (int j = 0; j < temp.size(); j++) {
-							p.frame.theFrameArray.add(temp.remove(j));
+							p.frame.theFrameArray.add(temp.get(j));
 						}
+                        temp.clear();
                         return false;
                     }
                 }
@@ -182,8 +183,9 @@ public class Board
                         {
                             for (int j = 0; j < temp.size(); j++)
                             {
-                                p.frame.theFrameArray.add(temp.remove(j));
+                                p.frame.theFrameArray.add(temp.get(j));
                             }
+                            temp.clear();
                             return false;
                         }
                     }
@@ -197,8 +199,9 @@ public class Board
 					if (board[row+i][col][0].getLetter() != word.charAt(i)) {
 						for (int j = 0; j < temp.size(); j++)
 						{
-							p.frame.theFrameArray.add(temp.remove(j));
+							p.frame.theFrameArray.add(temp.get(j));
 						}
+						temp.clear();
 						return false;
 					}
 				}
@@ -221,8 +224,9 @@ public class Board
 						{
 							for (int j = 0; j < temp.size(); j++)
 							{
-								p.frame.theFrameArray.add(temp.remove(j));
+								p.frame.theFrameArray.add(temp.get(j));
 							}
+							temp.clear();
 							return false;
 						}
 					}
@@ -235,7 +239,6 @@ public class Board
             p.frame.theFrameArray.add(temp.get(a));
         }
 		temp.clear();
-
 		//finds out if the word is the first word on the board
 		boolean first = true;
 		for(int i =0; i<15; i++){
@@ -265,7 +268,7 @@ public class Board
 				}
 				else {
 					for (int i = 0; i < word.length(); i++) {
-						if (board[row + i][col - 1][0] != null || board[row + i][col + 1][0] != null) {
+						if (board[row + i][col - 1][0] != null || board[row + i][col + 1][0] != null || board[row+i][col][0] != null) {
 							connected = true;
 						}
 					}
@@ -277,7 +280,7 @@ public class Board
 				}
 				else{
 					for(int i=0; i<word.length(); i++){
-						if(board[row-1][col+i][0]!=null || board[row+1][col+i][0]!=null){
+						if(board[row-1][col+i][0]!=null || board[row+1][col+i][0]!=null || board[row][col+i][0] != null){
 							connected = true;
 						}
 					}
