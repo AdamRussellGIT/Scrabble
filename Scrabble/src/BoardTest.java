@@ -1,7 +1,7 @@
 //Team: Camel Bois
 
 import java.util.Scanner;
-public class boardTest
+public class BoardTest
 {
     public static void main(String[] args)
     {
