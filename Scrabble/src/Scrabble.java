@@ -37,9 +37,9 @@ public class Scrabble
             }
 
             do {
-                UI.print("Enter 'QUIT', 'PASS', 'EXCHANGE', 'HELP', 'PLACEWORD', 'CHALLENGE'");
-                choice = UI.getChoice();
-            } while (!UI.correctChoice);
+                gameUI.print("Enter 'QUIT', 'PASS', 'EXCHANGE', 'HELP', 'PLACEWORD', 'CHALLENGE'");
+                choice = gameUI.getChoice();
+            } while (!gameUI.correctChoice);
 
             if (choice == "QUIT")
             {
@@ -59,11 +59,12 @@ public class Scrabble
 
     public static void main(String[] args)
     {
-        UI.print("Enter the name for Player 1 : ");
-        String name1 = UI.getInput();
-        UI.print("Enter the name for Player 2 : ");
-        String name2 = UI.getInput();
-        UI.print("Let's play!");
+        UI gameUI = new UI();
+        gameUI.print("Enter the name for Player 1 : ");
+        String name1 = gameUI.getInput();
+        gameUI.print("Enter the name for Player 2 : ");
+        String name2 = gameUI.getInput();
+        gameUI.print("Let's play!");
         Scrabble scrabbleGame = new Scrabble(name1, name2);
         scrabbleGame.playGame();
     }
