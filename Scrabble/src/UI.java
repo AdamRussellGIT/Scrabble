@@ -20,6 +20,11 @@ import java.util.Scanner;
 
 public class UI extends Application
 {
+    public void print(String s)
+    {
+        System.out.println(s);
+    }
+
     public String getInput()
     {
         Scanner in = new Scanner(System.in);
