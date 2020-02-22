@@ -9,21 +9,30 @@ public class Scrabble
     Player player2;
     Pool gamePool;
     Board gameBoard;
+    UI gameUI;
 
     int turn = 0;
     Player currentPlayer;
     String choice;
 
-    public Scrabble(String name1, String name2)
+    public Scrabble()
     {
         gamePool = new Pool();
         gameBoard = new Board();
-        player1 = new Player(name1, gamePool);
-        player2 = new Player(name2, gamePool);
+        gameUI = new UI();
     }
 
     public void playGame()
     {
+        gameUI.print("Enter the name for Player 1 : ");
+        String name1 = gameUI.getInput();
+        gameUI.print("Enter the name for Player 2 : ");
+        String name2 = gameUI.getInput();
+        gameUI.print("Let's play!");
+
+        player1 = new Player(name1, gamePool);
+        player2 = new Player(name2, gamePool);
+
         while (gamePool.poolEmpty() != true && (player1.frame.checkEmptyFrame() != true || player2.frame.checkEmptyFrame() != true))
         {
             if (turn%2 == 0)
@@ -59,13 +68,7 @@ public class Scrabble
 
     public static void main(String[] args)
     {
-        UI gameUI = new UI();
-        gameUI.print("Enter the name for Player 1 : ");
-        String name1 = gameUI.getInput();
-        gameUI.print("Enter the name for Player 2 : ");
-        String name2 = gameUI.getInput();
-        gameUI.print("Let's play!");
-        Scrabble scrabbleGame = new Scrabble(name1, name2);
+        Scrabble scrabbleGame = new Scrabble();
         scrabbleGame.playGame();
     }
 }

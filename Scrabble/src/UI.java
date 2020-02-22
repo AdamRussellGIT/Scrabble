@@ -20,29 +20,26 @@ import java.util.Scanner;
 
 public class UI extends Application
 {
-        public String getInput()
-        {
-            Scanner in = new Scanner(System.in);
+    public String getInput()
+    {
+        Scanner in = new Scanner(System.in);
 
-            String input = in.nextLine();
-            return input.toUpperCase();
+        String input = in.nextLine();
+        return input.toUpperCase();
+    }
+
+    public Boolean checkChoice(String input)
+    {
+        input.toUpperCase();
+
+        if (input == "QUIT" || input == "PASS" || input == "CHALLENGE" || input == "HELP" || input == "EXCHANGE" || input == "PLACEWORD") {
+            return true;
+        } else {
+            return false;
         }
+    }
 
-        public Boolean checkChoice(String input)
-        {
-            input.toUpperCase();
-
-            if(input == "QUIT" ||input == "PASS" || input == "CHALLENGE" ||input == "HELP" || input == "EXCHANGE" || input == "PLACEWORD")
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-        }
-
-        Stage curr_window;
+    Stage curr_window;
 
 
     @Override
