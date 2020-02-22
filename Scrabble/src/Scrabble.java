@@ -98,7 +98,10 @@ public class Scrabble
 
             if (choice.equals("PLACEWORD"))
             {
-
+                int row;
+                int column;
+                char direction;
+                String word;
             }
 
             if (choice.equals("HELP"))
