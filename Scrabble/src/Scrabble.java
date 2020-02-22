@@ -3,6 +3,8 @@
 //         Karol Wojcik - 18322146
 //         Carlo Motteran -
 
+import java.util.ArrayList;
+
 public class Scrabble
 {
     Player player1;
@@ -63,7 +65,8 @@ public class Scrabble
 
             if (choice.equals("EXCHANGE"))
             {
-                String keepExchanging;
+                ArrayList<Tile> tmpExchange = new ArrayList<>();
+                String keepExchanging = "y";
                 String exchangeInput;
                 char charExchange;
 
@@ -76,11 +79,7 @@ public class Scrabble
                     if (currentPlayer.frame.checkLettersFrame(charExchange))
                     {
                         //remove tile from players frame
-                        Tile tmpTile = currentPlayer.frame.removeLettersFrame(charExchange);
-                        //get new tile for players frame
-                        currentPlayer.frame.refillFrame(gamePool);
-                        //add the exchanged tile back to the gamePool
-                        gamePool.workPool.add(tmpTile);
+                        tmpExchange.add(currentPlayer.frame.removeLettersFrame(charExchange));
                     }
 
                     else
@@ -88,12 +87,20 @@ public class Scrabble
                         gameUI.print("You do not have that tile!");
                     }
 
-                    do {
-                        gameUI.print("Press y to exchange another letter, press n to finish exchanging : ");
-                        keepExchanging = gameUI.getInput();
-                    } while (!keepExchanging.equals("y") && !keepExchanging.equals("n"));
+                    if (!currentPlayer.frame.checkEmptyFrame()) {
+                        do {
+                            gameUI.print("Press y to exchange another letter, press n to finish exchanging : ");
+                            keepExchanging = gameUI.getInput();
+                        } while (!keepExchanging.equals("y") && !keepExchanging.equals("n"));
+                    }
 
-                } while (keepExchanging.equals("y"));
+                } while (keepExchanging.equals("y") && !currentPlayer.frame.checkEmptyFrame());
+
+                currentPlayer.frame.refillFrame(gamePool);
+
+                gamePool.workPool.addAll(tmpExchange);
+
+                tmpExchange.clear();
             }
 
             if (choice.equals("PLACEWORD"))
