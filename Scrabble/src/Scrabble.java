@@ -113,7 +113,14 @@ public class Scrabble
 
             if (choice.equals("HELP"))
             {
-
+                gameUI.print("QUIT: Quits the game and exits.");
+                gameUI.print("PASS: Passes the current players turn, effectively doing nothing.");
+                gameUI.print("EXCHANGE: Allows you to exchange some or all of your tiles.");
+                gameUI.print("PLACEWORD: Enter the row your word starts with, press return/nEnter the column where your word starts, press enter.");
+                gameUI.print("/tEnter the direction your word goes (A, a, D, d are accepted), press enter");
+                gameUI.print("/tEnter the word you want placed");
+                gameUI.print("NOTE: If there is a 'G' on the board, and you wish to place the word GET, and you only have E and T in your frame,");
+                gameUI.print("you must specify that the word starts in the row and column where G is, and say that the word you want to place is GET");
             }
 
             turn++;
