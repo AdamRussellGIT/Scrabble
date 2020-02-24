@@ -70,7 +70,8 @@ public class Scrabble
                 String exchangeInput;
                 char charExchange;
 
-                do {
+                while (tmpExchange.size() <= gamePool.poolSize() && !keepExchanging.equals("y") && !currentPlayer.frame.checkEmptyFrame())
+                {
                     gameUI.print("Enter the character you want to exchange : ");
                     exchangeInput = gameUI.getInput();
                     exchangeInput = exchangeInput.toUpperCase();
@@ -93,8 +94,7 @@ public class Scrabble
                             keepExchanging = gameUI.getInput();
                         } while (!keepExchanging.equals("y") && !keepExchanging.equals("n"));
                     }
-
-                } while (keepExchanging.equals("y") && !currentPlayer.frame.checkEmptyFrame());
+                }
 
                 currentPlayer.frame.refillFrame(gamePool);
 
