@@ -35,9 +35,9 @@ public class UI extends Application
 
     public Boolean checkChoice(String input)
     {
-        input.toUpperCase();
+        input = input.toUpperCase();
 
-        if (input == "QUIT" || input == "PASS" || input == "CHALLENGE" || input == "HELP" || input == "EXCHANGE" || input == "PLACEWORD") {
+        if (input.equals("QUIT") || input.equals("PASS") || input.equals("CHALLENGE") || input.equals("HELP") || input.equals("EXCHANGE") || input.equals("PLACEWORD")) {
             return true;
         } else {
             return false;

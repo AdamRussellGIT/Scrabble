@@ -148,6 +148,23 @@ public class Board
 			return false;
 		}
 
+		//Checks that there is no tile before start of word
+		if (dir == 'A' || dir == 'a')
+		{
+			if (board[row][col-1][0] != null)
+			{
+				return false;
+			}
+		}
+
+		else
+		{
+			if (board[row-1][col][0] != null)
+			{
+				return false;
+			}
+		}
+
 		//if necessary tiles are either in frame or on board
 		ArrayList<Tile> temp = new ArrayList<Tile>();
 		for (int i = 0; i < word.length(); i++)
