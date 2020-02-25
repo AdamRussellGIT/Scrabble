@@ -114,11 +114,39 @@ public class UI extends Application
             {
                 Button butt = new Button("(" + i + "," + j + ")");
                 butt.setPrefSize(55,55);
+                butt.setStyle("-fx-border-color: #fdf4ff; -fx-border-width: 2px");
+                butt.setStyle("-fx-background-color:#c8c2a8");
                 gridPane.add(butt, j, i, 1, 1);
+
+                //triple word score
+                if((i == 0 && j==0)||(i == 0 && j==7)||(i == 0 && j==14)||(i == 7 && j==0)||(i == 7 && j==14)||(i == 14 && j==0)||(i == 14 && j==7)||(i == 14 && j==14))
+                {
+                    butt.setStyle("-fx-border-color: #fdf4ff; -fx-border-width: 2px");
+                    butt.setStyle("-fx-background-color:#f35f49");
+                }
+                //double word score
+                if((i == 1 && j== 1)||(i == 2 && j== 2)||(i == 3 && j== 3)||(i == 4 && j== 4)||(i == 10 && j== 4)||(i == 11 && j== 3)||(i == 12 && j== 2)||(i == 13 && j== 1)||(i == 1 && j== 13)||(i == 2 && j== 12)||(i == 3 && j== 11)||(i == 4 && j== 10)||(i == 13 && j== 13)||(i == 12 && j== 12)||(i == 11 && j== 11)||(i == 10 && j== 10))
+                {
+                    butt.setStyle("-fx-border-color: #fdf4ff; -fx-border-width: 2px");
+                    butt.setStyle("-fx-background-color:#f6b9ab");
+                }
+                //triple letter score
+                if((i == 1 && j== 5)||(i == 1 && j== 9)||(i == 5 && j== 1)||(i == 5 && j== 5)||(i == 5 && j== 9)||(i == 5 && j== 13)||(i == 9 && j== 1)||(i == 9 && j== 5)||(i == 9 && j== 9)||(i == 9 && j== 13)||(i == 13 && j== 5)||(i == 13 && j== 9))
+                {
+                    butt.setStyle("-fx-border-color: #fdf4ff; -fx-border-width: 2px");
+                    butt.setStyle("-fx-background-color:#3d9eb2");
+                }
+                //double letter score
+                if((i == 0 && j== 3)||(i == 0 && j== 11)||(i == 2 && j== 6)||(i == 2 && j== 8)||(i == 3 && j== 7)||(i == 3 && j== 0)||(i == 3 && j== 14)||(i == 6 && j== 2)||(i == 6 && j== 6)||(i == 6 && j== 8)||(i == 6 && j== 12)||(i == 7 && j== 3)||(i == 7 && j== 11)||(i == 8 && j== 2)||(i == 8 && j== 6)||(i == 8 && j== 8)||(i == 8 && j== 12)||(i == 11 && j== 0)||(i == 11 && j== 7)||(i == 11 && j== 14)||(i == 12 && j== 6)||(i == 12 && j== 8)||(i == 14 && j== 3)||(i == 14 && j== 11))
+                {
+                    butt.setStyle("-fx-border-color: #fdf4ff; -fx-border-width: 2px");
+                    butt.setStyle("-fx-background-color:#b9d3d0");
+
+                }
             }
         }
 
-        Scene scene = new Scene(gridPane, 900, 800);
+        Scene scene = new Scene(gridPane, 930, 800);
 
         Scrabble.setScene(scene);
         Scrabble.show();
