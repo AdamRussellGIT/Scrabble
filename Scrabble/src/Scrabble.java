@@ -35,28 +35,41 @@ public class Scrabble
         player1 = new Player(name1, gamePool);
         player2 = new Player(name2, gamePool);
 
-        while (!gamePool.poolEmpty() && (!player1.frame.checkEmptyFrame() || !player2.frame.checkEmptyFrame())) {
+        while (!gamePool.poolEmpty() && (!player1.frame.checkEmptyFrame() || !player2.frame.checkEmptyFrame()))
+        {
             if (turn % 2 == 0) {
                 currentPlayer = player1;
             } else {
                 currentPlayer = player2;
             }
 
+            gameUI.print("Current player: " + currentPlayer.getName());
+
             do {
                 gameUI.print("Enter 'QUIT', 'PASS', 'EXCHANGE', 'HELP', 'PLACEWORD'");
                 choice = gameUI.getInput();
             } while (!gameUI.checkChoice(choice));
 
+            //don't increment turn if the player wants help
             if (choice.equals("HELP")) {
-                gameUI.print("QUIT: Quits the game and exits.");
-                gameUI.print("PASS: Passes the current players turn, effectively doing nothing.");
-                gameUI.print("EXCHANGE: Allows you to exchange some or all of your tiles.");
-                gameUI.print("PLACEWORD: Enter the row your word starts with, press return/nEnter the column where your word starts, press enter.");
-                gameUI.print("/tEnter the direction your word goes (A, a, D, d are accepted), press enter");
-                gameUI.print("/tEnter the word you want placed");
-                gameUI.print("NOTE: If there is a 'G' on the board, and you wish to place the word GET, and you only have E and T in your frame,");
-                gameUI.print("you must specify that the word starts in the row and column where G is, and say that the word you want to place is GET");
-            } else {
+                help();
+            }
+
+            else if (choice.equals("PLACEWORD")) {
+                //if they placed a valid word, move to the next turn
+                if (placeWordBoard(currentPlayer))
+                {
+                    turn++;
+                }
+
+                //if they did not pass the wordPlacementCheck, stay on the current players turn and tell them
+                else
+                {
+                    gameUI.print("That was an invalid word placement!");
+                }
+            }
+
+            else {
                 if (choice.equals("QUIT")) {
                     gameUI.print("User chose to quit the game!");
                     gamePool.workPool.clear();
@@ -67,44 +80,7 @@ public class Scrabble
                 }
 
                 if (choice.equals("EXCHANGE")) {
-                    ArrayList<Tile> tmpExchange = new ArrayList<>();
-                    String keepExchanging = "y";
-                    String exchangeInput;
-                    char charExchange;
-
-                    while (tmpExchange.size() <= gamePool.poolSize() && !keepExchanging.equals("y") && !currentPlayer.frame.checkEmptyFrame()) {
-                        gameUI.print("Enter the character you want to exchange : ");
-                        exchangeInput = gameUI.getInput();
-                        exchangeInput = exchangeInput.toUpperCase();
-                        charExchange = exchangeInput.charAt(0);
-
-                        if (currentPlayer.frame.checkLettersFrame(charExchange)) {
-                            //remove tile from players frame
-                            tmpExchange.add(currentPlayer.frame.removeLettersFrame(charExchange));
-                        } else {
-                            gameUI.print("You do not have that tile!");
-                        }
-
-                        if (!currentPlayer.frame.checkEmptyFrame()) {
-                            do {
-                                gameUI.print("Press y to exchange another letter, press n to finish exchanging : ");
-                                keepExchanging = gameUI.getInput();
-                            } while (!keepExchanging.equals("y") && !keepExchanging.equals("n"));
-                        }
-                    }
-
-                    currentPlayer.frame.refillFrame(gamePool);
-
-                    gamePool.workPool.addAll(tmpExchange);
-
-                    tmpExchange.clear();
-                }
-
-                if (choice.equals("PLACEWORD")) {
-                    int row;
-                    int column;
-                    char direction;
-                    String word;
+                    exchange(gamePool, currentPlayer);
                 }
 
                 turn++;
@@ -112,12 +88,89 @@ public class Scrabble
         }
     }
 
-    public void calculateScore(Player player)
+    public void exchange(Pool gamePool, Player currentPlayer)
+    {
+        ArrayList<Tile> tmpExchange = new ArrayList<>();
+        String keepExchanging = "Y";
+        String exchangeInput;
+        char charExchange;
+
+        while (tmpExchange.size() <= gamePool.poolSize() && keepExchanging.equals("Y") && !currentPlayer.frame.checkEmptyFrame()) {
+            gameUI.print("Enter the character you want to exchange : ");
+            exchangeInput = gameUI.getInput();
+            exchangeInput = exchangeInput.toUpperCase();
+            charExchange = exchangeInput.charAt(0);
+
+            if (currentPlayer.frame.checkLettersFrame(charExchange)) {
+                //remove tile from players frame
+                tmpExchange.add(currentPlayer.frame.removeLettersFrame(charExchange));
+            } else {
+                gameUI.print("You do not have that tile!");
+            }
+
+            if (!currentPlayer.frame.checkEmptyFrame()) {
+                do {
+                    gameUI.print("Press y to exchange another letter, press n to finish exchanging : ");
+                    keepExchanging = gameUI.getInput();
+                } while (!keepExchanging.equals("Y") && !keepExchanging.equals("N"));
+            }
+        }
+
+        currentPlayer.frame.refillFrame(gamePool);
+
+        gamePool.workPool.addAll(tmpExchange);
+
+        tmpExchange.clear();
+    }
+
+    public boolean placeWordBoard(Player currentPlayer)
+    {
+        int row;
+        int column;
+        char direction;
+        String word;
+
+        gameUI.print("Enter row that your word will start on : ");
+        row = Integer.parseInt(gameUI.getInput());
+
+        gameUI.print("Enter column that your word will start on : ");
+        column = Integer.parseInt(gameUI.getInput());
+
+        gameUI.print("Enter direction your word will go : ");
+        direction = gameUI.getInput().charAt(0);
+
+        gameUI.print("Enter the word you want to place");
+        word = gameUI.getInput();
+
+        if(gameBoard.wordPlacementCheck(row, column, direction, word, currentPlayer))
+        {
+            gameBoard.placeWord(row, column, direction, word, currentPlayer);
+            calculateScore(row, column, direction, word, currentPlayer);
+            return true;
+        }
+
+        else
+        {
+            return false;
+        }
+    }
+
+    public void calculateScore(int row, int col, char direction, String word, Player currentPlayer)
     {
 
     }
 
-
+    public void help()
+    {
+        gameUI.print("QUIT: Quits the game and exits.");
+        gameUI.print("PASS: Passes the current players turn, effectively doing nothing.");
+        gameUI.print("EXCHANGE: Allows you to exchange some or all of your tiles.");
+        gameUI.print("PLACEWORD: Enter the row your word starts with/nEnter the column where your word starts.");
+        gameUI.print("/tEnter the direction your word goes (A, a, D, d, are accepted), press enter");
+        gameUI.print("/tEnter the word you want placed");
+        gameUI.print("NOTE: If there is a 'G' on the board, and you wish to place the word GET, and you only have E and T in your frame,");
+        gameUI.print("you must specify that the word starts in the row and column where G is, and say that the word you want to place is GET");
+    }
 
     public static void main(String[] args)
     {

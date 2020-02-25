@@ -71,68 +71,61 @@ public class Board
 	}
 	
 	public void placeWord(int row, int column, char direction, String word, Player p) {
-        if (wordPlacementCheck(row, column, direction, word, p)) {
-            String upperWord = word.toUpperCase();
+		String upperWord = word.toUpperCase();
 
-            if (direction == 'A' || direction == 'a') {
-                int j = row;
-                int counter = 0;
+		if (direction == 'A' || direction == 'a') {
+			int j = row;
+			int counter = 0;
 
-                for (int k = column; k < (upperWord.length() + column); k++) {
-                	if (board[j][k][0] == null)
+			for (int k = column; k < (upperWord.length() + column); k++) {
+				if (board[j][k][0] == null)
+				{
+					if (p.frame.checkLettersFrame(upperWord.charAt(counter)))
 					{
-						if (p.frame.checkLettersFrame(upperWord.charAt(counter)))
-						{
-							board[j][k][0] = p.frame.removeLettersFrame(upperWord.charAt(counter++));
-						}
-
-						else
-						{
-							Tile alter = p.frame.removeLettersFrame(' ');
-							alter.setLetter(upperWord.charAt(counter));
-							alter.setValue(0);
-							board[j][k][0] = alter;
-							counter++;
-						}
+						board[j][k][0] = p.frame.removeLettersFrame(upperWord.charAt(counter++));
 					}
 
-                	else
-					{
+					else {
+						Tile alter = p.frame.removeLettersFrame(' ');
+						alter.setLetter(upperWord.charAt(counter));
+						alter.setValue(0);
+						board[j][k][0] = alter;
 						counter++;
 					}
-                }
-            }
-            else {
-                int k = column;
-                int counter = 0;
+				}
 
-                for (int j = row; j < (upperWord.length() + row); j++) {
-                	if (board[j][k][0] == null)
+				else {
+					counter++;
+				}
+			}
+		}
+
+		else {
+			int k = column;
+			int counter = 0;
+
+			for (int j = row; j < (upperWord.length() + row); j++) {
+				if (board[j][k][0] == null)
+				{
+					if (p.frame.checkLettersFrame(upperWord.charAt(counter)))
 					{
-						if (p.frame.checkLettersFrame(upperWord.charAt(counter)))
-						{
-							board[j][k][0] = p.frame.removeLettersFrame(upperWord.charAt(counter++));
-						}
-
-						else
-						{
-							Tile alter = p.frame.removeLettersFrame(' ');
-							alter.setLetter(upperWord.charAt(counter));
-							alter.setValue(0);
-							board[j][k][0] = alter;
-							counter++;
-						}
+						board[j][k][0] = p.frame.removeLettersFrame(upperWord.charAt(counter++));
 					}
 
-                	else
-					{
+					else {
+						Tile alter = p.frame.removeLettersFrame(' ');
+						alter.setLetter(upperWord.charAt(counter));
+						alter.setValue(0);
+						board[j][k][0] = alter;
 						counter++;
 					}
-                }
-            }
-        } else {
-            System.out.println("ERROR, FAILED PLACEMENT CHECK");
-        }
+				}
+
+				else {
+					counter++;
+				}
+			}
+		}
     }
 
 
