@@ -72,8 +72,7 @@ public class UI extends Application
 
 
     @Override
-    public void start(Stage Scrabble)
-    {
+    public void start(Stage Scrabble) throws FileNotFoundException {
         //Images for background
 //        Image board = new Image(new FileInputStream("C:\\Users\\karol\\IdeaProjects\\Camel-bois\\Scrabble\\res\\scrabbleBoard.png"));
 //        Image frame = new Image(new FileInputStream("C:\\Users\\karol\\IdeaProjects\\Camel-bois\\Scrabble\\res\\scrabbleFrame.png"));
@@ -107,6 +106,10 @@ public class UI extends Application
         gridPane.setHgap(7);
         gridPane.setVgap(7);
 
+        //Centre tile image set-up
+        ImageView imgV;
+        Image starImg = new Image(new FileInputStream("C:\\Users\\karol\\IdeaProjects\\Camel-bois\\Scrabble\\res\\star.jpg"));
+        imgV = new ImageView(starImg);
 
         for (int i = 0; i < 15; i++)
         {
@@ -141,12 +144,27 @@ public class UI extends Application
                 {
                     butt.setStyle("-fx-border-color: #fdf4ff; -fx-border-width: 2px");
                     butt.setStyle("-fx-background-color:#b9d3d0");
+                }
+                //centre tile
+                if((i == 7 && j== 7) )
+                {
+                    butt.setText("");
+                    butt.setStyle("-fx-border-color: #fdf4ff; -fx-border-width: 2px");
+                    butt.setStyle("-fx-background-color:#f6b9ab");
 
+                    butt.setGraphic(new ImageView(starImg));
+                }
+
+                //example placement
+                if((i == 0 && j == 0))
+                {
+                    butt.setText("A");
+                    butt.setStyle("-fx-font-weight: bold");
                 }
             }
         }
 
-        Scene scene = new Scene(gridPane, 930, 800);
+        Scene scene = new Scene(gridPane, 1230, 800);
 
         Scrabble.setScene(scene);
         Scrabble.show();
