@@ -40,7 +40,7 @@ public class Player
 	}
 	
 	//adds to the current players score
-	private void setScore(int score)
+	public void setScore(int score)
 	{
 		this.score += score;
 	}
