@@ -43,7 +43,7 @@ public class Scrabble
                 currentPlayer = player2;
             }
 
-            gameUI.print("Current player: " + currentPlayer.getName());
+            System.out.println("Current player: " + currentPlayer.getName());
 
             do {
                 gameUI.print("Enter 'QUIT', 'PASS', 'EXCHANGE', 'HELP', 'PLACEWORD'");
@@ -145,7 +145,7 @@ public class Scrabble
         if(gameBoard.wordPlacementCheck(row, column, direction, word, currentPlayer))
         {
             gameBoard.placeWord(row, column, direction, word, currentPlayer);
-            calculateScore(row, column, direction, word, currentPlayer);
+            calculateScore();
             return true;
         }
 
@@ -155,7 +155,7 @@ public class Scrabble
         }
     }
 
-    public void calculateScore(int row, int col, char direction, String word, Player currentPlayer)
+    public void calculateScore()
     {
 
     }
