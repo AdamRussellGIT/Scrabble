@@ -48,7 +48,17 @@ public class Scrabble
             }
 
             //set a previous board incase we need to remove letters after a players turn
-            previousBoard.board = gameBoard.board;
+            for (int i = 0; i < 15; i++)
+            {
+                for (int j = 0; j < 15; j++)
+                {
+                    for (int k = 0; k < 2; k++)
+                    {
+                        previousBoard.board[i][j][k] = gameBoard.board[i][j][k];
+                    }
+                }
+            }
+
             System.out.println("Current player: " + currentPlayer.getName() + " and their score : " + currentPlayer.getScore());
             System.out.println(currentPlayer.toString());
 
@@ -98,15 +108,14 @@ public class Scrabble
     }
 
     public ArrayList<Word> findAllWords(int row, int col, char dir, String wrd){
-
         ArrayList<Word> ans = new ArrayList<Word>();
         ans.add(new Word(row,col,dir,wrd));
         if(dir=='A' || dir=='a'){
-            String a = new String();
             for(int i=0; i<wrd.length(); i++){
+                String a = new String();
                 if((gameBoard.board[row-1][col+i][0]!=null || gameBoard.board[row+1][col+i][0]!=null) && previousBoard.board[row][col+i][0] == null) {
                     Word tmp = new Word(0,0,'d',"");
-                    int j = 0;
+                    int j = 1;
                     while (gameBoard.board[row - j][col + i][0] != null) {
                         j++;
                     }
@@ -120,17 +129,16 @@ public class Scrabble
                     }
                     tmp.setWord(a);
                     ans.add(tmp);
-                    tmp.clear();
                 }
-                a = null;
             }
         }
         else if(dir=='D' || dir=='d'){
-            String a = new String();
             for(int i=0; i<wrd.length(); i++){
+                String a = new String();
                 if((gameBoard.board[row+i][col-1][0]!=null || gameBoard.board[row+i][col+1][0]!=null)&&previousBoard.board[row+i][col][0]==null) {
+                    System.out.println("Yoink");
                     Word tmp = new Word(0,0,'a',"");
-                    int j = 0;
+                    int j = 1;
                     while (gameBoard.board[row+i][col-j][0] != null) {
                         j++;
                     }
@@ -142,11 +150,15 @@ public class Scrabble
                         a=a.concat(String.valueOf(gameBoard.board[row+i][col-j][0].getLetter()));
                         j--;
                     }
+                    System.out.println("a is : " + a);
                     tmp.setWord(a);
+                    System.out.println("What is a using get : " + tmp.getWord());
                     ans.add(tmp);
-                    tmp.clear();
+                    for (int z = 0; z < ans.size(); z++)
+                    {
+                        System.out.println("Whats in ans : " + ans.get(z).getWord());
+                    }
                 }
-                a = "";
             }
 
         }
@@ -223,19 +235,23 @@ public class Scrabble
 
     public void calculateScore(ArrayList<Word> wordsArray, Player currentPlayer)
     {
-        System.out.println("Hello");
+        System.out.println("Hello there");
         for (int i = 0; i < wordsArray.size(); i++)
         {
             System.out.println(wordsArray.get(i).getWord());
         }
         int score = 0;
-        int wordMultiplier = 1;
-        int letterScore = 0;
+        int wordMultiplier;
+        int letterScore;
+        int wordScore;
         previousScore = 0;
 
         for (int i = 0; i < wordsArray.size(); i++)
         {
             wordMultiplier = 1;
+            wordScore = 0;
+
+            System.out.println(wordsArray.get(i).getWord() + " row = " + wordsArray.get(i).getStartRow() + " column = " + wordsArray.get(i).getStartColumn());
 
             if (wordsArray.get(i).getDirection() == 'D' || wordsArray.get(i).getDirection() == 'd')
             {
@@ -276,10 +292,11 @@ public class Scrabble
                         }
                     }
 
-                    score += letterScore;
+                    wordScore += letterScore;
                 }
 
-                score *= wordMultiplier;
+                wordScore *= wordMultiplier;
+                score += wordScore;
             }
 
             else
@@ -321,10 +338,11 @@ public class Scrabble
                         }
                     }
 
-                    score += letterScore;
+                    wordScore += letterScore;
                 }
 
-                score *= wordMultiplier;
+                wordScore *= wordMultiplier;
+                score += wordScore;
             }
         }
 
