@@ -51,7 +51,7 @@ public class Player
 		return this.name;
 	}
 	
-	//returns the scoe of the current player
+	//returns the score of the current player
 	public int getScore()
 	{
 		return this.score;

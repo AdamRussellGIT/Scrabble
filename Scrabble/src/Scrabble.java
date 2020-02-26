@@ -4,6 +4,7 @@
 //         Carlo Motteran -
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class Scrabble
 {
@@ -18,7 +19,7 @@ public class Scrabble
     String choice;
 
     int previousScore = 0;
-    Board previousBoard;
+    Board previousBoard = new Board();
 
     public Scrabble()
     {
@@ -48,7 +49,8 @@ public class Scrabble
 
             //set a previous board incase we need to remove letters after a players turn
             previousBoard.board = gameBoard.board;
-            System.out.println("Current player: " + currentPlayer.getName());
+            System.out.println("Current player: " + currentPlayer.getName() + " and their score : " + currentPlayer.getScore());
+            System.out.println(currentPlayer.toString());
 
             do {
                 gameUI.print("Enter 'QUIT', 'PASS', 'EXCHANGE', 'HELP', 'PLACEWORD'");
@@ -90,17 +92,20 @@ public class Scrabble
 
                 turn++;
             }
+            currentPlayer.frame.refillFrame(gamePool);
+            System.out.println(gameBoard.toString());
         }
     }
 
     public ArrayList<Word> findAllWords(int row, int col, char dir, String wrd){
 
         ArrayList<Word> ans = new ArrayList<Word>();
+        ans.add(new Word(row,col,dir,wrd));
         if(dir=='A' || dir=='a'){
-
-            Word tmp = new Word(0,0,'d',"");
+            String a = new String();
             for(int i=0; i<wrd.length(); i++){
-                if(gameBoard.board[row-1][col+i][0]!=null || gameBoard.board[row+1][col+i][0]!=null) {
+                if((gameBoard.board[row-1][col+i][0]!=null || gameBoard.board[row+1][col+i][0]!=null) && previousBoard.board[row][col+i][0] == null) {
+                    Word tmp = new Word(0,0,'d',"");
                     int j = 0;
                     while (gameBoard.board[row - j][col + i][0] != null) {
                         j++;
@@ -109,23 +114,22 @@ public class Scrabble
                         j--;
                     tmp.setStartColumn(col + i);
                     tmp.setStartRow(row - j);
-                    String a = new String();
-                    while(gameBoard.board[row-j][col+i][0]!=null){
+                    while(gameBoard.board[row-j][col+i][0]!=null || col >= 14){
                         a=a.concat(String.valueOf(gameBoard.board[row-j][col+i][0].getLetter()));
                         j--;
                     }
                     tmp.setWord(a);
+                    ans.add(tmp);
+                    tmp.clear();
                 }
-                ans.add(tmp);
-                ans.clear();
-                tmp.clear();
+                a = null;
             }
         }
         else if(dir=='D' || dir=='d'){
-
-            Word tmp = new Word(0,0,'a',"");
+            String a = new String();
             for(int i=0; i<wrd.length(); i++){
-                if(gameBoard.board[row+i][col-1][0]!=null || gameBoard.board[row+i][col+1][0]!=null) {
+                if((gameBoard.board[row+i][col-1][0]!=null || gameBoard.board[row+i][col+1][0]!=null)&&previousBoard.board[row+i][col][0]==null) {
+                    Word tmp = new Word(0,0,'a',"");
                     int j = 0;
                     while (gameBoard.board[row+i][col-j][0] != null) {
                         j++;
@@ -134,16 +138,15 @@ public class Scrabble
                         j--;
                     tmp.setStartColumn(col-j);
                     tmp.setStartRow(row+i);
-                    String a = new String();
-                    while(gameBoard.board[row+i][col-j][0]!=null){
+                    while(gameBoard.board[row+i][col-j][0]!=null || row >= 14){
                         a=a.concat(String.valueOf(gameBoard.board[row+i][col-j][0].getLetter()));
                         j--;
                     }
                     tmp.setWord(a);
+                    ans.add(tmp);
+                    tmp.clear();
                 }
-                ans.add(tmp);
-                ans.clear();
-                tmp.clear();
+                a = "";
             }
 
         }
@@ -208,6 +211,7 @@ public class Scrabble
         if(gameBoard.wordPlacementCheck(row, column, direction, word, currentPlayer))
         {
             gameBoard.placeWord(row, column, direction, word, currentPlayer);
+            calculateScore(findAllWords(row, column, direction, word), currentPlayer);
             return true;
         }
 
@@ -219,6 +223,11 @@ public class Scrabble
 
     public void calculateScore(ArrayList<Word> wordsArray, Player currentPlayer)
     {
+        System.out.println("Hello");
+        for (int i = 0; i < wordsArray.size(); i++)
+        {
+            System.out.println(wordsArray.get(i).getWord());
+        }
         int score = 0;
         int wordMultiplier = 1;
         int letterScore = 0;
@@ -226,13 +235,13 @@ public class Scrabble
 
         for (int i = 0; i < wordsArray.size(); i++)
         {
-            letterScore = 0;
             wordMultiplier = 1;
 
             if (wordsArray.get(i).getDirection() == 'D' || wordsArray.get(i).getDirection() == 'd')
             {
                 for (int j = 0; j < wordsArray.get(i).getWord().length(); j++)
                 {
+                    letterScore = 0;
                     //add the letter value to their score
                     letterScore += gameBoard.board[wordsArray.get(i).getStartRow() + j][wordsArray.get(i).getStartColumn()][0].getValue();
 
@@ -277,7 +286,9 @@ public class Scrabble
             {
                 for (int j = 0; j < wordsArray.get(i).getWord().length(); j++)
                 {
-                    letterScore = gameBoard.board[wordsArray.get(i).getStartRow()][wordsArray.get(i).getStartColumn() + j][0].getValue();
+                    letterScore = 0;
+
+                    letterScore += gameBoard.board[wordsArray.get(i).getStartRow()][wordsArray.get(i).getStartColumn() + j][0].getValue();
 
                     if (gameBoard.board[wordsArray.get(i).getStartRow()][wordsArray.get(i).getStartColumn() + j][1] != null)
                     {
