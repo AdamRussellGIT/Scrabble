@@ -108,7 +108,7 @@ public class UI extends Application
 
         //Centre tile image set-up
         ImageView imgV;
-        Image starImg = new Image(new FileInputStream("C:\\Users\\karol\\IdeaProjects\\Camel-bois\\Scrabble\\res\\star.jpg"));
+        Image starImg = new Image(new FileInputStream("Scrabble\\res\\star.jpg"));
         imgV = new ImageView(starImg);
 
         for (int i = 0; i < 15; i++)
