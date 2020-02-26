@@ -145,7 +145,6 @@ public class Scrabble
         if(gameBoard.wordPlacementCheck(row, column, direction, word, currentPlayer))
         {
             gameBoard.placeWord(row, column, direction, word, currentPlayer);
-            calculateScore();
             return true;
         }
 
