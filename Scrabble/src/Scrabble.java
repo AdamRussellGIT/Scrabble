@@ -17,6 +17,9 @@ public class Scrabble
     Player currentPlayer;
     String choice;
 
+    int previousScore = 0;
+    Board previousBoard;
+
     public Scrabble()
     {
         gamePool = new Pool();
@@ -43,7 +46,9 @@ public class Scrabble
                 currentPlayer = player2;
             }
 
-            gameUI.print("Current player: " + currentPlayer.getName());
+            //set a previous board incase we need to remove letters after a players turn
+            previousBoard.board = gameBoard.board;
+            System.out.println("Current player: " + currentPlayer.getName());
 
             do {
                 gameUI.print("Enter 'QUIT', 'PASS', 'EXCHANGE', 'HELP', 'PLACEWORD'");
@@ -87,6 +92,64 @@ public class Scrabble
             }
         }
     }
+
+    public ArrayList<Word> findAllWords(int row, int col, char dir, String wrd){
+
+        ArrayList<Word> ans = new ArrayList<Word>();
+        if(dir=='A' || dir=='a'){
+
+            Word tmp = new Word(0,0,'d',"");
+            for(int i=0; i<wrd.length(); i++){
+                if(gameBoard.board[row-1][col+i][0]!=null || gameBoard.board[row+1][col+i][0]!=null) {
+                    int j = 0;
+                    while (gameBoard.board[row - j][col + i][0] != null) {
+                        j++;
+                    }
+                    if(gameBoard.board[row-1][col+i][0]!=null)
+                        j--;
+                    tmp.setStartColumn(col + i);
+                    tmp.setStartRow(row - j);
+                    String a = new String();
+                    while(gameBoard.board[row-j][col+i][0]!=null){
+                        a=a.concat(String.valueOf(gameBoard.board[row-j][col+i][0].getLetter()));
+                        j--;
+                    }
+                    tmp.setWord(a);
+                }
+                ans.add(tmp);
+                ans.clear();
+                tmp.clear();
+            }
+        }
+        else if(dir=='D' || dir=='d'){
+
+            Word tmp = new Word(0,0,'a',"");
+            for(int i=0; i<wrd.length(); i++){
+                if(gameBoard.board[row+i][col-1][0]!=null || gameBoard.board[row+i][col+1][0]!=null) {
+                    int j = 0;
+                    while (gameBoard.board[row+i][col-j][0] != null) {
+                        j++;
+                    }
+                    if(gameBoard.board[row+i][col-1][0]!=null)
+                        j--;
+                    tmp.setStartColumn(col-j);
+                    tmp.setStartRow(row+i);
+                    String a = new String();
+                    while(gameBoard.board[row+i][col-j][0]!=null){
+                        a=a.concat(String.valueOf(gameBoard.board[row+i][col-j][0].getLetter()));
+                        j--;
+                    }
+                    tmp.setWord(a);
+                }
+                ans.add(tmp);
+                ans.clear();
+                tmp.clear();
+            }
+
+        }
+        return ans;
+    }
+
 
     public void exchange(Pool gamePool, Player currentPlayer)
     {
@@ -145,7 +208,6 @@ public class Scrabble
         if(gameBoard.wordPlacementCheck(row, column, direction, word, currentPlayer))
         {
             gameBoard.placeWord(row, column, direction, word, currentPlayer);
-            calculateScore(row, column, direction, word, currentPlayer);
             return true;
         }
 
@@ -155,9 +217,108 @@ public class Scrabble
         }
     }
 
-    public void calculateScore(int row, int col, char direction, String word, Player currentPlayer)
+    public void calculateScore(ArrayList<Word> wordsArray, Player currentPlayer)
     {
+        int score = 0;
+        int wordMultiplier = 1;
+        int letterScore = 0;
+        previousScore = 0;
 
+        for (int i = 0; i < wordsArray.size(); i++)
+        {
+            letterScore = 0;
+            wordMultiplier = 1;
+
+            if (wordsArray.get(i).getDirection() == 'D' || wordsArray.get(i).getDirection() == 'd')
+            {
+                for (int j = 0; j < wordsArray.get(i).getWord().length(); j++)
+                {
+                    //add the letter value to their score
+                    letterScore += gameBoard.board[wordsArray.get(i).getStartRow() + j][wordsArray.get(i).getStartColumn()][0].getValue();
+
+                    if (gameBoard.board[wordsArray.get(i).getStartRow() + j][wordsArray.get(i).getStartColumn()][1] != null)
+                    {
+                        //tripleWord square
+                        if (gameBoard.board[wordsArray.get(i).getStartRow() + j][wordsArray.get(i).getStartColumn()][1].getLetter() == '$')
+                        {
+                            //increase tripleword value
+                            wordMultiplier = wordMultiplier * gameBoard.board[wordsArray.get(i).getStartRow() + j][wordsArray.get(i).getStartColumn()][1].getValue();
+                        }
+
+                        //doubleWord square
+                        if (gameBoard.board[wordsArray.get(i).getStartRow() + j][wordsArray.get(i).getStartColumn()][1].getLetter() == '!')
+                        {
+                            //increase tripleword value
+                            wordMultiplier = wordMultiplier * gameBoard.board[wordsArray.get(i).getStartRow() + j][wordsArray.get(i).getStartColumn()][1].getValue();
+                        }
+
+                        //tripleLetter square
+                        if (gameBoard.board[wordsArray.get(i).getStartRow() + j][wordsArray.get(i).getStartColumn()][1].getLetter() == '@')
+                        {
+                            //add the letter value to their score
+                            letterScore *= gameBoard.board[wordsArray.get(i).getStartRow() + j][wordsArray.get(i).getStartColumn()][1].getValue();
+                        }
+
+                        //doubleLetter square
+                        if (gameBoard.board[wordsArray.get(i).getStartRow() + j][wordsArray.get(i).getStartColumn()][1].getLetter() == '#')
+                        {
+                            //add the letter value to their score
+                            letterScore *= gameBoard.board[wordsArray.get(i).getStartRow() + j][wordsArray.get(i).getStartColumn()][1].getValue();
+                        }
+                    }
+
+                    score += letterScore;
+                }
+
+                score *= wordMultiplier;
+            }
+
+            else
+            {
+                for (int j = 0; j < wordsArray.get(i).getWord().length(); j++)
+                {
+                    letterScore = gameBoard.board[wordsArray.get(i).getStartRow()][wordsArray.get(i).getStartColumn() + j][0].getValue();
+
+                    if (gameBoard.board[wordsArray.get(i).getStartRow()][wordsArray.get(i).getStartColumn() + j][1] != null)
+                    {
+                        //tripleWord square
+                        if (gameBoard.board[wordsArray.get(i).getStartRow()][wordsArray.get(i).getStartColumn() + j][1].getLetter() == '$')
+                        {
+                            //increase tripleword value
+                            wordMultiplier = wordMultiplier * gameBoard.board[wordsArray.get(i).getStartRow()][wordsArray.get(i).getStartColumn() + j][1].getValue();
+                        }
+
+                        //doubleWord square
+                        if (gameBoard.board[wordsArray.get(i).getStartRow()][wordsArray.get(i).getStartColumn() + j][1].getLetter() == '!')
+                        {
+                            //increase tripleword value
+                            wordMultiplier = wordMultiplier * gameBoard.board[wordsArray.get(i).getStartRow()][wordsArray.get(i).getStartColumn() + j][1].getValue();
+                        }
+
+                        //tripleLetter square
+                        if (gameBoard.board[wordsArray.get(i).getStartRow()][wordsArray.get(i).getStartColumn() + j][1].getLetter() == '@')
+                        {
+                            //add the letter value to their score
+                            letterScore *= gameBoard.board[wordsArray.get(i).getStartRow()][wordsArray.get(i).getStartColumn() + j][1].getValue();
+                        }
+
+                        //doubleLetter square
+                        if (gameBoard.board[wordsArray.get(i).getStartRow()][wordsArray.get(i).getStartColumn() + j][1].getLetter() == '#')
+                        {
+                            //add the letter value to their score
+                            letterScore *= gameBoard.board[wordsArray.get(i).getStartRow()][wordsArray.get(i).getStartColumn() + j][1].getValue();
+                        }
+                    }
+
+                    score += letterScore;
+                }
+
+                score *= wordMultiplier;
+            }
+        }
+
+        previousScore = score;
+        currentPlayer.setScore(score);
     }
 
     public void help()
