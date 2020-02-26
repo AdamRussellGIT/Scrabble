@@ -11,6 +11,12 @@ public class Word {
         this.word = word;
     }
 
+    public void clear(){
+        setStartRow(0);
+        setStartColumn(0);
+        setWord(null);
+    }
+
     public int getStartRow() {
         return this.startRow;
     }

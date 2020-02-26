@@ -88,6 +88,64 @@ public class Scrabble
         }
     }
 
+    public ArrayList<Word> findAllWords(int row, int col, char dir, String wrd){
+
+        ArrayList<Word> ans = new ArrayList<Word>();
+        if(dir=='A' || dir=='a'){
+
+            Word tmp = new Word(0,0,'d',"");
+            for(int i=0; i<wrd.length(); i++){
+                if(gameBoard.board[row-1][col+i][0]!=null || gameBoard.board[row+1][col+i][0]!=null) {
+                    int j = 0;
+                    while (gameBoard.board[row - j][col + i][0] != null) {
+                        j++;
+                    }
+                    if(gameBoard.board[row-1][col+i][0]!=null)
+                        j--;
+                    tmp.setStartColumn(col + i);
+                    tmp.setStartRow(row - j);
+                    String a = new String();
+                    while(gameBoard.board[row-j][col+i][0]!=null){
+                        a=a.concat(String.valueOf(gameBoard.board[row-j][col+i][0].getLetter()));
+                        j--;
+                    }
+                    tmp.setWord(a);
+                }
+                ans.add(tmp);
+                ans.clear();
+                tmp.clear();
+            }
+        }
+        else if(dir=='D' || dir=='d'){
+
+            Word tmp = new Word(0,0,'a',"");
+            for(int i=0; i<wrd.length(); i++){
+                if(gameBoard.board[row+i][col-1][0]!=null || gameBoard.board[row+i][col+1][0]!=null) {
+                    int j = 0;
+                    while (gameBoard.board[row+i][col-j][0] != null) {
+                        j++;
+                    }
+                    if(gameBoard.board[row+i][col-1][0]!=null)
+                        j--;
+                    tmp.setStartColumn(col-j);
+                    tmp.setStartRow(row+i);
+                    String a = new String();
+                    while(gameBoard.board[row+i][col-j][0]!=null){
+                        a=a.concat(String.valueOf(gameBoard.board[row+i][col-j][0].getLetter()));
+                        j--;
+                    }
+                    tmp.setWord(a);
+                }
+                ans.add(tmp);
+                ans.clear();
+                tmp.clear();
+            }
+
+        }
+        return ans;
+    }
+
+
     public void exchange(Pool gamePool, Player currentPlayer)
     {
         ArrayList<Tile> tmpExchange = new ArrayList<>();
