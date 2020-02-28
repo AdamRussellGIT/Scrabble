@@ -155,8 +155,8 @@ public class UI extends Application
         System.out.println("Enter the name for Player 1 : ");
         String name1 = in.nextLine();
         System.out.println("Enter the name for Player 2 : ");
-        String name2 = gameUI.getInput();
-        gameUI.print("Let's play!");
+        String name2 = in.nextLine();
+        System.out.println("Let's play!");
 
         player1 = new Player(name1, gamePool);
         player2 = new Player(name2, gamePool);
@@ -185,9 +185,9 @@ public class UI extends Application
             System.out.println(currentPlayer.toString());
 
             do {
-                gameUI.print("Enter 'QUIT', 'PASS', 'EXCHANGE', 'HELP', 'PLACEWORD'");
-                choice = gameUI.getInput();
-            } while (!gameUI.checkChoice(choice));
+                System.out.println("Enter 'QUIT', 'PASS', 'EXCHANGE', 'HELP', 'PLACEWORD'");
+                choice = in.nextLine().toUpperCase();
+            } while (!checkChoice(choice));
 
             //don't increment turn if the player wants help
             if (choice.equals("HELP")) {
@@ -203,18 +203,18 @@ public class UI extends Application
 
                 //if they did not pass the wordPlacementCheck, stay on the current players turn and tell them
                 else {
-                    gameUI.print("That was an invalid word placement!");
+                    System.out.println("That was an invalid word placement!");
                 }
             }
 
             else {
                 if (choice.equals("QUIT")) {
-                    gameUI.print("User chose to quit the game!");
+                    System.out.println("User chose to quit the game!");
                     gamePool.workPool.clear();
                 }
 
                 if (choice.equals("PASS")) {
-                    gameUI.print("User chose to pass!");
+                    System.out.println("User chose to pass!");
                 }
 
                 if (choice.equals("EXCHANGE")) {
@@ -324,22 +324,23 @@ public class UI extends Application
 
     public boolean placeWordBoard(Player currentPlayer)
     {
+        Scanner in = new Scanner(System.in);
         int row;
         int column;
         char direction;
         String word;
 
-        gameUI.print("Enter row that your word will start on : ");
-        row = Integer.parseInt(gameUI.getInput());
+        System.out.println("Enter row that your word will start on : ");
+        row = in.nextInt();
 
-        gameUI.print("Enter column that your word will start on : ");
-        column = Integer.parseInt(gameUI.getInput());
+        System.out.println("Enter column that your word will start on : ");
+        column = in.nextInt();
 
-        gameUI.print("Enter direction your word will go : ");
-        direction = gameUI.getInput().charAt(0);
+        System.out.println("Enter direction your word will go : ");
+        direction = in.nextLine().charAt(0);
 
-        gameUI.print("Enter the word you want to place");
-        word = gameUI.getInput();
+        System.out.println("Enter the word you want to place");
+        word = in.nextLine();
 
         if(gameBoard.wordPlacementCheck(row, column, direction, word, currentPlayer))
         {
