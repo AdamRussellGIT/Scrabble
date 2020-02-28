@@ -5,6 +5,7 @@
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Scanner;
 
 public class Scrabble
 {
@@ -172,10 +173,11 @@ public class Scrabble
         String keepExchanging = "Y";
         String exchangeInput;
         char charExchange;
+        Scanner in = new Scanner(System.in);
 
         while (tmpExchange.size() <= gamePool.poolSize() && keepExchanging.equals("Y") && !currentPlayer.frame.checkEmptyFrame()) {
-            gameUI.print("Enter the character you want to exchange : ");
-            exchangeInput = gameUI.getInput();
+            System.out.println("Enter the character you want to exchange : ");
+            exchangeInput = in.nextLine();
             exchangeInput = exchangeInput.toUpperCase();
             charExchange = exchangeInput.charAt(0);
 
@@ -183,13 +185,13 @@ public class Scrabble
                 //remove tile from players frame
                 tmpExchange.add(currentPlayer.frame.removeLettersFrame(charExchange));
             } else {
-                gameUI.print("You do not have that tile!");
+                System.out.println("You do not have that tile!");
             }
 
             if (!currentPlayer.frame.checkEmptyFrame()) {
                 do {
-                    gameUI.print("Press y to exchange another letter, press n to finish exchanging : ");
-                    keepExchanging = gameUI.getInput();
+                    System.out.println("Press y to exchange another letter, press n to finish exchanging : ");
+                    keepExchanging = in.nextLine();
                 } while (!keepExchanging.equals("Y") && !keepExchanging.equals("N"));
             }
         }
@@ -352,13 +354,13 @@ public class Scrabble
 
     public void help()
     {
-        gameUI.print("QUIT: Quits the game and exits.");
-        gameUI.print("PASS: Passes the current players turn, effectively doing nothing.");
-        gameUI.print("EXCHANGE: Allows you to exchange some or all of your tiles.");
-        gameUI.print("PLACEWORD: Enter the row your word starts with/nEnter the column where your word starts.");
-        gameUI.print("/tEnter the direction your word goes (A, a, D, d, are accepted), press enter");
-        gameUI.print("/tEnter the word you want placed");
-        gameUI.print("NOTE: If there is a 'G' on the board, and you wish to place the word GET, and you only have E and T in your frame,");
-        gameUI.print("you must specify that the word starts in the row and column where G is, and say that the word you want to place is GET");
+        System.out.println("QUIT: Quits the game and exits.");
+        System.out.println("PASS: Passes the current players turn, effectively doing nothing.");
+        System.out.println("EXCHANGE: Allows you to exchange some or all of your tiles.");
+        System.out.println("PLACEWORD: Enter the row your word starts with/nEnter the column where your word starts.");
+        System.out.println("/tEnter the direction your word goes (A, a, D, d, are accepted), press enter");
+        System.out.println("/tEnter the word you want placed");
+        System.out.println("NOTE: If there is a 'G' on the board, and you wish to place the word GET, and you only have E and T in your frame,");
+        System.out.println("you must specify that the word starts in the row and column where G is, and say that the word you want to place is GET");
     }
 }
