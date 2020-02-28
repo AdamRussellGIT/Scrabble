@@ -361,10 +361,4 @@ public class Scrabble
         gameUI.print("NOTE: If there is a 'G' on the board, and you wish to place the word GET, and you only have E and T in your frame,");
         gameUI.print("you must specify that the word starts in the row and column where G is, and say that the word you want to place is GET");
     }
-
-    public static void main(String[] args)
-    {
-        Scrabble scrabbleGame = new Scrabble();
-        scrabbleGame.playGame();
-    }
 }
