@@ -117,10 +117,60 @@ public class UI extends Application
             String[] parsedInput = receivedInput.split(" ");
 
             //parsing input
+            if (parsedInput[0].equals("EXCHANGE"))
+            {
+                //exchange method call etc
+            }
+
+            else if (parsedInput[0].equals("PASS"))
+            {
+                turn++;
+                changeCurrentPlayer();
+            }
+
+            else if (parsedInput.equals("HELP"))
+            {
+                //show help dialog box?
+            }
+
+            else if (parsedInput[0].equals("QUIT"))
+            {
+                //show dialog box asking if sure and if sure then close etc?
+            }
+
+            //if none of the above, assume player is trying to placeword
+            else
+            {
+                //check if there are 4 things in the array (row, col, direction, word)
+                if (parsedInput.length != 4)
+                {
+                    //tell the user that its invalid through text above textfield maybe?
+                }
+
+                //parse input to row column etc
+                else
+                {
+                    int row = Integer.parseInt(parsedInput[0]);
+                    int column = Integer.parseInt(parsedInput[1]);
+                    char direction = parsedInput[2].charAt(0);
+                    String word = parsedInput[3];
+
+                    //run checks and placeword etc otherwise throw error yada yada ;)
+                }
+            }
         });
 
         Scene scene = new Scene(gridPane, 1230, 800);
         Scrabble.setScene(scene);
         Scrabble.show();
+    }
+
+    public void changeCurrentPlayer()
+    {
+        if (turn % 2 == 0) {
+            currentPlayer = player1;
+        } else {
+            currentPlayer = player2;
+        }
     }
 }
