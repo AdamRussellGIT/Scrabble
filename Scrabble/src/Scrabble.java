@@ -29,7 +29,7 @@ public class Scrabble
         gameUI = new UI();
     }
 
-    public void playGame()
+    /*public void playGame()
     {
         gameUI.print("Enter the name for Player 1 : ");
         String name1 = gameUI.getInput();
@@ -362,5 +362,5 @@ public class Scrabble
         System.out.println("/tEnter the word you want placed");
         System.out.println("NOTE: If there is a 'G' on the board, and you wish to place the word GET, and you only have E and T in your frame,");
         System.out.println("you must specify that the word starts in the row and column where G is, and say that the word you want to place is GET");
-    }
+    }*/
 }

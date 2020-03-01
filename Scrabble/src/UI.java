@@ -14,6 +14,7 @@ import javafx.application.Application;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.TextField;
 import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
@@ -23,7 +24,7 @@ import javafx.stage.Stage;
 import javax.imageio.ImageIO;
 import javafx.scene.image.Image;
 
-import java.awt.*;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -34,7 +35,10 @@ import java.util.Scanner;
 public class UI extends Application
 {
     Stage curr_window;
+    GridPane gridPane;
     Button my_button;
+
+    TextField input;
 
     Player player1;
     Player player2;
@@ -49,57 +53,24 @@ public class UI extends Application
     int previousScore = 0;
     Board previousBoard = new Board();
 
-    public void print(String s)
-    {
-        System.out.println(s);
-    }
-
-    public String getInput()
-    {
-        Scanner in = new Scanner(System.in);
-
-        String input = in.nextLine();
-        return input.toUpperCase();
-    }
-
-    public Boolean checkChoice(String input)
-    {
-        input = input.toUpperCase();
-
-        if (input.equals("QUIT") || input.equals("PASS") || input.equals("CHALLENGE") || input.equals("HELP") || input.equals("EXCHANGE") || input.equals("PLACEWORD")) {
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-
-
-
-
-
-    public void displayBoard()
-    {
-
-
-    }
-
-
     @Override
     public void start(Stage Scrabble) throws FileNotFoundException {
-        GridPane gridPane = new GridPane();
-
         curr_window = Scrabble;
         curr_window.setTitle("Scrabble");
 
+        gridPane = new GridPane();
         gridPane.setHgap(7);
         gridPane.setVgap(7);
+
+        //setting up textfield
+        input = new TextField();
 
         //Centre tile image set-up
         ImageView imgV;
         Image starImg = new Image(new FileInputStream("Scrabble\\res\\star.jpg"));
         imgV = new ImageView(starImg);
 
+        //setting up initial scrabble board
         for (int i = 0; i < 15; i++) {
             for (int j = 0; j < 15; j++) {
                 Button butt = new Button("(" + i + "," + j + ")");
@@ -137,17 +108,18 @@ public class UI extends Application
 
                     butt.setGraphic(new ImageView(starImg));
                 }
-
-                //example placement
-                if ((i == 0 && j == 0)) {
-                    butt.setText("A");
-                    butt.setStyle("-fx-font-weight: bold");
-                }
             }
         }
 
-        Scene scene = new Scene(gridPane, 1230, 800);
+        //gathering input from user
+        input.setOnAction(e -> {
+            String receivedInput = input.getText().toUpperCase();
+            String[] parsedInput = receivedInput.split(" ");
 
+            //parsing input
+        });
+
+        Scene scene = new Scene(gridPane, 1230, 800);
         Scrabble.setScene(scene);
         Scrabble.show();
     }
