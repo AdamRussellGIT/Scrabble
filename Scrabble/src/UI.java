@@ -61,14 +61,10 @@ public class UI extends Application
     @Override
     public void start(Stage Scrabble) throws FileNotFoundException
     {
-
-        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         curr_window = Scrabble;
         curr_window.setTitle("Scrabble");
 
         gridPane = new GridPane();
-        gridPane.setHgap(screenSize.height/7);
-        gridPane.setVgap(screenSize.width/7);
 
 
         HBox leftH = new HBox(8);
