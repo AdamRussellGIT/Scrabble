@@ -11,16 +11,21 @@
 //    Displays a graphical representation of the board
 
 import javafx.application.Application;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextInputDialog;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.scene.layout.VBox;
 
@@ -28,12 +33,12 @@ import javax.imageio.ImageIO;
 import javafx.scene.image.Image;
 
 
-import java.awt.*;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Optional;
 import java.util.Scanner;
 
 public class UI extends Application
@@ -44,51 +49,157 @@ public class UI extends Application
     Button my_button;
 
     TextField input;
+    Label currPlayer;
+    Label currScore;
 
-    Player player1;
-    Player player2;
+    Player playerOne;
+    Player playerTwo;
     Pool gamePool;
     Board gameBoard;
     UI gameUI;
 
-    int turn = 0;
+    int turn = -1;
     Player currentPlayer;
     String choice;
 
     int previousScore = 0;
     Board previousBoard = new Board();
 
+    ImageView imgV;
+    Image starImg = new Image(new FileInputStream("Scrabble\\res\\star.jpg"));
+
+    public UI() throws FileNotFoundException {
+    }
+
+    public void updateBoard(Board gameBoard)
+    {
+        for (int i = 0; i < 15; i++)
+        {
+            for (int j = 0; j < 15; j++)
+            {
+                Button butt = new Button("(" + i + "," + j + ")");
+
+                if (gameBoard.board[i][j][0] != null)
+                {
+                    butt.setPrefSize(70, 70);
+                    butt.setText(String.valueOf(gameBoard.board[i][j][0].getLetter()));
+                    butt.setStyle("-fx-font-weight: bold");
+                    gridPane.add(butt, j, i, 1, 1);
+                }
+
+                else {
+                    imgV = new ImageView(starImg);
+                    butt.setPrefSize(70, 70);
+                    butt.setStyle("-fx-border-color: #fdf4ff; -fx-border-width: 2px");
+                    butt.setStyle("-fx-background-color:#c8c2a8");
+                    gridPane.add(butt, j, i, 1, 1);
+
+                    //triple word score
+                    if ((i == 0 && j == 0) || (i == 0 && j == 7) || (i == 0 && j == 14) || (i == 7 && j == 0) || (i == 7 && j == 14)
+                            || (i == 14 && j == 0) || (i == 14 && j == 7) || (i == 14 && j == 14)) {
+                        butt.setStyle("-fx-border-color: #fdf4ff; -fx-border-width: 2px");
+                        butt.setStyle("-fx-background-color:#f35f49");
+                    }
+                    //double word score
+                    if ((i == 1 && j == 1) || (i == 2 && j == 2) || (i == 3 && j == 3) || (i == 4 && j == 4) || (i == 10 && j == 4) || (i == 11 && j == 3) || (i == 12 && j == 2) || (i == 13 && j == 1) || (i == 1 && j == 13) || (i == 2 && j == 12) || (i == 3 && j == 11) || (i == 4 && j == 10) || (i == 13 && j == 13) || (i == 12 && j == 12) || (i == 11 && j == 11) || (i == 10 && j == 10)) {
+                        butt.setStyle("-fx-border-color: #fdf4ff; -fx-border-width: 2px");
+                        butt.setStyle("-fx-background-color:#f6b9ab");
+                    }
+                    //triple letter score
+                    if ((i == 1 && j == 5) || (i == 1 && j == 9) || (i == 5 && j == 1) || (i == 5 && j == 5) || (i == 5 && j == 9) || (i == 5 && j == 13) || (i == 9 && j == 1) || (i == 9 && j == 5) || (i == 9 && j == 9) || (i == 9 && j == 13) || (i == 13 && j == 5) || (i == 13 && j == 9)) {
+                        butt.setStyle("-fx-border-color: #fdf4ff; -fx-border-width: 2px");
+                        butt.setStyle("-fx-background-color:#3d9eb2");
+                    }
+                    //double letter score
+                    if ((i == 0 && j == 3) || (i == 0 && j == 11) || (i == 2 && j == 6) || (i == 2 && j == 8) || (i == 3 && j == 7) || (i == 3 && j == 0) || (i == 3 && j == 14) || (i == 6 && j == 2) || (i == 6 && j == 6) || (i == 6 && j == 8) || (i == 6 && j == 12) || (i == 7 && j == 3) || (i == 7 && j == 11) || (i == 8 && j == 2) || (i == 8 && j == 6) || (i == 8 && j == 8) || (i == 8 && j == 12) || (i == 11 && j == 0) || (i == 11 && j == 7) || (i == 11 && j == 14) || (i == 12 && j == 6) || (i == 12 && j == 8) || (i == 14 && j == 3) || (i == 14 && j == 11)) {
+                        butt.setStyle("-fx-border-color: #fdf4ff; -fx-border-width: 2px");
+                        butt.setStyle("-fx-background-color:#b9d3d0");
+                    }
+                    //centre tile
+                    if ((i == 7 && j == 7)) {
+                        butt.setText("");
+                        butt.setStyle("-fx-border-color: #fdf4ff; -fx-border-width: 2px");
+                        butt.setStyle("-fx-background-color:#f6b9ab");
+
+                        butt.setGraphic(new ImageView(starImg));
+                    }
+                }
+            }
+        }
+    }
+
+    public void updateFrame(Frame f)
+    {
+        for (int i = 0; i < 7; i++)
+        {
+            if (f.theFrameArray.get(i) != null)
+            {
+                Button frameButt = new Button(String.valueOf(f.theFrameArray.get(i).getLetter()));
+                frameButt.setPrefSize(92, 92f);
+                frameButt.setPrefHeight(130);
+
+                frameButt.setStyle("-fx-border-color: #fdf4ff; -fx-border-width: 2px");
+                frameButt.setStyle("-fx-background-color:#c8c2a8");
+
+                framePane.add(frameButt, i, 0);
+            }
+            else
+            {
+                Button emptyButt = new Button("");
+                emptyButt.setVisible(false);
+            }
+
+        }
+    }
+
     @Override
     public void start(Stage Scrabble) throws FileNotFoundException
     {
+        gameBoard = new Board();
+        gamePool = new Pool();
         curr_window = Scrabble;
         curr_window.setTitle("Scrabble");
 
         gridPane = new GridPane();
+        gridPane.setHgap(7);
+        gridPane.setVgap(7);
 
+        //We divide the scene is divided into two HBoxes
+        //The left HBox holds the Scrabble Board
+        //The right HBox holds the gameInfo
 
         HBox leftH = new HBox(8);
         HBox rightH = new HBox(8);
 
-        VBox gameInfo = new VBox(380);
+        VBox gameInfo = new VBox(415);
 
         VBox playerInfo = new VBox(8);
 
-        Label currPlayer = new Label("Current Player: ");
-        Label currScore = new Label("Current Score: ");
+        currPlayer = new Label("Current Player: ");
+        currPlayer.setFont(new Font(30));
+
+        currScore = new Label("Current Score: ");
+        currScore.setFont(new Font(30));
+
+
 
         playerInfo.getChildren().addAll(currPlayer,currScore);
 
         VBox frameBox = new VBox(8);
 
         framePane = new GridPane();
-        gridPane.setHgap(7);
-        gridPane.setVgap(7);
+        framePane.setHgap(11);
+        framePane.setPadding(new Insets(0, 0, 0, 15));
+        frameBox.getChildren().add(framePane);
+
 
         VBox inputBox = new VBox(8);
 
         //setting up textfield
         input = new TextField();
+        input.setPrefHeight(50);
+        input.setPrefWidth(400);
+        input.setFont(new Font(30));
 
         inputBox.getChildren().add(input);
 
@@ -106,7 +217,7 @@ public class UI extends Application
         for (int i = 0; i < 15; i++) {
             for (int j = 0; j < 15; j++) {
                 Button butt = new Button("(" + i + "," + j + ")");
-                butt.setPrefSize(55, 55);
+                butt.setPrefSize(70, 70);
                 butt.setStyle("-fx-border-color: #fdf4ff; -fx-border-width: 2px");
                 butt.setStyle("-fx-background-color:#c8c2a8");
                 gridPane.add(butt, j, i, 1, 1);
@@ -143,8 +254,39 @@ public class UI extends Application
             }
         }
 
+        //TODO Check for cancel and null
+        //Creating a dialog box
+        //To enter both Player One's and Two's names
+        //Displays before the game starts and the board is shown
+        TextInputDialog nameInputBox1 = new TextInputDialog("");
+
+        nameInputBox1.setHeaderText("Enter Player One's Name: ");
+        nameInputBox1.setContentText("Name");
+
+        Optional<String> result1 = nameInputBox1.showAndWait();
+
+        result1.ifPresent(name ->
+        {
+            playerOne = new Player(result1.get(),gamePool);
+        });
+
+        TextInputDialog nameInputBox2 = new TextInputDialog("");
+
+        nameInputBox2.setHeaderText("Enter Player Two's Name: ");
+        nameInputBox2.setContentText("Name");
+
+        Optional<String> result2 = nameInputBox2.showAndWait();
+
+        result2.ifPresent(name ->
+        {
+            playerTwo = new Player(result2.get(),gamePool);
+        });
+
+        changeCurrentPlayer();
+
         //gathering input from user
         input.setOnAction(e -> {
+            System.out.println(currentPlayer.getName());
             String receivedInput = input.getText().toUpperCase();
             String[] parsedInput = receivedInput.split(" ");
 
@@ -156,7 +298,6 @@ public class UI extends Application
 
             else if (parsedInput[0].equals("PASS"))
             {
-                turn++;
                 changeCurrentPlayer();
             }
 
@@ -190,6 +331,9 @@ public class UI extends Application
                     //run checks and placeword etc otherwise throw error yada yada ;)
                 }
             }
+
+            input.clear();
+            gridPane.requestFocus();
         });
         rightH.getChildren().add(gameInfo);
         leftH.getChildren().addAll(gridPane,rightH);
@@ -204,10 +348,16 @@ public class UI extends Application
 
     public void changeCurrentPlayer()
     {
+        turn++;
+
         if (turn % 2 == 0) {
-            currentPlayer = player1;
+            currentPlayer = playerOne;
         } else {
-            currentPlayer = player2;
+            currentPlayer = playerTwo;
         }
+
+        currPlayer.setText("Current Player: " + currentPlayer.getName());
+        currScore.setText("Current Score: " + currentPlayer.getScore());
+        updateFrame(currentPlayer.frame);
     }
 }

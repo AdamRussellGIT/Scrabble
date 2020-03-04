@@ -22,12 +22,12 @@ public class Scrabble
     int previousScore = 0;
     Board previousBoard = new Board();
 
-    public Scrabble()
+    /*public Scrabble()
     {
         gamePool = new Pool();
         gameBoard = new Board();
         gameUI = new UI();
-    }
+    }*/
 
     /*public void playGame()
     {
