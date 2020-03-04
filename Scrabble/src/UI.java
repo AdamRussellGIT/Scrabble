@@ -350,7 +350,7 @@ public class UI extends Application
 
 
         Scene scene = new Scene(leftH, 1920, 1080);
-        curr_window.setMaximized(true);
+        curr_window.setFullScreen(true);
         curr_window.setResizable(false);
         Scrabble.setScene(scene);
         Scrabble.show();
