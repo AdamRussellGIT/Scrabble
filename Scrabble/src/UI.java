@@ -28,6 +28,7 @@ import javax.imageio.ImageIO;
 import javafx.scene.image.Image;
 
 
+import java.awt.*;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -58,13 +59,17 @@ public class UI extends Application
     Board previousBoard = new Board();
 
     @Override
-    public void start(Stage Scrabble) throws FileNotFoundException {
+    public void start(Stage Scrabble) throws FileNotFoundException
+    {
+
+        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         curr_window = Scrabble;
         curr_window.setTitle("Scrabble");
 
         gridPane = new GridPane();
-        gridPane.setHgap(7);
-        gridPane.setVgap(7);
+        gridPane.setHgap(screenSize.height/7);
+        gridPane.setVgap(screenSize.width/7);
+
 
         HBox leftH = new HBox(8);
         HBox rightH = new HBox(8);
