@@ -11,6 +11,7 @@
 //    Displays a graphical representation of the board
 
 import javafx.application.Application;
+import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -18,8 +19,10 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
+import javafx.scene.layout.VBox;
 
 import javax.imageio.ImageIO;
 import javafx.scene.image.Image;
@@ -36,6 +39,7 @@ public class UI extends Application
 {
     Stage curr_window;
     GridPane gridPane;
+    GridPane framePane;
     Button my_button;
 
     TextField input;
@@ -62,8 +66,35 @@ public class UI extends Application
         gridPane.setHgap(7);
         gridPane.setVgap(7);
 
+        HBox leftH = new HBox(8);
+        HBox rightH = new HBox(8);
+
+        VBox gameInfo = new VBox(380);
+
+        VBox playerInfo = new VBox(8);
+
+        Label currPlayer = new Label("Current Player: ");
+        Label currScore = new Label("Current Score: ");
+
+        playerInfo.getChildren().addAll(currPlayer,currScore);
+
+        VBox frameBox = new VBox(8);
+
+        framePane = new GridPane();
+        gridPane.setHgap(7);
+        gridPane.setVgap(7);
+
+        VBox inputBox = new VBox(8);
+
         //setting up textfield
         input = new TextField();
+
+        inputBox.getChildren().add(input);
+
+
+        gameInfo.getChildren().addAll(playerInfo,frameBox,inputBox);
+
+
 
         //Centre tile image set-up
         ImageView imgV;
@@ -159,8 +190,11 @@ public class UI extends Application
                 }
             }
         });
+        rightH.getChildren().add(gameInfo);
+        leftH.getChildren().addAll(gridPane,rightH);
 
-        Scene scene = new Scene(gridPane, 1920, 1080);
+
+        Scene scene = new Scene(leftH, 1920, 1080);
         curr_window.setMaximized(true);
         curr_window.setResizable(false);
         Scrabble.setScene(scene);
