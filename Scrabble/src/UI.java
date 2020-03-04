@@ -265,10 +265,20 @@ public class UI extends Application
 
         Optional<String> result1 = nameInputBox1.showAndWait();
 
+
         result1.ifPresent(name ->
         {
             playerOne = new Player(result1.get(),gamePool);
         });
+
+        if(result1.isPresent())
+        {
+            System.out.println("Ok was pressed");
+        }
+        else
+        {
+            System.out.println("Cancel, Exit or process termination was selected");
+        }
 
         TextInputDialog nameInputBox2 = new TextInputDialog("");
 
