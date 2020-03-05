@@ -26,6 +26,7 @@ import javafx.scene.layout.*;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
+import javafx.scene.text.TextAlignment;
 import javafx.stage.Popup;
 import javafx.stage.Stage;
 
@@ -384,8 +385,9 @@ public class UI extends Application
             //TODO add formatting: bold fonts and general aesthetic look
             else if (parsedInput[0].equals("HELP"))
             {
-                Alert helpAlert = new Alert(Alert.AlertType.INFORMATION,"Instructions:\n\n To Place A Word \n (coordinates, direction, word) \n (A - Across) (D - Down) : \n\n PLACEWORD 7 7 A dog \n\n To Pass Your Turn: PASS \n\n To Exchange \n (letters you wish to exchange) \n EXCHANGE A B C \n\n To Quit The Game: QUIT");
+                Alert helpAlert = new Alert(Alert.AlertType.INFORMATION,"Instructions:\n\n To Place A Word \n (coordinates, direction, word) \n (A - Across) (D - Down) : \n 7 7 A dog \n\n To Pass Your Turn:\n PASS \n\n To Exchange \n (letters you wish to exchange) \n EXCHANGE A B C \n\n To Quit The Game: \n QUIT");
                 helpAlert.setTitle("Help");
+                helpAlert.setHeaderText("Help Information");
                 helpAlert.showAndWait();
 
                 if(helpAlert.getResult()==ButtonType.OK){
@@ -460,7 +462,7 @@ public class UI extends Application
 
         currPlayer.setText("Current Player: " + currentPlayer.getName());
         currScore.setText("Current Score: " + currentPlayer.getScore());
-        turnText.setText("Turn: " + String.valueOf(turn));
+        turnText.setText("Turn: " + String.valueOf(turn+1));
         updateFrame(currentPlayer.frame);
     }
     void endGame(Player winner){
