@@ -15,7 +15,10 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.Scene;
-import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.TextField;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextInputDialog;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
@@ -51,7 +54,6 @@ public class UI extends Application
 
     Player playerOne;
     Player playerTwo;
-    Scrabble gameLogic;
     Pool gamePool;
     Board gameBoard;
     UI gameUI;
@@ -153,7 +155,6 @@ public class UI extends Application
     @Override
     public void start(Stage Scrabble) throws FileNotFoundException
     {
-        gameLogic = new Scrabble();
         gameBoard = new Board();
         gamePool = new Pool();
         curr_window = Scrabble;
@@ -295,41 +296,14 @@ public class UI extends Application
 
         //gathering input from user
         input.setOnAction(e -> {
+            System.out.println(currentPlayer.getName());
             String receivedInput = input.getText().toUpperCase();
             String[] parsedInput = receivedInput.split(" ");
 
             //parsing input
             if (parsedInput[0].equals("EXCHANGE"))
             {
-                //check if they gave the right number of arguments
-                if ((parsedInput.length > 8 ) || (parsedInput.length < 2))
-                {
-                    Alert alert = new Alert(Alert.AlertType.ERROR);
-                    alert.setHeaderText("Illegal Number Of Arguments Given!");
-                    alert.setContentText("Please try again!");
-
-                    alert.showAndWait();
-                }
-
-                else
-                {
-                    //check that they have all letters they specified
-                    if (!gameLogic.exchange(gamePool, currentPlayer, parsedInput))
-                    {
-                        Alert alert = new Alert(Alert.AlertType.ERROR);
-                        alert.setHeaderText("Error!");
-                        alert.setContentText("You do not have one of the tiles you specified!");
-
-                        alert.showAndWait();
-                    }
-
-                    //otherwise, move to next turn
-                    else
-                    {
-                        changeCurrentPlayer();
-                    }
-                }
-
+                //exchange method call etc
             }
 
             else if (parsedInput[0].equals("PASS"))
@@ -374,7 +348,8 @@ public class UI extends Application
         rightH.getChildren().add(gameInfo);
         leftH.getChildren().addAll(gridPane,rightH);
 
-        Scene scene = new Scene(leftH);
+
+        Scene scene = new Scene(leftH, 1920, 1080);
         curr_window.setFullScreen(true);
         curr_window.setResizable(false);
         Scrabble.setScene(scene);
