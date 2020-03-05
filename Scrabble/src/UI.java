@@ -33,6 +33,7 @@ import javax.imageio.ImageIO;
 import javafx.scene.image.Image;
 
 
+import java.awt.*;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -156,6 +157,7 @@ public class UI extends Application
     @Override
     public void start(Stage Scrabble) throws FileNotFoundException
     {
+        Dimension screenRes = Toolkit.getDefaultToolkit().getScreenSize();
         gameBoard = new Board();
         gamePool = new Pool();
         curr_window = Scrabble;
@@ -172,8 +174,7 @@ public class UI extends Application
         HBox leftH = new HBox(8);
         HBox rightH = new HBox(8);
         rightPane = new GridPane();
-        rightPane.setVgap(250);
-        rightPane.setHgap(100);
+        rightPane.setVgap(screenRes.getHeight()/3);
 
 
         VBox gameInfo = new VBox(415);
