@@ -11,6 +11,7 @@
 //    Displays a graphical representation of the board
 
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Group;
@@ -265,20 +266,28 @@ public class UI extends Application
 
         Optional<String> result1 = nameInputBox1.showAndWait();
 
-
-        result1.ifPresent(name ->
-        {
-            playerOne = new Player(result1.get(),gamePool);
-        });
-
-        if(result1.isPresent())
-        {
-            System.out.println("Ok was pressed");
-        }
-        else
-        {
-            System.out.println("Cancel, Exit or process termination was selected");
-        }
+//
+//        result1.ifPresent(name ->
+//        {
+//            playerOne = new Player(result1.get(),gamePool);
+//        });
+//
+//        if(result1.isPresent())
+//        {
+//            ;
+//        }
+//        else if(result1 == null || result1.isEmpty())
+//        {
+//
+//        }
+//        else
+//        {
+//            Scrabble.setOnCloseRequest(e ->
+//            {
+//                Platform.exit();
+//                System.exit(0);
+//            });
+//        }
 
         TextInputDialog nameInputBox2 = new TextInputDialog("");
 
@@ -291,6 +300,23 @@ public class UI extends Application
         {
             playerTwo = new Player(result2.get(),gamePool);
         });
+
+        if(result2.isPresent())
+        {
+            ;
+        }
+        else if(result2 == null || result1.isEmpty())
+        {
+
+        }
+        else
+        {
+            Scrabble.setOnCloseRequest(e ->
+            {
+                Platform.exit();
+                System.exit(0);
+            });
+        }
 
         changeCurrentPlayer();
 
