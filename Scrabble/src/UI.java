@@ -300,6 +300,7 @@ public class UI extends Application
             String[] parsedInput = receivedInput.split(" ");
 
             //parsing input
+            //if its exchange
             if (parsedInput[0].equals("EXCHANGE"))
             {
                 if (parsedInput.length > 8 || parsedInput.length < 2)
