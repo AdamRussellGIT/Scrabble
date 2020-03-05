@@ -273,57 +273,64 @@ public class UI extends Application
 
         Optional<String> result1 = nameInputBox1.showAndWait();
 
-
-
-
         if(result1.isPresent())
         {
-            result1.ifPresent(name ->
+            if(!(result1.get().equals("")))
             {
-                playerOne = new Player(result1.get(),gamePool);
-            });
-        }
-        else if(result1 != null)
-        {
-            ;
+                result1.ifPresent(name ->
+                {
+                    playerOne = new Player(result1.get(),gamePool);
+                });
+            }
+            else
+            {
+                if(result1.isPresent())
+                {
+                    result1.ifPresent(name ->
+                    {
+                        playerOne = new Player("Player One",gamePool);
+                    });
+                }
+            }
         }
         else
         {
-            Scrabble.setOnCloseRequest(e ->
-            {
-                Platform.exit();
-                System.exit(0);
-            });
+            Platform.exit();
+            System.exit(0);
         }
 
         TextInputDialog nameInputBox2 = new TextInputDialog("");
 
         nameInputBox2.setHeaderText("Enter Player Two's Name: ");
         nameInputBox2.setContentText("Name");
-        nameInputBox1.setTitle("Player One Name");
+        nameInputBox2.setTitle("Player Two Name");
 
         Optional<String> result2 = nameInputBox2.showAndWait();
 
-
-
         if(result2.isPresent())
         {
-            result2.ifPresent(name ->
+            if(!(result2.get().equals("")))
             {
-                playerTwo = new Player(result2.get(),gamePool);
-            });
-        }
-        else if(result2 == null || result1.isEmpty())
-        {
-
+                result2.ifPresent(name ->
+                {
+                    playerTwo = new Player(result2.get(),gamePool);
+                });
+            }
+            else
+            {
+                if(result2.isPresent())
+                {
+                    result2.ifPresent(name ->
+                    {
+                        playerTwo = new Player("Player Two",gamePool);
+                    });
+                }
+            }
         }
         else
         {
-            Scrabble.setOnCloseRequest(e ->
-            {
-                Platform.exit();
-                System.exit(0);
-            });
+            Platform.exit();
+            System.exit(0);
         }
 
         changeCurrentPlayer();
