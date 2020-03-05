@@ -12,6 +12,7 @@
 
 import javafx.application.Application;
 import javafx.application.Platform;
+import javafx.event.ActionEvent;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Group;
@@ -21,20 +22,19 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.StackPane;
+import javafx.scene.layout.*;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
+import javafx.stage.Popup;
 import javafx.stage.Stage;
-import javafx.scene.layout.VBox;
 
 import javax.imageio.ImageIO;
 import javafx.scene.image.Image;
 
 
 import java.awt.*;
+import java.beans.EventHandler;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -263,7 +263,7 @@ public class UI extends Application
             }
         }
 
-        //TODO Check for cancel and null
+
         //Creating a dialog box
         //To enter both Player One's and Two's names
         //Displays before the game starts and the board is shown
@@ -378,9 +378,17 @@ public class UI extends Application
             {
                 changeCurrentPlayer();
             }
-
+            //TODO add formatting: bold fonts and general aesthetic look
             else if (parsedInput[0].equals("HELP"))
             {
+                Alert helpAlert = new Alert(Alert.AlertType.INFORMATION,"Instructions:\n\n To Place A Word \n (coordinates, direction, word) \n (A - Across) (D - Down) : \n\n PLACEWORD 7 7 A dog \n\n To Pass Your Turn: PASS \n\n To Exchange \n (letters you wish to exchange) \n EXCHANGE A B C \n\n To Quit The Game: QUIT");
+                helpAlert.setTitle("Help");
+                helpAlert.showAndWait();
+
+                if(helpAlert.getResult()==ButtonType.OK){
+                    Platform.exit();
+                    System.exit(0);
+                }
 
             }
 
