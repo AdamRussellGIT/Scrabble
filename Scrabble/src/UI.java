@@ -47,6 +47,7 @@ public class UI extends Application
     Stage curr_window;
     GridPane gridPane;
     GridPane framePane;
+    GridPane rightPane;
     Button my_button;
 
     TextField input;
@@ -171,6 +172,10 @@ public class UI extends Application
 
         HBox leftH = new HBox(8);
         HBox rightH = new HBox(8);
+        rightPane = new GridPane();
+        rightPane.setVgap(250);
+        rightPane.setHgap(100);
+
 
         VBox gameInfo = new VBox(415);
 
@@ -371,12 +376,20 @@ public class UI extends Application
             input.clear();
             gridPane.requestFocus();
         });
-        rightH.getChildren().add(gameInfo);
+
+        rightPane.getChildren().addAll(playerInfo, frameBox, inputBox);
+        rightPane.setRowIndex(playerInfo, 0);
+        rightPane.setColumnIndex(playerInfo, 0);
+        rightPane.setRowIndex(frameBox, 1);
+        rightPane.setColumnIndex(frameBox, 0);
+        rightPane.setRowIndex(inputBox, 2);
+        rightPane.setColumnIndex(inputBox, 0);
+        rightH.getChildren().add(rightPane);
         leftH.getChildren().addAll(gridPane,rightH);
 
 
         Scene scene = new Scene(leftH, 1920, 1080);
-        curr_window.setMaximized(true);
+        curr_window.setFullScreen(true);
         curr_window.setResizable(false);
         Scrabble.setScene(scene);
         Scrabble.show();
