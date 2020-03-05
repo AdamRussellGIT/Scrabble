@@ -342,6 +342,7 @@ public class UI extends Application
             String[] parsedInput = receivedInput.split(" ");
 
             //parsing input
+            //if its exchange
             if (parsedInput[0].equals("EXCHANGE"))
             {
                 //exchange method call etc
