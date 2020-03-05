@@ -3,6 +3,8 @@
 //         Karol Wojcik - 18322146
 //         Carlo Motteran -
 
+import javafx.scene.control.Alert;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Scanner;
@@ -164,35 +166,30 @@ public class Scrabble
 
         }
         return ans;
-    }
+    }*/
 
 
-    public void exchange(Pool gamePool, Player currentPlayer)
+    public boolean exchange(Pool gamePool, Player currentPlayer, String[] parsedInput)
     {
+        boolean goodInput = true;
         ArrayList<Tile> tmpExchange = new ArrayList<>();
-        String keepExchanging = "Y";
-        String exchangeInput;
-        char charExchange;
-        Scanner in = new Scanner(System.in);
-
-        while (tmpExchange.size() <= gamePool.poolSize() && keepExchanging.equals("Y") && !currentPlayer.frame.checkEmptyFrame()) {
-            System.out.println("Enter the character you want to exchange : ");
-            exchangeInput = in.nextLine();
-            exchangeInput = exchangeInput.toUpperCase();
-            charExchange = exchangeInput.charAt(0);
-
-            if (currentPlayer.frame.checkLettersFrame(charExchange)) {
-                //remove tile from players frame
-                tmpExchange.add(currentPlayer.frame.removeLettersFrame(charExchange));
-            } else {
-                System.out.println("You do not have that tile!");
+        for (int i = 1; i < parsedInput.length; i++)
+        {
+            //if they want to exchange a blank, allow them to do so by typing blank, then change it to internal representation of blank tile char
+            if (parsedInput[i].equals("BLANK"))
+            {
+                parsedInput[i] = " ";
             }
 
-            if (!currentPlayer.frame.checkEmptyFrame()) {
-                do {
-                    System.out.println("Press y to exchange another letter, press n to finish exchanging : ");
-                    keepExchanging = in.nextLine();
-                } while (!keepExchanging.equals("Y") && !keepExchanging.equals("N"));
+            if (currentPlayer.frame.checkLettersFrame(parsedInput[i].charAt(0)))
+            {
+                //remove tile from players frame
+                tmpExchange.add(currentPlayer.frame.removeLettersFrame(parsedInput[i].charAt(0)));
+            }
+
+            else
+            {
+                return false;
             }
         }
 
@@ -201,8 +198,10 @@ public class Scrabble
         gamePool.workPool.addAll(tmpExchange);
 
         tmpExchange.clear();
-    }
 
+        return true;
+    }
+    /*
     public boolean placeWordBoard(Player currentPlayer)
     {
         int row;
