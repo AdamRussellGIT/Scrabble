@@ -54,6 +54,7 @@ public class UI extends Application
     TextField input;
     Label currPlayer;
     Label currScore;
+    Label turnText;
 
     Player playerOne;
     Player playerTwo;
@@ -190,9 +191,11 @@ public class UI extends Application
         currScore = new Label("Current Score: ");
         currScore.setFont(new Font(30));
 
+        turnText = new Label("Turn: ");
+        turnText.setFont(new Font(30));
 
 
-        playerInfo.getChildren().addAll(currPlayer,currScore);
+        playerInfo.getChildren().addAll(currPlayer,currScore,turnText);
 
         VBox frameBox = new VBox(8);
 
@@ -457,6 +460,7 @@ public class UI extends Application
 
         currPlayer.setText("Current Player: " + currentPlayer.getName());
         currScore.setText("Current Score: " + currentPlayer.getScore());
+        turnText.setText("Turn: " + String.valueOf(turn));
         updateFrame(currentPlayer.frame);
     }
     void endGame(Player winner){
