@@ -16,10 +16,10 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.Scene;
+import javafx.scene.control.*;
 import javafx.scene.control.Button;
-import javafx.scene.control.TextField;
 import javafx.scene.control.Label;
-import javafx.scene.control.TextInputDialog;
+import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
@@ -345,14 +345,19 @@ public class UI extends Application
                 changeCurrentPlayer();
             }
 
-            else if (parsedInput.equals("HELP"))
+            else if (parsedInput[0].equals("HELP"))
             {
-                //show help dialog box?
+
             }
 
             else if (parsedInput[0].equals("QUIT"))
             {
-                //show dialog box asking if sure and if sure then close etc?
+                Alert quit = new Alert(Alert.AlertType.CONFIRMATION, "Do you really wish to quit? you'll lose the game", ButtonType.YES, ButtonType.NO);
+                quit.showAndWait();
+                if(quit.getResult()==ButtonType.YES){
+                    changeCurrentPlayer();
+                    endGame(currentPlayer);
+                }
             }
 
             //if none of the above, assume player is trying to placeword
@@ -411,5 +416,30 @@ public class UI extends Application
         currPlayer.setText("Current Player: " + currentPlayer.getName());
         currScore.setText("Current Score: " + currentPlayer.getScore());
         updateFrame(currentPlayer.frame);
+    }
+    void endGame(Player winner){
+
+        if(winner!=null) {
+            Alert gameOver = new Alert(Alert.AlertType.INFORMATION, winner.getName() + " has won, congratulations " + winner.getName() + "!", ButtonType.OK);
+            gameOver.setTitle("winner winner chicken dinner!");
+            gameOver.setHeaderText(null);
+            gameOver.showAndWait();
+
+            if(gameOver.getResult()==ButtonType.OK){
+                System.exit(0);
+            }
+        }
+        if(winner==null){
+            Alert gameOver= new Alert(Alert.AlertType.INFORMATION,"Both of you have a score of " + playerOne.getScore() + " so it's a draw!",ButtonType.OK);
+            gameOver.setTitle("What are the chances?");
+            gameOver.showAndWait();
+
+            if(gameOver.getResult()==ButtonType.OK){
+                Platform.exit();
+                System.exit(0);
+            }
+        }
+
+
     }
 }
