@@ -16,10 +16,10 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.Scene;
+import javafx.scene.control.*;
 import javafx.scene.control.Button;
-import javafx.scene.control.TextField;
 import javafx.scene.control.Label;
-import javafx.scene.control.TextInputDialog;
+import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
@@ -57,6 +57,7 @@ public class UI extends Application
 
     Player playerOne;
     Player playerTwo;
+    Scrabble gameLogic;
     Pool gamePool;
     Board gameBoard;
     UI gameUI;
@@ -159,6 +160,7 @@ public class UI extends Application
     public void start(Stage Scrabble) throws FileNotFoundException
     {
         Dimension screenRes = Toolkit.getDefaultToolkit().getScreenSize();
+        gameLogic = new Scrabble();
         gameBoard = new Board();
         gamePool = new Pool();
         curr_window = Scrabble;
@@ -345,7 +347,31 @@ public class UI extends Application
             //if its exchange
             if (parsedInput[0].equals("EXCHANGE"))
             {
-                //exchange method call etc
+                if (parsedInput.length > 8 || parsedInput.length < 2)
+                {
+                    Alert alert = new Alert(Alert.AlertType.ERROR);
+                    alert.setHeaderText("Error!");
+                    alert.setContentText("Too many, or too little arguments!");
+
+                    alert.showAndWait();
+                }
+
+                else
+                {
+                    if (!gameLogic.exchange(gamePool, currentPlayer, parsedInput))
+                    {
+                        Alert alert = new Alert(Alert.AlertType.ERROR);
+                        alert.setHeaderText("Error!");
+                        alert.setContentText("You don't have one of the tiles!");
+
+                        alert.showAndWait();
+                    }
+
+                    else
+                    {
+                        changeCurrentPlayer();
+                    }
+                }
             }
 
             else if (parsedInput[0].equals("PASS"))
