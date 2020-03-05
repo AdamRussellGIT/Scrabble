@@ -268,47 +268,49 @@ public class UI extends Application
 
         nameInputBox1.setHeaderText("Enter Player One's Name: ");
         nameInputBox1.setContentText("Name");
+        nameInputBox1.setTitle("Player One Name");
 
         Optional<String> result1 = nameInputBox1.showAndWait();
 
-//
-//        result1.ifPresent(name ->
-//        {
-//            playerOne = new Player(result1.get(),gamePool);
-//        });
-//
-//        if(result1.isPresent())
-//        {
-//            ;
-//        }
-//        else if(result1 == null || result1.isEmpty())
-//        {
-//
-//        }
-//        else
-//        {
-//            Scrabble.setOnCloseRequest(e ->
-//            {
-//                Platform.exit();
-//                System.exit(0);
-//            });
-//        }
+
+
+
+        if(result1.isPresent())
+        {
+            result1.ifPresent(name ->
+            {
+                playerOne = new Player(result1.get(),gamePool);
+            });
+        }
+        else if(result1 != null)
+        {
+            ;
+        }
+        else
+        {
+            Scrabble.setOnCloseRequest(e ->
+            {
+                Platform.exit();
+                System.exit(0);
+            });
+        }
 
         TextInputDialog nameInputBox2 = new TextInputDialog("");
 
         nameInputBox2.setHeaderText("Enter Player Two's Name: ");
         nameInputBox2.setContentText("Name");
+        nameInputBox1.setTitle("Player One Name");
 
         Optional<String> result2 = nameInputBox2.showAndWait();
 
-        result2.ifPresent(name ->
-        {
-            playerTwo = new Player(result2.get(),gamePool);
-        });
+
 
         if(result2.isPresent())
         {
-            ;
+            result2.ifPresent(name ->
+            {
+                playerTwo = new Player(result2.get(),gamePool);
+            });
         }
         else if(result2 == null || result1.isEmpty())
         {
