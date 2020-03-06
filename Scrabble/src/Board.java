@@ -269,6 +269,7 @@ public class Board
 			}
 		}
 
+		//TODO fix bug that throws error when on the edge of the board (account for reach the edge of board)
 		//if not first word if it's connected to another word on the board
 		boolean connected = false;
 		if(!first){
