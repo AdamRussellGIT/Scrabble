@@ -31,6 +31,8 @@ import javafx.stage.Popup;
 import javafx.stage.Stage;
 
 import javax.imageio.ImageIO;
+import javax.swing.*;
+
 import javafx.scene.image.Image;
 
 
@@ -453,8 +455,9 @@ public class UI extends Application
                 if (parsedInput.length != 4)
                 {
                     Alert alert = new Alert(Alert.AlertType.ERROR);
+                    alert.initOwner(curr_window);
                     alert.setHeaderText("Error!");
-                    alert.setContentText("Too many, or too little arguments!");
+                    alert.setContentText("Invalid parameters to place a word!");
 
                     alert.showAndWait();
                 }
@@ -468,6 +471,23 @@ public class UI extends Application
                     String word = parsedInput[3];
 
                     //run checks and placeword etc otherwise throw error yada yada ;)
+                    if (gameBoard.wordPlacementCheck(row, column, direction, word, currentPlayer))
+                    {
+                        //TODO update previous board
+                        gameBoard.placeWord(row, column, direction, word, currentPlayer);
+                        gameLogic.calculateScore(gameLogic.findAllWords(row, column, direction, word, gameBoard, previousBoard), currentPlayer, gameBoard, previousScore);
+                        changeCurrentPlayer();
+                    }
+
+                    else
+                    {
+                        Alert alert = new Alert(Alert.AlertType.ERROR);
+                        alert.initOwner(curr_window);
+                        alert.setHeaderText("Error!");
+                        alert.setContentText("Failed Word Placement Check!");
+
+                        alert.showAndWait();
+                    }
                 }
             }
 
@@ -506,7 +526,9 @@ public class UI extends Application
         currPlayer.setText("Current Player: " + currentPlayer.getName());
         currScore.setText("Current Score: " + currentPlayer.getScore());
         turnText.setText("Turn: " + String.valueOf(turn+1));
+        currentPlayer.frame.refillFrame(gamePool);
         updateFrame(currentPlayer.frame);
+        updateBoard(gameBoard);
     }
     void endGame(Player winner){
 
