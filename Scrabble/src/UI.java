@@ -158,8 +158,8 @@ public class UI extends Application
             if (f.theFrameArray.get(i) != null)
             {
                 Button frameButt = new Button(String.valueOf(f.theFrameArray.get(i).getLetter()));
-                frameButt.setPrefSize(92, 92);
-                //frameButt.setPrefHeight(130);
+                frameButt.setPrefSize(92, 92f);
+                frameButt.setPrefHeight(130);
 
                 frameButt.setStyle("-fx-border-color: #fdf4ff; -fx-border-width: 2px");
                 frameButt.setStyle("-fx-background-color:#c8c2a8");
@@ -196,7 +196,7 @@ public class UI extends Application
         HBox leftH = new HBox(8);
         HBox rightH = new HBox(8);
         rightPane = new GridPane();
-        rightPane.setVgap(screenRes.getHeight()/3.7);
+        rightPane.setVgap(screenRes.getHeight()/3.8);
 
         VBox gameInfo = new VBox(15);
 
