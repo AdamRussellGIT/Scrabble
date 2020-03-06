@@ -198,7 +198,7 @@ public class UI extends Application
         HBox leftH = new HBox(8);
         HBox rightH = new HBox(8);
         rightPane = new GridPane();
-        rightPane.setVgap(screenRes.getHeight()/3.7);
+        rightPane.setVgap(screenRes.getHeight()/4);
 
         VBox gameInfo = new VBox(15);
 
@@ -416,6 +416,7 @@ public class UI extends Application
                 {
                     Alert alert = new Alert(Alert.AlertType.ERROR);
                     alert.setHeaderText("Error!");
+                    alert.initOwner(curr_window);
                     alert.setContentText("Too many, or too little arguments!");
 
                     alert.showAndWait();
@@ -427,6 +428,7 @@ public class UI extends Application
                     {
                         Alert alert = new Alert(Alert.AlertType.ERROR);
                         alert.setHeaderText("Error!");
+                        alert.initOwner(curr_window);
                         alert.setContentText("You don't have one of the tiles!");
 
                         alert.showAndWait();
@@ -449,10 +451,11 @@ public class UI extends Application
             {
                 Alert helpAlert = new Alert(Alert.AlertType.INFORMATION,"Instructions:\n\n To Place A Word \n (coordinates, direction, word) \n (A - Across) (D - Down) : \n 7 7 A dog \n\n To Pass Your Turn:\n PASS \n\n To Exchange \n (letters you wish to exchange) \n EXCHANGE A B C \n\n To Quit The Game: \n QUIT");
                 helpAlert.setTitle("Help");
+                helpAlert.initOwner(curr_window);
                 helpAlert.setHeaderText("Help Information");
                 helpAlert.showAndWait();
 
-                helpAlert.initOwner(curr_window);
+                gridPane.requestFocus();
             }
 
             else if (parsedInput[0].equals("QUIT"))
