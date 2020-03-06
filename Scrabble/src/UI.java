@@ -395,7 +395,6 @@ public class UI extends Application
 
         //gathering input from user
         input.setOnAction(e -> {
-            System.out.println(currentPlayer.getName());
             String receivedInput = input.getText().toUpperCase();
             String[] parsedInput = receivedInput.split(" ");
 

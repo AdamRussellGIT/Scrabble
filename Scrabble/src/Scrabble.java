@@ -53,15 +53,9 @@ public class Scrabble
                         a=a.concat(String.valueOf(gameBoard.board[row+i][col-j][0].getLetter()));
                         j--;
                     }
-                    System.out.println("a is : " + a);
                     tmp.setWord(a);
-                    System.out.println("What is a using get : " + tmp.getWord());
                     ans.add(tmp);
-                    for (int z = 0; z < ans.size(); z++)
-                    {
-                        System.out.println("Whats in ans : " + ans.get(z).getWord());
-                    }
-                }
+                   }
             }
 
         }
@@ -114,8 +108,6 @@ public class Scrabble
         {
             wordMultiplier = 1;
             wordScore = 0;
-
-            System.out.println(wordsArray.get(i).getWord() + " row = " + wordsArray.get(i).getStartRow() + " column = " + wordsArray.get(i).getStartColumn());
 
             if (wordsArray.get(i).getDirection() == 'D' || wordsArray.get(i).getDirection() == 'd')
             {
