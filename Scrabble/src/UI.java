@@ -196,7 +196,7 @@ public class UI extends Application
         HBox leftH = new HBox(8);
         HBox rightH = new HBox(8);
         rightPane = new GridPane();
-        rightPane.setVgap(screenRes.getHeight()/3.8);
+        rightPane.setVgap(screenRes.getHeight()/4);
 
         VBox gameInfo = new VBox(15);
 
