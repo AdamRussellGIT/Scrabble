@@ -58,6 +58,8 @@ public class UI extends Application
     Label currPlayer;
     Label currScore;
     Label turnText;
+    Label keyColours;
+
 
     Player playerOne;
     Player playerTwo;
@@ -195,6 +197,9 @@ public class UI extends Application
         currScore.setFont(new Font(30));
 
         turnText = new Label("Turn: ");
+        turnText.setFont(new Font(30));
+
+        keyColours = new Label("ColourTest");
         turnText.setFont(new Font(30));
 
 
@@ -373,6 +378,7 @@ public class UI extends Application
                         alert.showAndWait();
                     }
 
+
                     else
                     {
                         changeCurrentPlayer();
@@ -391,12 +397,6 @@ public class UI extends Application
                 helpAlert.setTitle("Help");
                 helpAlert.setHeaderText("Help Information");
                 helpAlert.showAndWait();
-
-                if(helpAlert.getResult()==ButtonType.OK){
-                    Platform.exit();
-                    System.exit(0);
-                }
-
             }
 
             else if (parsedInput[0].equals("QUIT"))
@@ -515,7 +515,5 @@ public class UI extends Application
                 System.exit(0);
             }
         }
-
-
     }
 }
