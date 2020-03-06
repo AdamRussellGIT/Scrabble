@@ -61,6 +61,8 @@ public class UI extends Application
     Label turnText;
     Label helpHint;
 
+    Button frameBoxButton;
+
     Label colourKey;
     Label doubleLetterScore;
     Label tripleLetterScore;
@@ -252,12 +254,17 @@ public class UI extends Application
         playerInfo.getChildren().addAll(currPlayer,currScore,turnText,colourKey,doubleLetterScore,tripleLetterScore,doubleWordScore,tripleWordScore);
         VBox frameBox = new VBox(2);
 
+        frameBoxButton = new Button("");
+//        frameBoxButton.setPadding(new Insets(0, 0, 0, 20));
+        frameBoxButton.setTranslateX(20);
+        frameBoxButton.setStyle("-fx-background-color: #666666; -fx-border-width: 2px");
+        frameBoxButton.setMaxHeight(70);
+        frameBoxButton.setMaxWidth(710);
+
         framePane = new GridPane();
         framePane.setHgap(11);
-        framePane.setPadding(new Insets(0, 0, 0, 15));
-        frameBox.getChildren().addAll(framePane);
-//        frameBox.setStyle("-fx-background-color:#474747");
-
+        framePane.setPadding(new Insets(0, 0, 0, 20));
+        frameBox.getChildren().addAll(framePane,frameBoxButton);
 
         VBox inputBox = new VBox(2);
 
