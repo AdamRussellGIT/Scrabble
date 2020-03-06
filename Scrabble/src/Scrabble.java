@@ -210,6 +210,11 @@ public class Scrabble
             }
         }
 
+        if (currentPlayer.frame.checkEmptyFrame())
+        {
+            score += 50;
+        }
+
         previousScore = score;
         currentPlayer.setScore(score);
     }
