@@ -395,11 +395,6 @@ public class UI extends Application
                 helpAlert.setTitle("Help");
                 helpAlert.setHeaderText("Help Information");
                 helpAlert.showAndWait();
-
-                if(helpAlert.getResult()==ButtonType.OK){
-                    Platform.exit();
-                    System.exit(0);
-                }
             }
 
             else if (parsedInput[0].equals("QUIT"))
