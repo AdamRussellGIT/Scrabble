@@ -58,8 +58,18 @@ public class UI extends Application
     Label currPlayer;
     Label currScore;
     Label turnText;
-    Label keyColours;
 
+    Label colourKey;
+    Label doubleLetterScore;
+    Label tripleLetterScore;
+    Label doubleWordScore;
+    Label tripleWordScore;
+
+    Button colourKeyButton;
+    Button doubleLetterScoreButton;
+    Button tripleLetterScoreButton;
+    Button doubleWordScoreButton;
+    Button tripleWordScoreButton;
 
     Player playerOne;
     Player playerTwo;
@@ -183,37 +193,68 @@ public class UI extends Application
         HBox leftH = new HBox(8);
         HBox rightH = new HBox(8);
         rightPane = new GridPane();
-        rightPane.setVgap(screenRes.getHeight()/3);
+        rightPane.setVgap(screenRes.getHeight()/3.5);
 
+        VBox gameInfo = new VBox(15);
 
-        VBox gameInfo = new VBox(415);
-
-        VBox playerInfo = new VBox(8);
+        VBox playerInfo = new VBox(2);
 
         currPlayer = new Label("Current Player: ");
         currPlayer.setFont(new Font(30));
+        currPlayer.setStyle("-fx-font-weight: bold");
+
 
         currScore = new Label("Current Score: ");
         currScore.setFont(new Font(30));
+        currScore.setStyle("-fx-font-weight: bold");
 
         turnText = new Label("Turn: ");
         turnText.setFont(new Font(30));
-
-        keyColours = new Label("ColourTest");
-        turnText.setFont(new Font(30));
+        turnText.setStyle("-fx-font-weight: bold");
 
 
-        playerInfo.getChildren().addAll(currPlayer,currScore,turnText);
+        colourKey = new Label("Board Colour Key: ");
+        colourKey.setFont(new Font(18));
+        colourKey.setStyle("-fx-font-weight: bold");
 
-        VBox frameBox = new VBox(8);
+        doubleLetterScoreButton = new Button(" ");
+        tripleLetterScoreButton = new Button(" ");
+        doubleWordScoreButton = new Button(" ");
+        tripleWordScoreButton = new Button(" ");
+
+        doubleLetterScore = new Label("Double Letter Score" );
+        doubleLetterScore.setGraphic(doubleLetterScoreButton);
+        doubleLetterScoreButton.setStyle("-fx-border-color: #fdf4ff; -fx-border-width: 2px");
+        doubleLetterScoreButton.setStyle("-fx-background-color:#b9d3d0");
+        doubleLetterScore.setFont(new Font(15));
+
+        tripleLetterScore = new Label("Triple Letter Score");
+        tripleLetterScore.setGraphic(tripleLetterScoreButton);
+        tripleLetterScore.setFont(new Font(15));
+        tripleLetterScoreButton.setStyle("-fx-border-color: #fdf4ff; -fx-border-width: 2px");
+        tripleLetterScoreButton.setStyle("-fx-background-color:#3d9eb2");
+
+        doubleWordScore = new Label("Double Word Score");
+        doubleWordScore.setGraphic(doubleWordScoreButton);
+        doubleWordScore.setFont(new Font(15));
+        doubleWordScoreButton.setStyle("-fx-border-color: #fdf4ff; -fx-border-width: 2px");
+        doubleWordScoreButton.setStyle("-fx-background-color:#f6b9ab");
+
+        tripleWordScore = new Label("Triple Word Score");
+        tripleWordScore.setGraphic(tripleWordScoreButton);
+        tripleWordScore.setFont(new Font(15));
+        tripleWordScoreButton.setStyle("-fx-border-color: #fdf4ff; -fx-border-width: 2px");
+        tripleWordScoreButton.setStyle("-fx-background-color:#f35f49");
+
+        playerInfo.getChildren().addAll(currPlayer,currScore,turnText,colourKey,doubleLetterScore,tripleLetterScore,doubleWordScore,tripleWordScore);
+        VBox frameBox = new VBox(2);
 
         framePane = new GridPane();
         framePane.setHgap(11);
         framePane.setPadding(new Insets(0, 0, 0, 15));
-        frameBox.getChildren().add(framePane);
+        frameBox.getChildren().addAll(framePane);
 
-
-        VBox inputBox = new VBox(8);
+        VBox inputBox = new VBox(2);
 
         //setting up textfield
         input = new TextField();
@@ -223,10 +264,7 @@ public class UI extends Application
 
         inputBox.getChildren().add(input);
 
-
         gameInfo.getChildren().addAll(playerInfo,frameBox,inputBox);
-
-
 
         //Centre tile image set-up
         ImageView imgV;
@@ -273,7 +311,6 @@ public class UI extends Application
                 }
             }
         }
-
 
         //Creating a dialog box
         //To enter both Player One's and Two's names
@@ -378,7 +415,6 @@ public class UI extends Application
                         alert.showAndWait();
                     }
 
-
                     else
                     {
                         changeCurrentPlayer();
@@ -397,6 +433,8 @@ public class UI extends Application
                 helpAlert.setTitle("Help");
                 helpAlert.setHeaderText("Help Information");
                 helpAlert.showAndWait();
+
+                helpAlert.initOwner(curr_window);
             }
 
             else if (parsedInput[0].equals("QUIT"))
