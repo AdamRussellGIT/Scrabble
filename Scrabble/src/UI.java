@@ -400,6 +400,7 @@ public class UI extends Application
             else if (parsedInput[0].equals("QUIT"))
             {
                 Alert quit = new Alert(Alert.AlertType.CONFIRMATION, "Do you really wish to quit? you'll lose the game", ButtonType.YES, ButtonType.NO);
+                quit.initOwner(curr_window);
                 quit.showAndWait();
                 if(quit.getResult()==ButtonType.YES){
                     changeCurrentPlayer();
@@ -413,7 +414,11 @@ public class UI extends Application
                 //check if there are 4 things in the array (row, col, direction, word)
                 if (parsedInput.length != 4)
                 {
-                    //tell the user that its invalid through text above textfield maybe?
+                    Alert alert = new Alert(Alert.AlertType.ERROR);
+                    alert.setHeaderText("Error!");
+                    alert.setContentText("Too many, or too little arguments!");
+
+                    alert.showAndWait();
                 }
 
                 //parse input to row column etc
@@ -471,6 +476,7 @@ public class UI extends Application
             Alert gameOver = new Alert(Alert.AlertType.INFORMATION, winner.getName() + " has won, congratulations " + winner.getName() + "!", ButtonType.OK);
             gameOver.setTitle("winner winner chicken dinner!");
             gameOver.setHeaderText(null);
+            gameOver.initOwner(curr_window);
             gameOver.showAndWait();
 
             if(gameOver.getResult()==ButtonType.OK){
