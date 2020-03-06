@@ -254,6 +254,8 @@ public class UI extends Application
         framePane.setHgap(11);
         framePane.setPadding(new Insets(0, 0, 0, 15));
         frameBox.getChildren().addAll(framePane);
+//        frameBox.setStyle("-fx-background-color:#474747");
+
 
         VBox inputBox = new VBox(2);
 
