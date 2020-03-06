@@ -437,6 +437,18 @@ public class UI extends Application
                     {
                         //TODO update previous board
                         gameBoard.placeWord(row, column, direction, word, currentPlayer);
+
+                        //check for bonus 50 points
+                        if (currentPlayer.frame.checkEmptyFrame())
+                        {
+                            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                            alert.initOwner(curr_window);
+                            alert.setHeaderText("Congratulations!");
+                            alert.setContentText("You used all 7 of the tiles in your frame, and got a 50 point bonus!");
+
+                            alert.showAndWait();
+                        }
+
                         gameLogic.calculateScore(gameLogic.findAllWords(row, column, direction, word, gameBoard, previousBoard), currentPlayer, gameBoard, previousScore);
                         changeCurrentPlayer();
                     }
