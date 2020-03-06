@@ -473,7 +473,14 @@ public class UI extends Application
                     //run checks and placeword etc otherwise throw error yada yada ;)
                     if (gameBoard.wordPlacementCheck(row, column, direction, word, currentPlayer))
                     {
-                        //TODO update previous board
+                        for (int i = 0; i < 15; i++)
+                        {
+                            for (int j = 0; j < 15; j++)
+                            {
+                                previousBoard.board[i][j][0] = gameBoard.board[i][j][0];
+                                previousBoard.board[i][j][1] = gameBoard.board[i][j][1];
+                            }
+                        }
                         gameBoard.placeWord(row, column, direction, word, currentPlayer);
 
                         //check for bonus 50 points
