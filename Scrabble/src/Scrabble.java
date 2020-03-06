@@ -67,6 +67,7 @@ public class Scrabble
     {
         boolean goodInput = true;
         ArrayList<Tile> tmpExchange = new ArrayList<>();
+
         for (int i = 1; i < parsedInput.length; i++)
         {
             //if they want to exchange a blank, allow them to do so by typing blank, then change it to internal representation of blank tile char
@@ -83,6 +84,7 @@ public class Scrabble
 
             else
             {
+                currentPlayer.frame.theFrameArray.addAll(tmpExchange);
                 return false;
             }
         }
