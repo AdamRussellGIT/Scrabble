@@ -72,6 +72,8 @@ public class UI extends Application
     Player currentPlayer;
     String choice;
 
+    int endcounter = 0;
+
     int previousScore = 0;
     Board previousBoard = new Board();
 
@@ -358,6 +360,7 @@ public class UI extends Application
             //if its exchange
             if (parsedInput[0].equals("EXCHANGE"))
             {
+                endcounter++;
                 if (parsedInput.length > 8 || parsedInput.length < 2)
                 {
                     Alert alert = new Alert(Alert.AlertType.ERROR);
@@ -389,6 +392,7 @@ public class UI extends Application
             else if (parsedInput[0].equals("PASS"))
             {
                 changeCurrentPlayer();
+                endcounter++;
             }
             //TODO add formatting: bold fonts and general aesthetic look
             else if (parsedInput[0].equals("HELP"))
@@ -438,6 +442,7 @@ public class UI extends Application
                         //TODO update previous board
                         gameBoard.placeWord(row, column, direction, word, currentPlayer);
                         gameLogic.calculateScore(gameLogic.findAllWords(row, column, direction, word, gameBoard, previousBoard), currentPlayer, gameBoard, previousScore);
+                        endcounter=0;
                         changeCurrentPlayer();
                     }
 
@@ -475,6 +480,48 @@ public class UI extends Application
         Scrabble.show();
     }
 
+    void hasGameEnded(){
+        if(gamePool.poolSize()==0 || endcounter>=6){
+            if(playerOne.frame.checkEmptyFrame() || playerTwo.frame.checkEmptyFrame() || endcounter>=6){
+                if(playerOne.frame.checkEmptyFrame()){
+                    int tmp=0;
+                    for(int i=0; i<playerTwo.frame.theFrameArray.size(); i++){
+                        tmp+=playerTwo.frame.theFrameArray.get(i).getValue();
+                    }
+                    playerOne.setScore(2*tmp);
+                }
+                else if(playerTwo.frame.checkEmptyFrame()){
+                    int tmp=0;
+                    for(int i=0; i<playerOne.frame.theFrameArray.size(); i++){
+                        tmp+=playerOne.frame.theFrameArray.get(i).getValue();
+                    }
+                    playerTwo.setScore(2*tmp);
+                }
+                else if(!playerTwo.frame.checkEmptyFrame() && !playerOne.frame.checkEmptyFrame()){
+                    int tmp=0;
+                    for(int i=0; i<playerOne.frame.theFrameArray.size(); i++){
+                        tmp-=playerOne.frame.theFrameArray.get(i).getValue();
+                    }
+                    playerOne.setScore(tmp);
+                    tmp=0;
+                    for(int i=0; i<playerTwo.frame.theFrameArray.size(); i++){
+                        tmp-=playerTwo.frame.theFrameArray.get(i).getValue();
+                    }
+                    playerTwo.setScore(tmp);
+                }
+                if(playerOne.getScore()>playerTwo.getScore()){
+                    endGame(playerOne);
+                }
+                else if(playerTwo.getScore()>playerOne.getScore()){
+                    endGame(playerTwo);
+                }
+                else {
+                    endGame(null);
+                }
+            }
+        }
+    }
+
     public void changeCurrentPlayer()
     {
         turn++;
@@ -491,6 +538,7 @@ public class UI extends Application
         currentPlayer.frame.refillFrame(gamePool);
         updateFrame(currentPlayer.frame);
         updateBoard(gameBoard);
+        hasGameEnded();
     }
     void endGame(Player winner){
 
@@ -508,6 +556,8 @@ public class UI extends Application
         if(winner==null){
             Alert gameOver= new Alert(Alert.AlertType.INFORMATION,"Both of you have a score of " + playerOne.getScore() + " so it's a draw!",ButtonType.OK);
             gameOver.setTitle("What are the chances?");
+            gameOver.setHeaderText(null);
+            gameOver.initOwner(curr_window);
             gameOver.showAndWait();
 
             if(gameOver.getResult()==ButtonType.OK){
