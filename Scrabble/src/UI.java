@@ -23,6 +23,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
@@ -58,6 +59,7 @@ public class UI extends Application
     Label currPlayer;
     Label currScore;
     Label turnText;
+    Label helpHint;
 
     Label colourKey;
     Label doubleLetterScore;
@@ -65,7 +67,6 @@ public class UI extends Application
     Label doubleWordScore;
     Label tripleWordScore;
 
-    Button colourKeyButton;
     Button doubleLetterScoreButton;
     Button tripleLetterScoreButton;
     Button doubleWordScoreButton;
@@ -193,7 +194,7 @@ public class UI extends Application
         HBox leftH = new HBox(8);
         HBox rightH = new HBox(8);
         rightPane = new GridPane();
-        rightPane.setVgap(screenRes.getHeight()/3.5);
+        rightPane.setVgap(screenRes.getHeight()/3.7);
 
         VBox gameInfo = new VBox(15);
 
@@ -256,13 +257,18 @@ public class UI extends Application
 
         VBox inputBox = new VBox(2);
 
+        helpHint = new Label("Type \"HELP\" for help");
+        helpHint.setFont(new Font(15));
+
+        helpHint.setTextFill(Color.GREY);
+
         //setting up textfield
         input = new TextField();
         input.setPrefHeight(50);
         input.setPrefWidth(400);
         input.setFont(new Font(30));
 
-        inputBox.getChildren().add(input);
+        inputBox.getChildren().addAll(helpHint,input);
 
         gameInfo.getChildren().addAll(playerInfo,frameBox,inputBox);
 
