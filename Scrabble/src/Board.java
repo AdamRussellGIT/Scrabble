@@ -137,14 +137,14 @@ public class Board
 		}
 
 		//Checks if the tile is out of bounds
-		if(row>14||row<0||col<0||col>14||((dir=='a'||dir=='A') && col + word.length() > 14) || ((dir=='d' || dir=='D') && row+word.length()>14)){
+		if(row>14||row<0||col<0||col>14||((dir=='a'||dir=='A') && col + word.length()-1 > 14) || ((dir=='d' || dir=='D') && row+word.length()-1>14)){
 			return false;
 		}
 
 		//Checks that there is no tile before start of word
 		if (dir == 'A' || dir == 'a')
 		{
-			if (board[row][col-1][0] != null)
+			if ((col-1 >= 0 ) && (board[row][col-1][0] != null))
 			{
 				return false;
 			}
@@ -152,7 +152,7 @@ public class Board
 
 		else
 		{
-			if (board[row-1][col][0] != null)
+			if ((row-1 >= 0) && (board[row-1][col][0] != null))
 			{
 				return false;
 			}
@@ -272,26 +272,47 @@ public class Board
 		//TODO fix bug that throws error when on the edge of the board (account for reach the edge of board)
 		//if not first word if it's connected to another word on the board
 		boolean connected = false;
-		if(!first){
+
+		if (!first)
+        {
+            int boxTop = Math.max(row-1,0);
+            int boxBottom = ((dir == 'A' || dir == 'a') ? (Math.min(row, 14)) : (Math.min(row + word.length()-1, 14)));
+            int boxLeft = Math.max(col-1,0);
+            int boxRight = ((dir == 'D' || dir == 'd') ? (Math.min(col, 14)) : (Math.min(col + word.length()-1, 14)));
+            boolean foundConnection = false;
+            for (int r=boxTop; r<=boxBottom && !foundConnection; r++) {
+                for (int c=boxLeft; c<=boxRight && !foundConnection; c++) {
+                    if (board[r][c][0] != null) {
+                        foundConnection = true;
+                        }
+                }
+            }
+            if (!foundConnection) {
+                return false;
+            }
+        }
+
+
+		/*if(!first){
 			if(dir=='D' || dir=='d'){
-				if(board[row-1][col][0]!=null || board[row+word.length()+1][col][0]!=null){
+				if(board[row-1][col][0]!=null || board[row+word.length()][col][0]!=null){
 					connected=true;
 				}
 				else {
 					for (int i = 0; i < word.length(); i++) {
-						if (board[row + i][col - 1][0] != null || board[row + i][col + 1][0] != null || board[row+i][col][0] != null) {
+						if (board[row + i][col - 1][0] != null || (col-1)  < 0 || board[row + i][col + 1][0] != null || (col+i) > 14 || board[row+i][col][0] != null) {
 							connected = true;
 						}
 					}
 				}
 			}
 			else if(dir=='A' || dir=='a'){
-				if(board[row][col-1][0]!=null || board[row][col+word.length()+1][0]!=null){
+				if(board[row][col-1][0]!=null || board[row][col+word.length()][0]!=null){
 					connected=true;
 				}
 				else{
 					for(int i=0; i<word.length(); i++){
-						if(board[row-1][col+i][0]!=null || board[row+1][col+i][0]!=null || board[row][col+i][0] != null){
+						if(board[row-1][col+i][0]!=null || (row-1) < 0 || board[row+1][col+i][0]!=null || (row+1) > 14 || board[row][col+i][0] != null){
 							connected = true;
 						}
 					}
@@ -300,7 +321,7 @@ public class Board
 			if(!connected) {
 				return connected;
 			}
-		}
+		}*/
 
 		//if placement uses at least one letter from rack
 		boolean usesRack = false;

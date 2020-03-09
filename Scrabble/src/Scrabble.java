@@ -17,7 +17,7 @@ public class Scrabble
         if(dir=='A' || dir=='a'){
             for(int i=0; i<wrd.length(); i++){
                 String a = new String();
-                if((gameBoard.board[row-1][col+i][0]!=null || gameBoard.board[row+1][col+i][0]!=null) && previousBoard.board[row][col+i][0] == null) {
+                if(((row-1 >= 0 && gameBoard.board[row-1][col+i][0]!=null) || (row+1 <= 14 && gameBoard.board[row+1][col+i][0]!=null)) && previousBoard.board[row][col+i][0] == null) {
                     Word tmp = new Word(0,0,'d',"");
                     int j = 1;
                     while (row-j>=0 && gameBoard.board[row - j][col + i][0] != null) {
@@ -39,7 +39,7 @@ public class Scrabble
         else if(dir=='D' || dir=='d'){
             for(int i=0; i<wrd.length(); i++){
                 String a = new String();
-                if((gameBoard.board[row+i][col-1][0]!=null || gameBoard.board[row+i][col+1][0]!=null)&&previousBoard.board[row+i][col][0]==null) {
+                if(((col-1 >= 0 && gameBoard.board[row+i][col-1][0]!=null) || (col+1 <= 14 && gameBoard.board[row+i][col+1][0]!=null))&&previousBoard.board[row+i][col][0]==null) {
                     Word tmp = new Word(0,0,'a',"");
                     int j = 1;
                     while (col-j >=0 && gameBoard.board[row+i][col-j][0] != null) {
