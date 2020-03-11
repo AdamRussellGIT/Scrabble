@@ -59,6 +59,12 @@ public class Scrabble
             }
 
         }
+
+        for (int i = 0; i < ans.size(); i++)
+        {
+            System.out.println(ans.get(i).getWord());
+        }
+        System.out.println("dfyeufh0aspdhfbWEUOWRSD");
         return ans;
     }
 

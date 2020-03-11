@@ -276,7 +276,7 @@ public class Board
 		if (!first)
         {
             int boxTop = Math.max(row-1,0);
-            int boxBottom = ((dir == 'A' || dir == 'a') ? (Math.min(row, 14)) : (Math.min(row + word.length()-1, 14)));
+            int boxBottom = ((dir == 'A' || dir == 'a') ? (Math.min(row+1, 14)) : (Math.min(row + word.length()-1, 14)));
             int boxLeft = Math.max(col-1,0);
             int boxRight = ((dir == 'D' || dir == 'd') ? (Math.min(col+1, 14)) : (Math.min(col + word.length()-1, 14)));
             boolean foundConnection = false;
@@ -288,7 +288,6 @@ public class Board
                 }
             }
             if (!foundConnection) {
-                System.out.println("Hi");
                 return false;
             }
         }
