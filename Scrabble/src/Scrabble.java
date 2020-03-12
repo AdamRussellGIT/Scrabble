@@ -23,12 +23,13 @@ public class Scrabble
                     while (row-j>=0 && gameBoard.board[row - j][col + i][0] != null) {
                         j++;
                     }
-                    if(gameBoard.board[row-1][col+i][0]!=null)
-                        j--;
+                    /*if(gameBoard.board[row-1][col+i][0]==null)
+                        j--;*/
                     tmp.setStartColumn(col + i);
-                    tmp.setStartRow(row - j);
-                    while(row-j <= 14 && gameBoard.board[row-j][col+i][0]!=null){
-                        a=a.concat(String.valueOf(gameBoard.board[row-j][col+i][0].getLetter()));
+                    tmp.setStartRow(row - j + 1);
+                    while(row-j+1<= 14 && gameBoard.board[row-j+1][col+i][0]!=null){
+                        System.out.println(String.valueOf(gameBoard.board[row-j+1][col+i][0].getLetter()));
+                        a=a.concat(String.valueOf(gameBoard.board[row-j+1][col+i][0].getLetter()));
                         j--;
                     }
                     tmp.setWord(a);
@@ -45,12 +46,12 @@ public class Scrabble
                     while (col-j >=0 && gameBoard.board[row+i][col-j][0] != null) {
                         j++;
                     }
-                    if(gameBoard.board[row+i][col-1][0]!=null)
-                        j--;
-                    tmp.setStartColumn(col-j);
+                    /*if(gameBoard.board[row+i][col-1][0]==null)
+                        j--;*/
+                    tmp.setStartColumn(col-j+1);
                     tmp.setStartRow(row+i);
-                    while(col-j<=14 && gameBoard.board[row+i][col-j][0]!=null || row >= 14){
-                        a=a.concat(String.valueOf(gameBoard.board[row+i][col-j][0].getLetter()));
+                    while(col-j+1<=14 && gameBoard.board[row+i][col-j+1][0]!=null || row >= 14){
+                        a=a.concat(String.valueOf(gameBoard.board[row+i][col-j+1][0].getLetter()));
                         j--;
                     }
                     tmp.setWord(a);
