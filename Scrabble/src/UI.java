@@ -155,25 +155,32 @@ public class UI extends Application
 
     public void updateFrame(Frame f)
     {
-        for (int i = 0; i < 7; i++)
+        for (int i = 0; i < f.theFrameArray.size(); i++)
         {
-            if (f.theFrameArray.get(i) != null)
-            {
-                Button frameButt = new Button(String.valueOf(f.theFrameArray.get(i).getLetter()));
-                frameButt.setPrefSize(92, 92f);
-                frameButt.setPrefHeight(130);
+            Button frameButt = new Button(String.valueOf(f.theFrameArray.get(i).getLetter()));
+            frameButt.setPrefSize(92, 92f);
+            frameButt.setPrefHeight(130);
 
-                frameButt.setStyle("-fx-border-color: #fdf4ff; -fx-border-width: 2px");
-                frameButt.setStyle("-fx-background-color:#c8c2a8");
+            frameButt.setStyle("-fx-border-color: #fdf4ff; -fx-border-width: 2px");
+            frameButt.setStyle("-fx-background-color:#c8c2a8");
 
-                framePane.add(frameButt, i, 0);
-            }
-            else
-            {
-                Button emptyButt = new Button("");
-                emptyButt.setVisible(false);
-            }
+            framePane.add(frameButt, i, 0);
+        }
 
+
+        //checks if player has less than 7 tiles
+        //if so, replace with pseudo blank tiles
+        //same colour as background
+        for (int j = f.theFrameArray.size(); j < 7; j++)
+        {
+            Button emptyButt = new Button("");
+            emptyButt.setPrefSize(92, 92f);
+            emptyButt.setPrefHeight(130);
+
+            emptyButt.setStyle("-fx-border-color: #f4f4f4; -fx-border-width: 2px");
+            emptyButt.setStyle("-fx-background-color:#f4f4f4");
+
+            framePane.add(emptyButt, j, 0);
         }
     }
 
