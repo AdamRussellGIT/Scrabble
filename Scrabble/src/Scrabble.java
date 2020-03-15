@@ -12,27 +12,37 @@ import java.util.Scanner;
 public class Scrabble
 {
     public ArrayList<Word> findAllWords(int row, int col, char dir, String wrd, Board gameBoard, Board previousBoard){
-        ArrayList<Word> ans = new ArrayList<Word>();
-        ans.add(new Word(row,col,dir,wrd));
-        if(dir=='A' || dir=='a'){
-            for(int i=0; i<wrd.length(); i++){
-                String a = new String();
+        ArrayList<Word> ans = new ArrayList<Word>();    //this will be returned
+        ans.add(new Word(row,col,dir,wrd));             // the first word added to the ArrayList is the word inputted by the user
+
+        /*the program is divided in two halves that do the same process in the same way, but swap the rows and columns
+          accordingly with the orientation of the inputted word*/
+
+        if(dir=='A' || dir=='a'){    //going across
+            for(int i=0; i<wrd.length(); i++){  //for every square of the board on which the word has a letter
+
+                /*if the word isn't placed in row 0, and there's a tile above it, or the word isn't on row 14 and there's a tile below it
+                * AND the tile that we're checking was not there in the previousBoard (i.e.: was just placed to form the word)
+                * then it means that there is another word that was formed by the player, going down, in that column(col+i)
+                * */
                 if(((row-1 >= 0 && gameBoard.board[row-1][col+i][0]!=null) || (row+1 <= 14 && gameBoard.board[row+1][col+i][0]!=null)) && previousBoard.board[row][col+i][0] == null) {
-                    Word tmp = new Word(0,0,'d',"");
+                    Word tmpWord = new Word(0,0,'d',"");    //then a new word is made
+                    String tmpString = new String();                                            // and a new String is made to store that word temporarily
+
                     int j = 1;
-                    while (row-j>=0 && gameBoard.board[row - j][col + i][0] != null) {
+                    while (row-j>=0 && gameBoard.board[row - j][col + i][0] != null) {          //while we haven't reached the top row, and there's a tile above this we keep looking for the start of the new word
                         j++;
                     }
-                    if(gameBoard.board[row-1][col+i][0]!=null)
+                    if(gameBoard.board[row-1][col+i][0]!=null)                                  //if the
                         j--;
-                    tmp.setStartColumn(col + i);
-                    tmp.setStartRow(row - j);
+                    tmpWord.setStartColumn(col + i);
+                    tmpWord.setStartRow(row - j);
                     while(row-j <= 14 && gameBoard.board[row-j][col+i][0]!=null){
-                        a=a.concat(String.valueOf(gameBoard.board[row-j][col+i][0].getLetter()));
+                        tmpString=tmpString.concat(String.valueOf(gameBoard.board[row-j][col+i][0].getLetter()));
                         j--;
                     }
-                    tmp.setWord(a);
-                    ans.add(tmp);
+                    tmpWord.setWord(tmpString);
+                    ans.add(tmpWord);
                 }
             }
         }
