@@ -12,60 +12,66 @@ import java.util.Scanner;
 public class Scrabble
 {
     public ArrayList<Word> findAllWords(int row, int col, char dir, String wrd, Board gameBoard, Board previousBoard){
-        ArrayList<Word> ans = new ArrayList<Word>();
-        ans.add(new Word(row,col,dir,wrd));
+        ArrayList<Word> ans = new ArrayList<Word>();        //this will be returned
+        ans.add(new Word(row,col,dir,wrd));                 //the first word added to the answer is the user input
+
+        /*the method does the same thing twice, once for words going across and once for words going down*/
         if(dir=='A' || dir=='a'){
-            for(int i=0; i<wrd.length(); i++){
-                String a = new String();
+            for(int i=0; i<wrd.length(); i++){              //for each letter in the word
+
+                /*if the letter isn't on the first row, and there's a tile above it, or the word isn't on the bottom row, and there's a tile below it
+                * AND the letter wasn't there in the previousBoard (i.e.: was just placed by the currentPlayer)
+                * then it means that there's a word on that column (col+i) that the currentPlayer extended, so we should find it and add it to the ans ArrayList*/
                 if(((row-1 >= 0 && gameBoard.board[row-1][col+i][0]!=null) || (row+1 <= 14 && gameBoard.board[row+1][col+i][0]!=null)) && previousBoard.board[row][col+i][0] == null) {
-                    Word tmp = new Word(0,0,'d',"");
+                    Word tmpWord = new Word(0,0,'d',"");    //this will hold the word
+                    String tmpString = new String();                                            //this will hold the string value of the word while we add the letters one by one
+
                     int j = 1;
-                    while (row-j>=0 && gameBoard.board[row - j][col + i][0] != null) {
+                    while (row-j>=0 && gameBoard.board[row - j][col + i][0] != null) {          //this goes up until it finds the start of the word that was extended
                         j++;
                     }
-                    /*if(gameBoard.board[row-1][col+i][0]==null)
-                        j--;*/
-                    tmp.setStartColumn(col + i);
-                    tmp.setStartRow(row - j + 1);
-                    while(row-j+1<= 14 && gameBoard.board[row-j+1][col+i][0]!=null){
-                        System.out.println(String.valueOf(gameBoard.board[row-j+1][col+i][0].getLetter()));
-                        a=a.concat(String.valueOf(gameBoard.board[row-j+1][col+i][0].getLetter()));
+                    if(row-j<0 || gameBoard.board[row-1][col+i][0]==null)                       //we want row-j to be the row where the first letter is, so because it's possible that it points at the last whitespace before it we check that it doesn't
+                        j--;
+                    tmpWord.setStartColumn(col + i);
+                    tmpWord.setStartRow(row - j);
+
+                    while(row-j<= 14 && gameBoard.board[row-j][col+i][0]!=null){               //this adds the letters one by one to the tmpString while going through the word
+                        tmpString=tmpString.concat(String.valueOf(gameBoard.board[row-j][col+i][0].getLetter()));
                         j--;
                     }
-                    tmp.setWord(a);
-                    ans.add(tmp);
+                    tmpWord.setWord(tmpString);
+                    ans.add(tmpWord);
                 }
             }
         }
+        //in case the word inputted was going down instead of across the method operates in the same way, but swaps the operations it does on rows and columns
         else if(dir=='D' || dir=='d'){
             for(int i=0; i<wrd.length(); i++){
-                String a = new String();
+
+                /*if the letter isn't on the first column, and there's a tile left of it, or the word isn't on the bottom column, and there's a tile right of it
+                 * AND the letter wasn't there in the previousBoard (i.e.: was just placed by the currentPlayer)
+                 * then it means that there's a word on that row (row+i) that the currentPlayer extended, so we should find it and add it to the ans ArrayList*/
                 if(((col-1 >= 0 && gameBoard.board[row+i][col-1][0]!=null) || (col+1 <= 14 && gameBoard.board[row+i][col+1][0]!=null))&&previousBoard.board[row+i][col][0]==null) {
-                    Word tmp = new Word(0,0,'a',"");
+                    Word tmpWord = new Word(0,0,'a',"");
+                    String tmpString = new String();
+
                     int j = 1;
                     while (col-j >=0 && gameBoard.board[row+i][col-j][0] != null) {
                         j++;
                     }
-                    /*if(gameBoard.board[row+i][col-1][0]==null)
-                        j--;*/
-                    tmp.setStartColumn(col-j+1);
-                    tmp.setStartRow(row+i);
-                    while(col-j+1<=14 && gameBoard.board[row+i][col-j+1][0]!=null || row >= 14){
-                        a=a.concat(String.valueOf(gameBoard.board[row+i][col-j+1][0].getLetter()));
+                    if(gameBoard.board[row+i][col-1][0]==null)
+                        j--;
+                    tmpWord.setStartColumn(col-j);
+                    tmpWord.setStartRow(row+i);
+                    while(col-j+1<=14 && gameBoard.board[row+i][col-j][0]!=null || row >= 14){
+                        tmpString=tmpString.concat(String.valueOf(gameBoard.board[row+i][col-j][0].getLetter()));
                         j--;
                     }
-                    tmp.setWord(a);
-                    ans.add(tmp);
-                   }
+                    tmpWord.setWord(tmpString);
+                    ans.add(tmpWord);
+                }
             }
-
         }
-
-        for (int i = 0; i < ans.size(); i++)
-        {
-            System.out.println(ans.get(i).getWord());
-        }
-        System.out.println("dfyeufh0aspdhfbWEUOWRSD");
         return ans;
     }
 
