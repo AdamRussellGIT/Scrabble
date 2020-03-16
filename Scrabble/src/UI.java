@@ -278,7 +278,7 @@ public class UI extends Application
         helpHint = new Label("Type \"HELP\" for help");
         helpHint.setFont(new Font(15));
 
-        helpHint.setTextFill(Color.GREY);
+        helpHint.setTextFill(Color.BLACK);
 
         //setting up textfield
         input = new TextField();
@@ -454,12 +454,34 @@ public class UI extends Application
             //TODO add formatting: bold fonts and general aesthetic look
             else if (parsedInput[0].equals("HELP"))
             {
-                Alert helpAlert = new Alert(Alert.AlertType.INFORMATION,"Instructions:\n\n To Place A Word \n (coordinates, direction, word) \n (A - Across) (D - Down) : \n 7 7 A dog \n\n To Pass Your Turn:\n PASS \n\n To Exchange \n (letters you wish to exchange) \n EXCHANGE A B C \n\n To Quit The Game: \n QUIT");
+                Alert helpAlert = new Alert(Alert.AlertType.INFORMATION);
+
+                helpAlert.setContentText(" INSTRUCTIONS: \n  How to PLAY: \n *Both lower and UPPERCASE input is acceptable " +
+                        "\n *Blank tile in the frame constitutes a blank tile \n  that can be substituted for any letter in a word you wish to place\n\n " +
+                        "TO PLACE A WORD: \n Input Format: (coordinates, direction, word) \n Coordinates: \n Coordinates range from 0 - 14 and should have " +
+                        "have a space between them i.e. (0 0). \n If ypu are starting the game you MUST place your first word starting at position (7 7) " +
+                        "*the key centre tile \n\n Direction: \n The word can either go down or across on the board and is denoted \n as either A - ACROSS " +
+                        "and D - DOWN, after having chosen the coordinates placing a word would \n look as follows (7 7 A). *Note the space between coordinates & direction: e.g. (77a) or (7 7a) are INVALID!" +
+                        "\n\n Word: \n The word must use available tiles from your frame and connect them appropriately  to another word on the Scrabble board." +
+                        "\n If the first letter of your word already resides on the Scrabble board, simply enter the coordinates of that letter and type \n in the " +
+                        "word fully. \n The format is as follows: (7 7 A dog) *notice the space between the direction and the word for valid input. \n " +
+                        "\n\n TO PASS YOUR TURN: \n In the event that you wish to forfeit your turn if you can't think of a suitable word, type in \"PASS\" into " +
+                        "the text-field. \n In the event the game consists of 6 PASS/or Non-Scoring turns the game terminates. \n\n\n TO EXCHANGE A WORD \n " +
+                        "If you wish to exchange certain letters in your frame from the pool you must enter the desired letters in the textfield in the " +
+                        "\n following format: (Exchange a b c). \n *Note the " +
+                        "letters must be in your frame and must have a space between them. If you have duplicate letters the same procedure \n  follows e.g. (a a). " +
+                        "Once you have exchanged your letters they will appear in your frame and the turn will be tunred over to your \n  opponent. \n *In the event " +
+                        "the game consists of 6 EXCHANGE/or Non-Scoring turns the game terminates." +
+                        "\n\n TO QUIT THE GAME: \n If you wish to quit the game type in \"QUIT\" \n\n Game End Conditions: \n 1.When QUIT is typed in \n 2.PASS/EXCHANGE exceeds 6 continuous occurances \n 3.No more letters" +
+                        "are left in either the Pool/Frame \n 4.No more words can be placed in the board.");
+                helpAlert.initOwner(curr_window);
                 helpAlert.setTitle("Help");
                 helpAlert.setHeaderText("Help Information");
+                helpAlert.getDialogPane().setPrefSize(720,900);
                 helpAlert.showAndWait();
 
-                helpAlert.initOwner(curr_window);
+                gridPane.requestFocus();
+
             }
 
             else if (parsedInput[0].equals("QUIT"))
