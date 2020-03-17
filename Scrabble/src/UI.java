@@ -347,6 +347,8 @@ public class UI extends Application
 
         Optional<String> result1 = nameInputBox1.showAndWait();
 
+        //the following either creates a player with a specified (or default name)
+        //otherwise the program exits if cancel is typed
         if(result1.isPresent())
         {
             if(!(result1.get().equals("")))
@@ -415,7 +417,6 @@ public class UI extends Application
             String[] parsedInput = receivedInput.split(" ");
 
             //parsing input
-            //if its exchange
             if (parsedInput[0].equals("EXCHANGE"))
             {
                 endcounter++;
@@ -451,7 +452,7 @@ public class UI extends Application
                 changeCurrentPlayer();
                 endcounter++;
             }
-            //TODO add formatting: bold fonts and general aesthetic look
+
             else if (parsedInput[0].equals("HELP"))
             {
                 Alert helpAlert = new Alert(Alert.AlertType.INFORMATION);
@@ -459,7 +460,7 @@ public class UI extends Application
                 helpAlert.setContentText(" INSTRUCTIONS: \n  How to PLAY: \n *Both lower and UPPERCASE input is acceptable " +
                         "\n *Blank tile in the frame constitutes a blank tile \n  that can be substituted for any letter in a word you wish to place\n\n " +
                         "TO PLACE A WORD: \n Input Format: (coordinates, direction, word) \n Coordinates: \n Coordinates range from 0 - 14 and should have " +
-                        "have a space between them i.e. (0 0). \n If ypu are starting the game you MUST place your first word starting at position (7 7) " +
+                        "have a space between them i.e. (0 0). \n If you are starting the game you MUST place your first word so that one of the letters is placed on (7 7) " +
                         "*the key centre tile \n\n Direction: \n The word can either go down or across on the board and is denoted \n as either A - ACROSS " +
                         "and D - DOWN, after having chosen the coordinates placing a word would \n look as follows (7 7 A). *Note the space between coordinates & direction: e.g. (77a) or (7 7a) are INVALID!" +
                         "\n\n Word: \n The word must use available tiles from your frame and connect them appropriately  to another word on the Scrabble board." +
@@ -520,6 +521,7 @@ public class UI extends Application
                     //run checks and placeword etc otherwise throw error yada yada ;)
                     if (gameBoard.wordPlacementCheck(row, column, direction, word, currentPlayer))
                     {
+                        //update previous board
                         for (int i = 0; i < 15; i++)
                         {
                             for (int j = 0; j < 15; j++)
@@ -528,6 +530,7 @@ public class UI extends Application
                                 previousBoard.board[i][j][1] = gameBoard.board[i][j][1];
                             }
                         }
+
                         gameBoard.placeWord(row, column, direction, word, currentPlayer);
 
                         //check for bonus 50 points
