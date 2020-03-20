@@ -1,4 +1,7 @@
 //Team: Camel Bois
+//Members: Adam Russell - 18328851
+//         Karol Wojcik - 18322146
+//         Carlo Motteran - 18717341
 
 //    A class called UI that:
 //    Gathers together all console display and input methods
@@ -12,10 +15,7 @@
 
 import javafx.application.Application;
 import javafx.application.Platform;
-import javafx.event.ActionEvent;
 import javafx.geometry.Insets;
-import javafx.geometry.Pos;
-import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.Button;
@@ -25,27 +25,15 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
-import javafx.scene.text.FontWeight;
-import javafx.scene.text.Text;
-import javafx.scene.text.TextAlignment;
-import javafx.stage.Popup;
+
 import javafx.stage.Stage;
-
-import javax.imageio.ImageIO;
-import javax.swing.*;
-
 import javafx.scene.image.Image;
 
 
 import java.awt.*;
-import java.beans.EventHandler;
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Optional;
-import java.util.Scanner;
 
 public class UI extends Application
 {
@@ -53,7 +41,6 @@ public class UI extends Application
     GridPane gridPane;
     GridPane framePane;
     GridPane rightPane;
-    Button my_button;
 
     TextField input;
     Label currPlayer;
@@ -79,7 +66,6 @@ public class UI extends Application
     Scrabble gameLogic;
     Pool gamePool;
     Board gameBoard;
-    UI gameUI;
 
     int turn = -1;
     Player currentPlayer;
@@ -112,6 +98,7 @@ public class UI extends Application
                     gridPane.add(butt, j, i, 1, 1);
                 }
 
+                //we will need this else statement if we want to return the board to what it looked like during the previous turn, in case of a successful challenge
                 else {
                     imgV = new ImageView(starImg);
                     butt.setPrefSize(70, 70);
@@ -126,17 +113,23 @@ public class UI extends Application
                         butt.setStyle("-fx-background-color:#f35f49");
                     }
                     //double word score
-                    if ((i == 1 && j == 1) || (i == 2 && j == 2) || (i == 3 && j == 3) || (i == 4 && j == 4) || (i == 10 && j == 4) || (i == 11 && j == 3) || (i == 12 && j == 2) || (i == 13 && j == 1) || (i == 1 && j == 13) || (i == 2 && j == 12) || (i == 3 && j == 11) || (i == 4 && j == 10) || (i == 13 && j == 13) || (i == 12 && j == 12) || (i == 11 && j == 11) || (i == 10 && j == 10)) {
+                    if ((i == 1 && j == 1) || (i == 2 && j == 2) || (i == 3 && j == 3) || (i == 4 && j == 4) || (i == 10 && j == 4) || (i == 11 && j == 3) ||
+                            (i == 12 && j == 2) || (i == 13 && j == 1) || (i == 1 && j == 13) || (i == 2 && j == 12) || (i == 3 && j == 11) || (i == 4 && j == 10) ||
+                            (i == 13 && j == 13) || (i == 12 && j == 12) || (i == 11 && j == 11) || (i == 10 && j == 10)) {
                         butt.setStyle("-fx-border-color: #fdf4ff; -fx-border-width: 2px");
                         butt.setStyle("-fx-background-color:#f6b9ab");
                     }
                     //triple letter score
-                    if ((i == 1 && j == 5) || (i == 1 && j == 9) || (i == 5 && j == 1) || (i == 5 && j == 5) || (i == 5 && j == 9) || (i == 5 && j == 13) || (i == 9 && j == 1) || (i == 9 && j == 5) || (i == 9 && j == 9) || (i == 9 && j == 13) || (i == 13 && j == 5) || (i == 13 && j == 9)) {
+                    if ((i == 1 && j == 5) || (i == 1 && j == 9) || (i == 5 && j == 1) || (i == 5 && j == 5) || (i == 5 && j == 9) || (i == 5 && j == 13) ||
+                            (i == 9 && j == 1) || (i == 9 && j == 5) || (i == 9 && j == 9) || (i == 9 && j == 13) || (i == 13 && j == 5) || (i == 13 && j == 9)) {
                         butt.setStyle("-fx-border-color: #fdf4ff; -fx-border-width: 2px");
                         butt.setStyle("-fx-background-color:#3d9eb2");
                     }
                     //double letter score
-                    if ((i == 0 && j == 3) || (i == 0 && j == 11) || (i == 2 && j == 6) || (i == 2 && j == 8) || (i == 3 && j == 7) || (i == 3 && j == 0) || (i == 3 && j == 14) || (i == 6 && j == 2) || (i == 6 && j == 6) || (i == 6 && j == 8) || (i == 6 && j == 12) || (i == 7 && j == 3) || (i == 7 && j == 11) || (i == 8 && j == 2) || (i == 8 && j == 6) || (i == 8 && j == 8) || (i == 8 && j == 12) || (i == 11 && j == 0) || (i == 11 && j == 7) || (i == 11 && j == 14) || (i == 12 && j == 6) || (i == 12 && j == 8) || (i == 14 && j == 3) || (i == 14 && j == 11)) {
+                    if ((i == 0 && j == 3) || (i == 0 && j == 11) || (i == 2 && j == 6) || (i == 2 && j == 8) || (i == 3 && j == 7) || (i == 3 && j == 0) ||
+                            (i == 3 && j == 14) || (i == 6 && j == 2) || (i == 6 && j == 6) || (i == 6 && j == 8) || (i == 6 && j == 12) || (i == 7 && j == 3) ||
+                            (i == 7 && j == 11) || (i == 8 && j == 2) || (i == 8 && j == 6) || (i == 8 && j == 8) || (i == 8 && j == 12) || (i == 11 && j == 0) ||
+                            (i == 11 && j == 7) || (i == 11 && j == 14) || (i == 12 && j == 6) || (i == 12 && j == 8) || (i == 14 && j == 3) || (i == 14 && j == 11)) {
                         butt.setStyle("-fx-border-color: #fdf4ff; -fx-border-width: 2px");
                         butt.setStyle("-fx-background-color:#b9d3d0");
                     }
@@ -169,7 +162,7 @@ public class UI extends Application
 
 
         //checks if player has less than 7 tiles
-        //if so, replace with pseudo blank tiles
+        //if so, replace with pseudo blank (invisible) tiles
         //same colour as background
         for (int j = f.theFrameArray.size(); j < 7; j++)
         {
@@ -225,6 +218,7 @@ public class UI extends Application
         turnText.setStyle("-fx-font-weight: bold");
 
 
+        //setting up key
         colourKey = new Label("Board Colour Key: ");
         colourKey.setFont(new Font(18));
         colourKey.setStyle("-fx-font-weight: bold");
@@ -262,7 +256,6 @@ public class UI extends Application
         VBox frameBox = new VBox(2);
 
         frameBoxButton = new Button("");
-//        frameBoxButton.setPadding(new Insets(0, 0, 0, 20));
         frameBoxButton.setTranslateX(20);
         frameBoxButton.setStyle("-fx-background-color: #666666; -fx-border-width: 2px");
         frameBoxButton.setMaxHeight(70);
@@ -280,7 +273,7 @@ public class UI extends Application
 
         helpHint.setTextFill(Color.BLACK);
 
-        //setting up textfield
+        //setting up text field
         input = new TextField();
         input.setPrefHeight(50);
         input.setPrefWidth(400);
@@ -291,9 +284,7 @@ public class UI extends Application
         gameInfo.getChildren().addAll(playerInfo,frameBox,inputBox);
 
         //Centre tile image set-up
-        ImageView imgV;
         Image starImg = new Image(new FileInputStream("Scrabble\\res\\star.jpg"));
-        imgV = new ImageView(starImg);
 
         //setting up initial scrabble board
         for (int i = 0; i < 15; i++) {
@@ -336,78 +327,7 @@ public class UI extends Application
             }
         }
 
-        //Creating a dialog box
-        //To enter both Player One's and Two's names
-        //Displays before the game starts and the board is shown
-        TextInputDialog nameInputBox1 = new TextInputDialog("");
-
-        nameInputBox1.setHeaderText("Enter Player One's Name: ");
-        nameInputBox1.setContentText("Name");
-        nameInputBox1.setTitle("Player One Name");
-
-        Optional<String> result1 = nameInputBox1.showAndWait();
-
-        //the following either creates a player with a specified (or default name)
-        //otherwise the program exits if cancel is typed
-        if(result1.isPresent())
-        {
-            if(!(result1.get().equals("")))
-            {
-                result1.ifPresent(name ->
-                {
-                    playerOne = new Player(result1.get(),gamePool);
-                });
-            }
-            else
-            {
-                if(result1.isPresent())
-                {
-                    result1.ifPresent(name ->
-                    {
-                        playerOne = new Player("Player One",gamePool);
-                    });
-                }
-            }
-        }
-        else
-        {
-            Platform.exit();
-            System.exit(0);
-        }
-
-        TextInputDialog nameInputBox2 = new TextInputDialog("");
-
-        nameInputBox2.setHeaderText("Enter Player Two's Name: ");
-        nameInputBox2.setContentText("Name");
-        nameInputBox2.setTitle("Player Two Name");
-
-        Optional<String> result2 = nameInputBox2.showAndWait();
-
-        if(result2.isPresent())
-        {
-            if(!(result2.get().equals("")))
-            {
-                result2.ifPresent(name ->
-                {
-                    playerTwo = new Player(result2.get(),gamePool);
-                });
-            }
-            else
-            {
-                if(result2.isPresent())
-                {
-                    result2.ifPresent(name ->
-                    {
-                        playerTwo = new Player("Player Two",gamePool);
-                    });
-                }
-            }
-        }
-        else
-        {
-            Platform.exit();
-            System.exit(0);
-        }
+        getNames();
 
         changeCurrentPlayer();
 
@@ -637,7 +557,7 @@ public class UI extends Application
 
         currPlayer.setText("Current Player: " + currentPlayer.getName());
         currScore.setText("Current Score: " + currentPlayer.getScore());
-        turnText.setText("Turn: " + String.valueOf(turn+1));
+        turnText.setText("Turn: " + (turn + 1));
         currentPlayer.frame.refillFrame(gamePool);
         updateFrame(currentPlayer.frame);
         updateBoard(gameBoard);
@@ -647,7 +567,7 @@ public class UI extends Application
 
         if(winner!=null) {
             Alert gameOver = new Alert(Alert.AlertType.INFORMATION, winner.getName() + " has won, congratulations " + winner.getName() + "!", ButtonType.OK);
-            gameOver.setTitle("winner winner chicken dinner!");
+            gameOver.setTitle("Winner Winner Chicken Dinner!");
             gameOver.setHeaderText(null);
             gameOver.initOwner(curr_window);
             gameOver.showAndWait();
@@ -667,6 +587,80 @@ public class UI extends Application
                 Platform.exit();
                 System.exit(0);
             }
+        }
+    }
+
+    private void getNames()
+    {
+        //Creating a dialog box
+        //To enter both Player One's and Two's names
+        //Displays before the game starts and the board is shown
+        TextInputDialog nameInputBox1 = new TextInputDialog("");
+
+        nameInputBox1.setHeaderText("Enter Player One's Name: ");
+        nameInputBox1.setContentText("Name");
+        nameInputBox1.setTitle("Player One Name");
+
+        Optional<String> result1 = nameInputBox1.showAndWait();
+
+        //the following either creates a player with a specified (or default name)
+        //otherwise the program exits if cancel is typed
+        if(result1.isPresent())
+        {
+            if(!(result1.get().equals("")))
+            {
+                result1.ifPresent(name ->
+                {
+                    playerOne = new Player(result1.get(),gamePool);
+                });
+            }
+            else
+            {
+                if(result1.isPresent())
+                {
+                    result1.ifPresent(name ->
+                            playerOne = new Player("Player One",gamePool));
+                }
+            }
+        }
+        else
+        {
+            Platform.exit();
+            System.exit(0);
+        }
+
+        TextInputDialog nameInputBox2 = new TextInputDialog("");
+
+        nameInputBox2.setHeaderText("Enter Player Two's Name: ");
+        nameInputBox2.setContentText("Name");
+        nameInputBox2.setTitle("Player Two Name");
+
+        Optional<String> result2 = nameInputBox2.showAndWait();
+
+        if(result2.isPresent())
+        {
+            if(!(result2.get().equals("")))
+            {
+                result2.ifPresent(name ->
+                {
+                    playerTwo = new Player(result2.get(),gamePool);
+                });
+            }
+            else
+            {
+                if(result2.isPresent())
+                {
+                    result2.ifPresent(name ->
+                    {
+                        playerTwo = new Player("Player Two",gamePool);
+                    });
+                }
+            }
+        }
+        else
+        {
+            Platform.exit();
+            System.exit(0);
         }
     }
 }

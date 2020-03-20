@@ -1,13 +1,9 @@
 //Team: Camel Bois
 //Members: Adam Russell - 18328861
 //         Karol Wojcik - 18322146
-//         Carlo Motteran -
-
-import javafx.scene.control.Alert;
+//         Carlo Motteran - 18717341
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Scanner;
 
 public class Scrabble
 {
@@ -78,7 +74,6 @@ public class Scrabble
 
     public boolean exchange(Pool gamePool, Player currentPlayer, String[] parsedInput)
     {
-        boolean goodInput = true;
         ArrayList<Tile> tmpExchange = new ArrayList<>();
 
         for (int i = 1; i < parsedInput.length; i++)
