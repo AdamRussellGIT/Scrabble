@@ -26,13 +26,12 @@ public class Scrabble
                     while (row-j>=0 && gameBoard.board[row - j][col + i][0] != null) {          //this goes up until it finds the start of the word that was extended
                         j++;
                     }
-                    if(row-j<0 || gameBoard.board[row-1][col+i][0]==null)                       //we want row-j to be the row where the first letter is, so because it's possible that it points at the last whitespace before it we check that it doesn't
-                        j--;
-                    tmpWord.setStartColumn(col + i);
-                    tmpWord.setStartRow(row - j);
 
-                    while(row-j<= 14 && gameBoard.board[row-j][col+i][0]!=null){               //this adds the letters one by one to the tmpString while going through the word
-                        tmpString=tmpString.concat(String.valueOf(gameBoard.board[row-j][col+i][0].getLetter()));
+                    tmpWord.setStartColumn(col + i);
+                    tmpWord.setStartRow(row - j+1);
+
+                    while(row-j<= 14 && gameBoard.board[row-j+1][col+i][0]!=null){               //this adds the letters one by one to the tmpString while going through the word
+                        tmpString=tmpString.concat(String.valueOf(gameBoard.board[row-j+1][col+i][0].getLetter()));
                         j--;
                     }
                     tmpWord.setWord(tmpString);
@@ -55,12 +54,11 @@ public class Scrabble
                     while (col-j >=0 && gameBoard.board[row+i][col-j][0] != null) {
                         j++;
                     }
-                    if(gameBoard.board[row+i][col-1][0]==null)
-                        j--;
-                    tmpWord.setStartColumn(col-j);
+
+                    tmpWord.setStartColumn(col-j+1);
                     tmpWord.setStartRow(row+i);
-                    while(col-j+1<=14 && gameBoard.board[row+i][col-j][0]!=null || row >= 14){
-                        tmpString=tmpString.concat(String.valueOf(gameBoard.board[row+i][col-j][0].getLetter()));
+                    while(col-j+1<=14 && gameBoard.board[row+i][col-j+1][0]!=null || row >= 14){
+                        tmpString=tmpString.concat(String.valueOf(gameBoard.board[row+i][col-j+1][0].getLetter()));
                         j--;
                     }
                     tmpWord.setWord(tmpString);
