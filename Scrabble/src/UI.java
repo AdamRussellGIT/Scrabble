@@ -21,28 +21,20 @@ import javafx.scene.control.*;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 
 import javafx.stage.Stage;
-import javafx.scene.shape.Polygon;
-import javafx.scene.image.Image;
 
 
 import java.awt.*;
-import java.io.FileInputStream;
+import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.Optional;
-
-
-
-import javafx.application.Application;
-import javafx.scene.Group;
-import javafx.scene.Scene;
-import javafx.scene.shape.Polygon;
-import javafx.stage.Stage;
+import java.util.Scanner;
 
 public class UI extends Application
 {
@@ -79,6 +71,8 @@ public class UI extends Application
     int turn = -1;
     Player currentPlayer;
     String choice;
+
+    String[] dictionary;
 
     int endcounter = 0;
 
@@ -326,6 +320,8 @@ public class UI extends Application
 
         getNames();
 
+        setUpDictionary();
+
         changeCurrentPlayer();
 
         //gathering input from user
@@ -560,6 +556,22 @@ public class UI extends Application
         updateBoard(gameBoard);
         hasGameEnded();
     }
+
+    public void setUpDictionary() throws FileNotFoundException
+    {
+        InputStream txt = this.getClass().getResourceAsStream("sowpods.txt");
+        Scanner scan = new Scanner(txt);
+
+        ArrayList<String> data = new ArrayList<String>();
+
+        while (scan.hasNextLine())
+        {
+            data.add(scan.nextLine());
+        }
+
+        dictionary = data.toArray(new String[]{});
+    }
+
     void endGame(Player winner){
 
         if(winner!=null) {

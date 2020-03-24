@@ -218,4 +218,17 @@ public class Scrabble
         previousScore = score;
         currentPlayer.setScore(score);
     }
+
+    public boolean challenge()
+    {
+        //go through all words that findAllWords() finds
+
+        //binary search on each word
+
+        //if dont find any word, return false
+
+        //else return true
+
+        return false;
+    }
 }
