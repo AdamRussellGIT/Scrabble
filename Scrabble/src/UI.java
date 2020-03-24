@@ -27,6 +27,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 
 import javafx.stage.Stage;
+import javafx.scene.shape.Polygon;
 import javafx.scene.image.Image;
 
 
@@ -34,6 +35,14 @@ import java.awt.*;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.util.Optional;
+
+
+
+import javafx.application.Application;
+import javafx.scene.Group;
+import javafx.scene.Scene;
+import javafx.scene.shape.Polygon;
+import javafx.stage.Stage;
 
 public class UI extends Application
 {
@@ -76,9 +85,6 @@ public class UI extends Application
     int previousScore = 0;
     Board previousBoard = new Board();
 
-    ImageView imgV;
-    Image starImg = new Image(new FileInputStream("Scrabble\\res\\star.jpg"));
-
     public UI() throws FileNotFoundException {
     }
 
@@ -100,7 +106,6 @@ public class UI extends Application
 
                 //we will need this else statement if we want to return the board to what it looked like during the previous turn, in case of a successful challenge
                 else {
-                    imgV = new ImageView(starImg);
                     butt.setPrefSize(70, 70);
                     butt.setStyle("-fx-border-color: #fdf4ff; -fx-border-width: 2px");
                     butt.setStyle("-fx-background-color:#c8c2a8");
@@ -137,9 +142,7 @@ public class UI extends Application
                     if ((i == 7 && j == 7)) {
                         butt.setText("");
                         butt.setStyle("-fx-border-color: #fdf4ff; -fx-border-width: 2px");
-                        butt.setStyle("-fx-background-color:#f6b9ab");
-
-                        butt.setGraphic(new ImageView(starImg));
+                        butt.setStyle("-fx-background-color:#706a6c");
                     }
                 }
             }
@@ -283,9 +286,6 @@ public class UI extends Application
 
         gameInfo.getChildren().addAll(playerInfo,frameBox,inputBox);
 
-        //Centre tile image set-up
-        Image starImg = new Image(new FileInputStream("Scrabble\\res\\star.jpg"));
-
         //setting up initial scrabble board
         for (int i = 0; i < 15; i++) {
             for (int j = 0; j < 15; j++) {
@@ -318,11 +318,8 @@ public class UI extends Application
                 }
                 //centre tile
                 if ((i == 7 && j == 7)) {
-                    butt.setText("");
                     butt.setStyle("-fx-border-color: #fdf4ff; -fx-border-width: 2px");
-                    butt.setStyle("-fx-background-color:#f6b9ab");
-
-                    butt.setGraphic(new ImageView(starImg));
+                    butt.setStyle("-fx-background-color:#706a6c");
                 }
             }
         }
