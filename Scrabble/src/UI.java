@@ -78,6 +78,7 @@ public class UI extends Application
 
     int previousScore = 0;
     Board previousBoard = new Board();
+    ArrayList<Word> foundWords;
 
     public UI() throws FileNotFoundException {
     }
@@ -457,8 +458,13 @@ public class UI extends Application
                             alert.showAndWait();
                         }
 
-                        gameLogic.calculateScore(gameLogic.findAllWords(row, column, direction, word, gameBoard, previousBoard), currentPlayer, gameBoard, previousScore);
+                        //finding all words created by the word placement
+                        foundWords = gameLogic.findAllWords(row, column, direction, word, gameBoard, previousBoard);
+
+                        gameLogic.calculateScore(foundWords, currentPlayer, gameBoard, previousScore);
+
                         endcounter=0;
+
                         changeCurrentPlayer();
                     }
 

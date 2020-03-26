@@ -219,15 +219,19 @@ public class Scrabble
         currentPlayer.setScore(score);
     }
 
-    public boolean challenge()
+    public boolean challenge(ArrayList<Word> foundWords, String[] dictionary)
     {
+        int dSize = dictionary.length;
+
         //go through all words that findAllWords() finds
+        for (int i = 0; i < foundWords.size(); i++)
+        {
+            //binary search on each word
 
-        //binary search on each word
+            //if dont find any word, return false
 
-        //if dont find any word, return false
-
-        //else return true
+            //else return true
+        }
 
         return false;
     }
