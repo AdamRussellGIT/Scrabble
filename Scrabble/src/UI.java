@@ -64,6 +64,7 @@ public class UI extends Application
 
     Player playerOne;
     Player playerTwo;
+    Player previousPlayer;
     Scrabble gameLogic;
     Pool gamePool;
     Board gameBoard;
@@ -412,7 +413,7 @@ public class UI extends Application
                             {
                                 if(gameBoard.board[i][j][0] != previousBoard.board[i][j][0])
                                 {
-                                    previousPlayer.frame.add(gameBoard.board[i][j][0]);
+                                    previousPlayer.frame.theFrameArray.add(gameBoard.board[i][j][0]);
                                     gameBoard.board[i][j][0] = previousBoard.board[i][j][0];
                                 }
                             }
@@ -620,8 +621,10 @@ public class UI extends Application
 
         if (turn % 2 == 0) {
             currentPlayer = playerOne;
+            previousPlayer = playerTwo;
         } else {
             currentPlayer = playerTwo;
+            previousPlayer = playerOne;
         }
 
         currPlayer.setText("Current Player: " + currentPlayer.getName());
