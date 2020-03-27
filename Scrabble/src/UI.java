@@ -360,6 +360,54 @@ public class UI extends Application
                     }
                 }
             }
+            if(parsedInput[0].equals("CHALLENGE"))
+            {
+                endcounter++;
+                if(turn == 0)
+                {
+                    Alert alert = new Alert(Alert.AlertType.ERROR);
+                    alert.setHeaderText("Error!");
+                    alert.setContentText("Can't Challenge on the first turn!");
+                    alert.initOwner(curr_window);
+
+                    alert.showAndWait();
+                }
+                else
+                {
+                    if(gameLogic.challenge(foundWords,dictionary))
+                    {
+                        endcounter++;
+                        //Miss your turn
+                        //update turn
+                        //Pop up unsucessful challenge
+                        Alert alert = new Alert(Alert.AlertType.ERROR);
+                        alert.setHeaderText("Unsuccesful Challenge");
+                        alert.setContentText("The challenge was unsuccessful!");
+                        alert.initOwner(curr_window);
+
+                        alert.showAndWait();
+
+                    }
+                    else
+                    {
+                        //Board reset to previous
+
+                        //Reset to previous score
+
+                        //Pop up successful challenge
+                        Alert alert = new Alert(Alert.AlertType.ERROR);
+                        alert.setHeaderText("Succesful Challenge");
+                        alert.setContentText("The challenge was successful!");
+                        alert.initOwner(curr_window);
+
+                        alert.showAndWait();
+                        //update turn
+                        endcounter++;
+
+                    }
+
+                }
+            }
 
             else if (parsedInput[0].equals("PASS"))
             {
@@ -543,6 +591,8 @@ public class UI extends Application
             }
         }
     }
+    
+
 
     public void changeCurrentPlayer()
     {
