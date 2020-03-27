@@ -85,6 +85,18 @@ public class UI extends Application
     {
 
     }
+    //Utility function checking if the passed string can be parsed to an integer
+    public static boolean isStringInt(String s)
+    {
+        try
+        {
+            Integer.parseInt(s);
+            return true;
+        } catch (NumberFormatException ex)
+        {
+            return false;
+        }
+    }
 
     private void removeSpecialSquares(Board gameBoard)
     {
@@ -510,58 +522,63 @@ public class UI extends Application
                     //parse input to row column etc
                     else
                     {
-                        int row = Integer.parseInt(parsedInput[0]);
-                        int column = Integer.parseInt(parsedInput[1]);
-                        char direction = parsedInput[2].charAt(0);
-                        String word = parsedInput[3];
+                       if(isStringInt(parsedInput[0]) && isStringInt(parsedInput[1]))
+                       {
+                           int row = Integer.parseInt(parsedInput[0]);
+                           int column = Integer.parseInt(parsedInput[1]);
+                           char direction = parsedInput[2].charAt(0);
+                           String word = parsedInput[3];
 
-                        //run checks and placeword etc otherwise throw error yada yada ;)
-                        if (gameBoard.wordPlacementCheck(row, column, direction, word, currentPlayer))
-                        {
-                            //update previous board
-                            for (int i = 0; i < 15; i++)
-                            {
-                                for (int j = 0; j < 15; j++)
-                                {
-                                    previousBoard.board[i][j][0] = gameBoard.board[i][j][0];
-                                    previousBoard.board[i][j][1] = gameBoard.board[i][j][1];
-                                }
-                            }
+                           //run checks and placeword etc otherwise throw error
+                           if (gameBoard.wordPlacementCheck(row, column, direction, word, currentPlayer)) {
+                               //update previous board
+                               for (int i = 0; i < 15; i++) {
+                                   for (int j = 0; j < 15; j++) {
+                                       previousBoard.board[i][j][0] = gameBoard.board[i][j][0];
+                                       previousBoard.board[i][j][1] = gameBoard.board[i][j][1];
+                                   }
+                               }
 
-                            gameBoard.placeWord(row, column, direction, word, currentPlayer);
+                               gameBoard.placeWord(row, column, direction, word, currentPlayer);
 
-                            //check for bonus 50 points
-                            if (currentPlayer.frame.checkEmptyFrame())
-                            {
-                                Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                                alert.initOwner(curr_window);
-                                alert.setHeaderText("Congratulations!");
-                                alert.setContentText("You used all 7 of the tiles in your frame, and got a 50 point bonus!");
+                               //check for bonus 50 points
+                               if (currentPlayer.frame.checkEmptyFrame()) {
+                                   Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                                   alert.initOwner(curr_window);
+                                   alert.setHeaderText("Congratulations!");
+                                   alert.setContentText("You used all 7 of the tiles in your frame, and got a 50 point bonus!");
 
-                                alert.showAndWait();
-                            }
+                                   alert.showAndWait();
+                               }
 
-                            //finding all words created by the word placement
-                            foundWords = gameLogic.findAllWords(row, column, direction, word, gameBoard, previousBoard);
+                               //finding all words created by the word placement
+                               foundWords = gameLogic.findAllWords(row, column, direction, word, gameBoard, previousBoard);
 
-                            previousScore = gameLogic.calculateScore(foundWords, currentPlayer, gameBoard);
+                               previousScore = gameLogic.calculateScore(foundWords, currentPlayer, gameBoard);
 
-                            endcounter=0;
+                               endcounter = 0;
 
-                            changeCurrentPlayer();
-                        }
+                               changeCurrentPlayer();
+                           } else {
+                               Alert alert = new Alert(Alert.AlertType.ERROR);
+                               alert.initOwner(curr_window);
+                               alert.setHeaderText("Error!");
+                               alert.setContentText("Failed Word Placement Check!");
 
-                        else
-                        {
-                            Alert alert = new Alert(Alert.AlertType.ERROR);
-                            alert.initOwner(curr_window);
-                            alert.setHeaderText("Error!");
-                            alert.setContentText("Failed Word Placement Check!");
-
-                            alert.showAndWait();
-                        }
+                               alert.showAndWait();
+                           }
+                       }
+                       else
+                       {
+                           Alert alert = new Alert(Alert.AlertType.ERROR);
+                           alert.initOwner(curr_window);
+                           alert.setHeaderText("Error!");
+                           alert.setContentText("Invalid coordinates! Use numeric values");
+                           alert.showAndWait();
+                       }
                     }
                 }
+
             }
 
             input.clear();
