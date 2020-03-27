@@ -221,7 +221,6 @@ public class Scrabble
 
     public boolean challenge(ArrayList<Word> foundWords, String[] dictionary)
     {
-        //go through all words that findAllWords() finds
         for (int i = 0; i < foundWords.size(); i++)
         {
             int start = 0;
@@ -230,14 +229,26 @@ public class Scrabble
 
             while (start <= end)
             {
-                //binary search on each word
-
-                //if dont find any word, return false
-
-                //else return true
+                if(binarySearch(foundWords.get(i).getWord(), dictionary, 0, dictionary.length-1)){
+                    return true;
+                }
             }
         }
-
         return false;
+    }
+
+    public static boolean binarySearch(String word, String[] dictionary, int l, int r){
+
+        if(r>=l){
+            int mid = l +(r-1)/2;
+            if(dictionary[mid].compareTo(word)==0){
+                return false;
+            }
+            if(dictionary[mid].compareTo(word)<0){
+                return binarySearch(word, dictionary, l, mid-1);
+            }
+            return binarySearch(word, dictionary, mid+1, r);
+        }
+        return true;
     }
 }
