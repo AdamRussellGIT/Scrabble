@@ -80,7 +80,9 @@ public class UI extends Application
     Board previousBoard = new Board();
     ArrayList<Word> foundWords;
 
-    public UI() throws FileNotFoundException {
+    public UI() throws FileNotFoundException
+    {
+
     }
 
     private void removeSpecialSquares(Board gameBoard)
@@ -379,7 +381,7 @@ public class UI extends Application
                 endcounter++;
                 if(turn == 0)
                 {
-                    //get rid of the special squares
+                    removeSpecialSquares(gameBoard);
                     Alert alert = new Alert(Alert.AlertType.ERROR);
                     alert.setHeaderText("Error!");
                     alert.setContentText("Can't Challenge on the first turn!");
@@ -389,6 +391,7 @@ public class UI extends Application
                 }
                 else
                 {
+                    removeSpecialSquares(gameBoard);
                     if(gameLogic.challenge(foundWords,dictionary))
                     {
                         endcounter++;
