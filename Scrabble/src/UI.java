@@ -83,6 +83,20 @@ public class UI extends Application
     public UI() throws FileNotFoundException {
     }
 
+    private void removeSpecialSquares(Board gameBoard)
+    {
+        for (int i = 0; i < 15; i++)
+        {
+            for (int j = 0; j < 15; j++)
+            {
+                if (gameBoard.board[i][j][0] != null)
+                {
+                    gameBoard.board[i][j][1] = null;
+                }
+            }
+        }
+    }
+
     public void updateBoard(Board gameBoard)
     {
         for (int i = 0; i < 15; i++)
