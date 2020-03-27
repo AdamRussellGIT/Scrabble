@@ -365,6 +365,7 @@ public class UI extends Application
                 endcounter++;
                 if(turn == 0)
                 {
+                    //get rid of the special squares
                     Alert alert = new Alert(Alert.AlertType.ERROR);
                     alert.setHeaderText("Error!");
                     alert.setContentText("Can't Challenge on the first turn!");
@@ -377,9 +378,7 @@ public class UI extends Application
                     if(gameLogic.challenge(foundWords,dictionary))
                     {
                         endcounter++;
-                        //Miss your turn
-                        //update turn
-                        //Pop up unsucessful challenge
+
                         Alert alert = new Alert(Alert.AlertType.ERROR);
                         alert.setHeaderText("Unsuccesful Challenge");
                         alert.setContentText("The challenge was unsuccessful!");
@@ -390,22 +389,26 @@ public class UI extends Application
                     }
                     else
                     {
-                        //Board reset to previous
+                        for(int i = 0;i < 15; i++)
+                        {
+                            for(int j = 0;i < 15; i++)
+                            {
+                                if(gameBoard.board[i][j][0] != previousBoard.board[i][j][0])
+                                {
+                                    previousPlayer.frame.add(gameBoard.board[i][j][0]);
+                                    gameBoard.board[i][j][0] = previousBoard.board[i][j][0];
+                                }
+                            }
+                            previousPlayer.setScore(-previousScore);
+                        }
 
-                        //Reset to previous score
-
-                        //Pop up successful challenge
                         Alert alert = new Alert(Alert.AlertType.ERROR);
                         alert.setHeaderText("Succesful Challenge");
                         alert.setContentText("The challenge was successful!");
                         alert.initOwner(curr_window);
 
                         alert.showAndWait();
-                        //update turn
-                        endcounter++;
-
                     }
-
                 }
             }
 
