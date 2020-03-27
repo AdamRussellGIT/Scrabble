@@ -221,16 +221,21 @@ public class Scrabble
 
     public boolean challenge(ArrayList<Word> foundWords, String[] dictionary)
     {
-        int dSize = dictionary.length;
-
         //go through all words that findAllWords() finds
         for (int i = 0; i < foundWords.size(); i++)
         {
-            //binary search on each word
+            int start = 0;
+            int mid = 0;
+            int end = dictionary.length-1;
 
-            //if dont find any word, return false
+            while (start <= end)
+            {
+                //binary search on each word
 
-            //else return true
+                //if dont find any word, return false
+
+                //else return true
+            }
         }
 
         return false;
