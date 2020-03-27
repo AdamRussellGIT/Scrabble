@@ -104,13 +104,12 @@ public class Scrabble
         return true;
     }
 
-    public void calculateScore(ArrayList<Word> wordsArray, Player currentPlayer, Board gameBoard, int previousScore)
+    public int calculateScore(ArrayList<Word> wordsArray, Player currentPlayer, Board gameBoard)
     {
         int score = 0;
         int wordMultiplier;
         int letterScore;
         int wordScore;
-        previousScore = 0;
 
         for (int i = 0; i < wordsArray.size(); i++)
         {
@@ -215,8 +214,9 @@ public class Scrabble
             score += 50;
         }
 
-        previousScore = score;
         currentPlayer.setScore(score);
+
+        return score;
     }
 
     public boolean challenge(ArrayList<Word> foundWords, String[] dictionary)
@@ -230,20 +230,27 @@ public class Scrabble
         return false;
     }
 
-    public static boolean binarySearch(String word, String[] dictionary, int l, int r){
+    public static boolean binarySearch(String word, String[] dictionary, int begin, int last){
+        while (begin <= last)
+        {
+            int mid = (begin + last)/2;
 
-        while(r>=l){
-            int mid = (l +(r-1))/2;
-            if(dictionary[mid].compareTo(word)==0){
+            if (dictionary[mid].compareTo(word) < 0)
+            {
+                begin = mid + 1;
+            }
+
+            else if (dictionary[mid].compareTo(word) > 0)
+            {
+                last = mid - 1;
+            }
+
+            else
+            {
                 return true;
             }
-            if(dictionary[mid].compareTo(word)<0){
-               r=mid-1;
-            }
-            else{
-                l=mid+1;
-            }
         }
+
         return false;
     }
 }

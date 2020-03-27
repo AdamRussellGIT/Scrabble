@@ -78,7 +78,7 @@ public class UI extends Application
     int endcounter = 0;
 
     int previousScore = 0;
-    Board previousBoard = new Board();
+    Board previousBoard;
     ArrayList<Word> foundWords;
 
     public UI() throws FileNotFoundException
@@ -198,6 +198,7 @@ public class UI extends Application
         Dimension screenRes = Toolkit.getDefaultToolkit().getScreenSize();
         gameLogic = new Scrabble();
         gameBoard = new Board();
+        previousBoard = new Board();
         gamePool = new Pool();
         curr_window = Scrabble;
         curr_window.setTitle("Scrabble");
@@ -362,7 +363,6 @@ public class UI extends Application
                 }
                 else
                 {
-                    removeSpecialSquares(gameBoard);
                     if(!gameLogic.challenge(foundWords,dictionary))
                     {
                         removeSpecialSquares(gameBoard);
@@ -374,12 +374,14 @@ public class UI extends Application
 
                         alert.showAndWait();
 
+                        changeCurrentPlayer();
+
                     }
                     else
                     {
-                        for(int i = 0;i < 15; i++)
+                        for(int i = 0; i < 15; i++)
                         {
-                            for(int j = 0;i < 15; i++)
+                            for(int j = 0; j < 15; j++)
                             {
                                 if(gameBoard.board[i][j][0] != previousBoard.board[i][j][0])
                                 {
@@ -387,10 +389,13 @@ public class UI extends Application
                                     gameBoard.board[i][j][0] = previousBoard.board[i][j][0];
                                 }
                             }
-                            previousPlayer.setScore(-previousScore);
                         }
 
-                        Alert alert = new Alert(Alert.AlertType.ERROR);
+                        updateBoard(gameBoard);
+
+                        previousPlayer.setScore(-previousScore);
+
+                        Alert alert = new Alert(Alert.AlertType.INFORMATION);
                         alert.setHeaderText("Succesful Challenge");
                         alert.setContentText("The challenge was successful!");
                         alert.initOwner(curr_window);
@@ -535,7 +540,7 @@ public class UI extends Application
                             //finding all words created by the word placement
                             foundWords = gameLogic.findAllWords(row, column, direction, word, gameBoard, previousBoard);
 
-                            gameLogic.calculateScore(foundWords, currentPlayer, gameBoard, previousScore);
+                            previousScore = gameLogic.calculateScore(foundWords, currentPlayer, gameBoard);
 
                             endcounter=0;
 
@@ -651,7 +656,7 @@ public class UI extends Application
 
         while (scan.hasNextLine())
         {
-            data.add(scan.nextLine());
+            data.add(scan.nextLine().toUpperCase());
         }
 
         dictionary = data.toArray(new String[]{});

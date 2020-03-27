@@ -12,7 +12,7 @@ public class Board
 	public Board()
 	{
 		board = new Tile[15][15][2];
-
+		this.resetBoard();
 		this.setUpBoard();
 	}
 
