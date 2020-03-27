@@ -221,17 +221,10 @@ public class Scrabble
 
     public boolean challenge(ArrayList<Word> foundWords, String[] dictionary)
     {
-        for (int i = 0; i < foundWords.size(); i++)
-        {
-            int start = 0;
-            int mid = 0;
-            int end = dictionary.length-1;
+        for (int i = 0; i < foundWords.size(); i++) {
 
-            while (start <= end)
-            {
-                if(binarySearch(foundWords.get(i).getWord(), dictionary, 0, dictionary.length-1)){
-                    return true;
-                }
+            if (!binarySearch(foundWords.get(i).getWord(), dictionary, 0, dictionary.length - 1)) {
+                return true;
             }
         }
         return false;
@@ -239,16 +232,18 @@ public class Scrabble
 
     public static boolean binarySearch(String word, String[] dictionary, int l, int r){
 
-        if(r>=l){
+        while(r>=l){
             int mid = (l +(r-1))/2;
             if(dictionary[mid].compareTo(word)==0){
-                return false;
+                return true;
             }
             if(dictionary[mid].compareTo(word)<0){
-                return binarySearch(word, dictionary, l, mid-1);
+               r=mid-1;
             }
-            return binarySearch(word, dictionary, mid+1, r);
+            else{
+                l=mid+1;
+            }
         }
-        return true;
+        return false;
     }
 }
