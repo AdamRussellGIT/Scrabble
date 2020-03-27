@@ -240,7 +240,7 @@ public class Scrabble
     public static boolean binarySearch(String word, String[] dictionary, int l, int r){
 
         if(r>=l){
-            int mid = l +(r-1)/2;
+            int mid = (l +(r-1))/2;
             if(dictionary[mid].compareTo(word)==0){
                 return false;
             }
