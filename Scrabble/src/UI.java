@@ -345,38 +345,8 @@ public class UI extends Application
             String[] parsedInput = receivedInput.split(" ");
 
             //parsing input
-            if (parsedInput[0].equals("EXCHANGE"))
-            {
-                endcounter++;
-                if (parsedInput.length > 8 || parsedInput.length < 2)
-                {
-                    Alert alert = new Alert(Alert.AlertType.ERROR);
-                    alert.setHeaderText("Error!");
-                    alert.setContentText("Too many, or too little arguments!");
+            if(parsedInput[0].equals("CHALLENGE")) {
 
-                    alert.showAndWait();
-                }
-
-                else
-                {
-                    if (!gameLogic.exchange(gamePool, currentPlayer, parsedInput))
-                    {
-                        Alert alert = new Alert(Alert.AlertType.ERROR);
-                        alert.setHeaderText("Error!");
-                        alert.setContentText("You don't have one of the tiles!");
-
-                        alert.showAndWait();
-                    }
-
-                    else
-                    {
-                        changeCurrentPlayer();
-                    }
-                }
-            }
-            if(parsedInput[0].equals("CHALLENGE"))
-            {
-                endcounter++;
                 if(turn == 0)
                 {
                     Alert alert = new Alert(Alert.AlertType.ERROR);
@@ -388,15 +358,13 @@ public class UI extends Application
                 }
                 else
                 {
-                    if(gameLogic.challenge(foundWords,dictionary))
+                    if(!gameLogic.challenge(foundWords,dictionary))
                     {
-                        endcounter++;
-                        //Miss your turn
-                        //update turn
+                        removeSpecialSquares(gameBoard);
                         //Pop up unsucessful challenge
                         Alert alert = new Alert(Alert.AlertType.ERROR);
                         alert.setHeaderText("Unsuccesful Challenge");
-                        alert.setContentText("The challenge was unsuccessful!");
+                        alert.setContentText("The challenge was unsuccessful, you will now miss your turn");
                         alert.initOwner(curr_window);
 
                         alert.showAndWait();
@@ -404,7 +372,16 @@ public class UI extends Application
                     }
                     else
                     {
-                        //Board reset to previous
+                        for(int i=0; i<15; i++){
+                            for(int j=0; j<15; j++){
+                                if(gameBoard.board[i][j][0]!=previousBoard.board[i][j][0]){
+
+                                    previousPlayer.frame.add(gameBoard.board[i][j][0]);
+                                    gameBoard.board[i][j][0] = previousBoard.board[i][j][0];
+                                }
+                            }
+                        }
+                        previousPlayer.setScore(-previousScore);
 
                         //Reset to previous score
 
@@ -422,122 +399,154 @@ public class UI extends Application
 
                 }
             }
-
-            else if (parsedInput[0].equals("PASS"))
-            {
-                changeCurrentPlayer();
-                endcounter++;
-            }
-
-            else if (parsedInput[0].equals("HELP"))
-            {
-                Alert helpAlert = new Alert(Alert.AlertType.INFORMATION);
-
-                helpAlert.setContentText(" INSTRUCTIONS: \n  How to PLAY: \n *Both lower and UPPERCASE input is acceptable " +
-                        "\n *Blank tile in the frame constitutes a blank tile \n  that can be substituted for any letter in a word you wish to place\n\n " +
-                        "TO PLACE A WORD: \n Input Format: (coordinates, direction, word) \n Coordinates: \n Coordinates range from 0 - 14 and should have " +
-                        "have a space between them i.e. (0 0). \n If you are starting the game you MUST place your first word so that one of the letters is placed on (7 7) " +
-                        "*the key centre tile \n\n Direction: \n The word can either go down or across on the board and is denoted \n as either A - ACROSS " +
-                        "and D - DOWN, after having chosen the coordinates placing a word would \n look as follows (7 7 A). *Note the space between coordinates & direction: e.g. (77a) or (7 7a) are INVALID!" +
-                        "\n\n Word: \n The word must use available tiles from your frame and connect them appropriately  to another word on the Scrabble board." +
-                        "\n If the first letter of your word already resides on the Scrabble board, simply enter the coordinates of that letter and type \n in the " +
-                        "word fully. \n The format is as follows: (7 7 A dog) *notice the space between the direction and the word for valid input. \n " +
-                        "\n\n TO PASS YOUR TURN: \n In the event that you wish to forfeit your turn if you can't think of a suitable word, type in \"PASS\" into " +
-                        "the text-field. \n In the event the game consists of 6 PASS/or Non-Scoring turns the game terminates. \n\n\n TO EXCHANGE A WORD \n " +
-                        "If you wish to exchange certain letters in your frame from the pool you must enter the desired letters in the textfield in the " +
-                        "\n following format: (Exchange a b c). \n *Note the " +
-                        "letters must be in your frame and must have a space between them. If you have duplicate letters the same procedure \n  follows e.g. (a a). " +
-                        "Once you have exchanged your letters they will appear in your frame and the turn will be tunred over to your \n  opponent. \n *In the event " +
-                        "the game consists of 6 EXCHANGE/or Non-Scoring turns the game terminates." +
-                        "\n\n TO QUIT THE GAME: \n If you wish to quit the game type in \"QUIT\" \n\n Game End Conditions: \n 1.When QUIT is typed in \n 2.PASS/EXCHANGE exceeds 6 continuous occurances \n 3.No more letters" +
-                        "are left in either the Pool/Frame \n 4.No more words can be placed in the board.");
-                helpAlert.initOwner(curr_window);
-                helpAlert.setTitle("Help");
-                helpAlert.setHeaderText("Help Information");
-                helpAlert.getDialogPane().setPrefSize(720,900);
-                helpAlert.showAndWait();
-
-                gridPane.requestFocus();
-
-            }
-
-            else if (parsedInput[0].equals("QUIT"))
-            {
-                Alert quit = new Alert(Alert.AlertType.CONFIRMATION, "Do you really wish to quit? you'll lose the game", ButtonType.YES, ButtonType.NO);
-                quit.initOwner(curr_window);
-                quit.showAndWait();
-                if(quit.getResult()==ButtonType.YES){
-                    changeCurrentPlayer();
-                    endGame(currentPlayer);
-                }
-            }
-
-            //if none of the above, assume player is trying to placeword
-            else
-            {
-                //check if there are 4 things in the array (row, col, direction, word)
-                if (parsedInput.length != 4)
+            else{
+                removeSpecialSquares(gameBoard);
+                if (parsedInput[0].equals("EXCHANGE"))
                 {
-                    Alert alert = new Alert(Alert.AlertType.ERROR);
-                    alert.initOwner(curr_window);
-                    alert.setHeaderText("Error!");
-                    alert.setContentText("Invalid parameters to place a word!");
-
-                    alert.showAndWait();
-                }
-
-                //parse input to row column etc
-                else
-                {
-                    int row = Integer.parseInt(parsedInput[0]);
-                    int column = Integer.parseInt(parsedInput[1]);
-                    char direction = parsedInput[2].charAt(0);
-                    String word = parsedInput[3];
-
-                    //run checks and placeword etc otherwise throw error yada yada ;)
-                    if (gameBoard.wordPlacementCheck(row, column, direction, word, currentPlayer))
+                    endcounter++;
+                    if (parsedInput.length > 8 || parsedInput.length < 2)
                     {
-                        //update previous board
-                        for (int i = 0; i < 15; i++)
-                        {
-                            for (int j = 0; j < 15; j++)
-                            {
-                                previousBoard.board[i][j][0] = gameBoard.board[i][j][0];
-                                previousBoard.board[i][j][1] = gameBoard.board[i][j][1];
-                            }
-                        }
+                        Alert alert = new Alert(Alert.AlertType.ERROR);
+                        alert.setHeaderText("Error!");
+                        alert.setContentText("Too many, or too little arguments!");
 
-                        gameBoard.placeWord(row, column, direction, word, currentPlayer);
-
-                        //check for bonus 50 points
-                        if (currentPlayer.frame.checkEmptyFrame())
-                        {
-                            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                            alert.initOwner(curr_window);
-                            alert.setHeaderText("Congratulations!");
-                            alert.setContentText("You used all 7 of the tiles in your frame, and got a 50 point bonus!");
-
-                            alert.showAndWait();
-                        }
-
-                        //finding all words created by the word placement
-                        foundWords = gameLogic.findAllWords(row, column, direction, word, gameBoard, previousBoard);
-
-                        gameLogic.calculateScore(foundWords, currentPlayer, gameBoard, previousScore);
-
-                        endcounter=0;
-
-                        changeCurrentPlayer();
+                        alert.showAndWait();
                     }
 
                     else
                     {
+                        if (!gameLogic.exchange(gamePool, currentPlayer, parsedInput))
+                        {
+                            Alert alert = new Alert(Alert.AlertType.ERROR);
+                            alert.setHeaderText("Error!");
+                            alert.setContentText("You don't have one of the tiles!");
+
+                            alert.showAndWait();
+                        }
+
+                        else
+                        {
+                            changeCurrentPlayer();
+                        }
+                    }
+                }
+
+                else if (parsedInput[0].equals("PASS"))
+                {
+                    changeCurrentPlayer();
+                    endcounter++;
+                }
+
+                else if (parsedInput[0].equals("HELP"))
+                {
+                    Alert helpAlert = new Alert(Alert.AlertType.INFORMATION);
+
+                    helpAlert.setContentText(" INSTRUCTIONS: \n  How to PLAY: \n *Both lower and UPPERCASE input is acceptable " +
+                            "\n *Blank tile in the frame constitutes a blank tile \n  that can be substituted for any letter in a word you wish to place\n\n " +
+                            "TO PLACE A WORD: \n Input Format: (coordinates, direction, word) \n Coordinates: \n Coordinates range from 0 - 14 and should have " +
+                            "have a space between them i.e. (0 0). \n If you are starting the game you MUST place your first word so that one of the letters is placed on (7 7) " +
+                            "*the key centre tile \n\n Direction: \n The word can either go down or across on the board and is denoted \n as either A - ACROSS " +
+                            "and D - DOWN, after having chosen the coordinates placing a word would \n look as follows (7 7 A). *Note the space between coordinates & direction: e.g. (77a) or (7 7a) are INVALID!" +
+                            "\n\n Word: \n The word must use available tiles from your frame and connect them appropriately  to another word on the Scrabble board." +
+                            "\n If the first letter of your word already resides on the Scrabble board, simply enter the coordinates of that letter and type \n in the " +
+                            "word fully. \n The format is as follows: (7 7 A dog) *notice the space between the direction and the word for valid input. \n " +
+                            "\n\n TO PASS YOUR TURN: \n In the event that you wish to forfeit your turn if you can't think of a suitable word, type in \"PASS\" into " +
+                            "the text-field. \n In the event the game consists of 6 PASS/or Non-Scoring turns the game terminates. \n\n\n TO EXCHANGE A WORD \n " +
+                            "If you wish to exchange certain letters in your frame from the pool you must enter the desired letters in the textfield in the " +
+                            "\n following format: (Exchange a b c). \n *Note the " +
+                            "letters must be in your frame and must have a space between them. If you have duplicate letters the same procedure \n  follows e.g. (a a). " +
+                            "Once you have exchanged your letters they will appear in your frame and the turn will be tunred over to your \n  opponent. \n *In the event " +
+                            "the game consists of 6 EXCHANGE/or Non-Scoring turns the game terminates." +
+                            "\n\n TO QUIT THE GAME: \n If you wish to quit the game type in \"QUIT\" \n\n Game End Conditions: \n 1.When QUIT is typed in \n 2.PASS/EXCHANGE exceeds 6 continuous occurances \n 3.No more letters" +
+                            "are left in either the Pool/Frame \n 4.No more words can be placed in the board.");
+                    helpAlert.initOwner(curr_window);
+                    helpAlert.setTitle("Help");
+                    helpAlert.setHeaderText("Help Information");
+                    helpAlert.getDialogPane().setPrefSize(720,900);
+                    helpAlert.showAndWait();
+
+                    gridPane.requestFocus();
+
+                }
+
+                else if (parsedInput[0].equals("QUIT"))
+                {
+                    Alert quit = new Alert(Alert.AlertType.CONFIRMATION, "Do you really wish to quit? you'll lose the game", ButtonType.YES, ButtonType.NO);
+                    quit.initOwner(curr_window);
+                    quit.showAndWait();
+                    if(quit.getResult()==ButtonType.YES){
+                        changeCurrentPlayer();
+                        endGame(currentPlayer);
+                    }
+                }
+
+                //if none of the above, assume player is trying to placeword
+                else
+                {
+                    //check if there are 4 things in the array (row, col, direction, word)
+                    if (parsedInput.length != 4)
+                    {
                         Alert alert = new Alert(Alert.AlertType.ERROR);
                         alert.initOwner(curr_window);
                         alert.setHeaderText("Error!");
-                        alert.setContentText("Failed Word Placement Check!");
+                        alert.setContentText("Invalid parameters to place a word!");
 
                         alert.showAndWait();
+                    }
+
+                    //parse input to row column etc
+                    else
+                    {
+                        int row = Integer.parseInt(parsedInput[0]);
+                        int column = Integer.parseInt(parsedInput[1]);
+                        char direction = parsedInput[2].charAt(0);
+                        String word = parsedInput[3];
+
+                        //run checks and placeword etc otherwise throw error yada yada ;)
+                        if (gameBoard.wordPlacementCheck(row, column, direction, word, currentPlayer))
+                        {
+                            //update previous board
+                            for (int i = 0; i < 15; i++)
+                            {
+                                for (int j = 0; j < 15; j++)
+                                {
+                                    previousBoard.board[i][j][0] = gameBoard.board[i][j][0];
+                                    previousBoard.board[i][j][1] = gameBoard.board[i][j][1];
+                                }
+                            }
+
+                            gameBoard.placeWord(row, column, direction, word, currentPlayer);
+
+                            //check for bonus 50 points
+                            if (currentPlayer.frame.checkEmptyFrame())
+                            {
+                                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                                alert.initOwner(curr_window);
+                                alert.setHeaderText("Congratulations!");
+                                alert.setContentText("You used all 7 of the tiles in your frame, and got a 50 point bonus!");
+
+                                alert.showAndWait();
+                            }
+
+                            //finding all words created by the word placement
+                            foundWords = gameLogic.findAllWords(row, column, direction, word, gameBoard, previousBoard);
+
+                            gameLogic.calculateScore(foundWords, currentPlayer, gameBoard, previousScore);
+
+                            endcounter=0;
+
+                            changeCurrentPlayer();
+                        }
+
+                        else
+                        {
+                            Alert alert = new Alert(Alert.AlertType.ERROR);
+                            alert.initOwner(curr_window);
+                            alert.setHeaderText("Error!");
+                            alert.setContentText("Failed Word Placement Check!");
+
+                            alert.showAndWait();
+                        }
                     }
                 }
             }
