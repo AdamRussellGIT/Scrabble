@@ -64,6 +64,7 @@ public class UI extends Application
 
     Player playerOne;
     Player playerTwo;
+    Player previousPlayer;
     Scrabble gameLogic;
     Pool gamePool;
     Board gameBoard;
@@ -80,7 +81,9 @@ public class UI extends Application
     Board previousBoard = new Board();
     ArrayList<Word> foundWords;
 
-    public UI() throws FileNotFoundException {
+    public UI() throws FileNotFoundException
+    {
+
     }
 
     private void removeSpecialSquares(Board gameBoard)
@@ -349,6 +352,7 @@ public class UI extends Application
 
                 if(turn == 0)
                 {
+                    removeSpecialSquares(gameBoard);
                     Alert alert = new Alert(Alert.AlertType.ERROR);
                     alert.setHeaderText("Error!");
                     alert.setContentText("Can't Challenge on the first turn!");
@@ -358,6 +362,7 @@ public class UI extends Application
                 }
                 else
                 {
+                    removeSpecialSquares(gameBoard);
                     if(!gameLogic.challenge(foundWords,dictionary))
                     {
                         removeSpecialSquares(gameBoard);
@@ -372,20 +377,19 @@ public class UI extends Application
                     }
                     else
                     {
-                        for(int i=0; i<15; i++){
-                            for(int j=0; j<15; j++){
-                                if(gameBoard.board[i][j][0]!=previousBoard.board[i][j][0]){
-
-                                    previousPlayer.frame.add(gameBoard.board[i][j][0]);
+                        for(int i = 0;i < 15; i++)
+                        {
+                            for(int j = 0;i < 15; i++)
+                            {
+                                if(gameBoard.board[i][j][0] != previousBoard.board[i][j][0])
+                                {
+                                    previousPlayer.frame.theFrameArray.add(gameBoard.board[i][j][0]);
                                     gameBoard.board[i][j][0] = previousBoard.board[i][j][0];
                                 }
                             }
+                            previousPlayer.setScore(-previousScore);
                         }
-                        previousPlayer.setScore(-previousScore);
 
-                        //Reset to previous score
-
-                        //Pop up successful challenge
                         Alert alert = new Alert(Alert.AlertType.ERROR);
                         alert.setHeaderText("Succesful Challenge");
                         alert.setContentText("The challenge was successful!");
@@ -623,8 +627,10 @@ public class UI extends Application
 
         if (turn % 2 == 0) {
             currentPlayer = playerOne;
+            previousPlayer = playerTwo;
         } else {
             currentPlayer = playerTwo;
+            previousPlayer = playerOne;
         }
 
         currPlayer.setText("Current Player: " + currentPlayer.getName());
