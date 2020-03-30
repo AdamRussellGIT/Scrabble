@@ -79,7 +79,7 @@ public class UI extends Application
 
     int previousScore = 0;
     Board previousBoard;
-    ArrayList<Word> foundWords;
+    ArrayList<Word> foundWords = new ArrayList<>();
 
     public UI() throws FileNotFoundException
     {
@@ -363,9 +363,7 @@ public class UI extends Application
             //parsing input
             if(parsedInput[0].equals("CHALLENGE")) {
 
-                if(turn == 0)
-                {
-                    removeSpecialSquares(gameBoard);
+                if (turn == 0) {
                     Alert alert = new Alert(Alert.AlertType.ERROR);
                     alert.setHeaderText("Error!");
                     alert.setContentText("Can't Challenge on the first turn!");
@@ -373,55 +371,68 @@ public class UI extends Application
 
                     alert.showAndWait();
                 }
+
                 else
                 {
-                    if(!gameLogic.challenge(foundWords,dictionary))
+                    if (foundWords.isEmpty())
                     {
-                        removeSpecialSquares(gameBoard);
-                        //Pop up unsucessful challenge
                         Alert alert = new Alert(Alert.AlertType.ERROR);
                         alert.setHeaderText("Unsuccesful Challenge");
-                        alert.setContentText("The challenge was unsuccessful, you will now miss your turn");
+                        alert.setContentText("Cannot Challenge after a non-scoring turn!");
                         alert.initOwner(curr_window);
 
                         alert.showAndWait();
-
-                        changeCurrentPlayer();
-
                     }
-                    else
-                    {
-                        for(int i = 0; i < 15; i++)
-                        {
-                            for(int j = 0; j < 15; j++)
-                            {
-                                if(gameBoard.board[i][j][0] != previousBoard.board[i][j][0])
-                                {
-                                    previousPlayer.frame.theFrameArray.add(gameBoard.board[i][j][0]);
-                                    gameBoard.board[i][j][0] = previousBoard.board[i][j][0];
-                                }
-                            }
+
+                    else {
+                        if (!gameLogic.challenge(foundWords, dictionary)) {
+                            removeSpecialSquares(gameBoard);
+                            //Pop up unsucessful challenge
+                            Alert alert = new Alert(Alert.AlertType.ERROR);
+                            alert.setHeaderText("Unsuccesful Challenge");
+                            alert.setContentText("The challenge was unsuccessful, you will now miss your turn");
+                            alert.initOwner(curr_window);
+
+                            alert.showAndWait();
+
+                            endcounter++;
+
+                            changeCurrentPlayer();
                         }
 
-                        updateBoard(gameBoard);
+                        else {
+                            for (int i = 0; i < 15; i++) {
+                                for (int j = 0; j < 15; j++) {
+                                    if (gameBoard.board[i][j][0] != previousBoard.board[i][j][0]) {
+                                        previousPlayer.frame.theFrameArray.add(gameBoard.board[i][j][0]);
+                                        gameBoard.board[i][j][0] = previousBoard.board[i][j][0];
+                                    }
+                                }
+                            }
 
-                        previousPlayer.setScore(-previousScore);
+                            updateBoard(gameBoard);
 
-                        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                        alert.setHeaderText("Succesful Challenge");
-                        alert.setContentText("The challenge was successful!");
-                        alert.initOwner(curr_window);
+                            previousPlayer.setScore(-previousScore);
 
-                        alert.showAndWait();
-                        //update turn
-                        endcounter++;
+                            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                            alert.setHeaderText("Succesful Challenge");
+                            alert.setContentText("The challenge was successful!");
+                            alert.initOwner(curr_window);
 
+                            alert.showAndWait();
+                        }
                     }
-
                 }
             }
+
             else{
+                //if not challenging, remove special squares that have been used in previous turn, if any
                 removeSpecialSquares(gameBoard);
+
+                //make sure a challenge will be unsuccessful if called not after a placeWord turn
+                foundWords.clear();
+
+
                 if (parsedInput[0].equals("EXCHANGE"))
                 {
                     endcounter++;
