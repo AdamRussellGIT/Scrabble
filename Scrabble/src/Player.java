@@ -34,7 +34,7 @@ public class Player
 	
 	
 	//sets the name of the player
-	private void setName(String name)
+    void setName(String name)
 	{
 			this.name = name;
 	}

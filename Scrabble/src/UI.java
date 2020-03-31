@@ -36,6 +36,8 @@ import java.util.ArrayList;
 import java.util.Optional;
 import java.util.Scanner;
 
+import static java.lang.String.valueOf;
+
 public class UI extends Application
 {
     Stage curr_window;
@@ -123,7 +125,7 @@ public class UI extends Application
                 if (gameBoard.board[i][j][0] != null)
                 {
                     butt.setPrefSize(70, 70);
-                    butt.setText(String.valueOf(gameBoard.board[i][j][0].getLetter()));
+                    butt.setText(valueOf(gameBoard.board[i][j][0].getLetter()));
                     butt.setStyle("-fx-font-weight: bold");
                     gridPane.add(butt, j, i, 1, 1);
                 }
@@ -177,7 +179,7 @@ public class UI extends Application
     {
         for (int i = 0; i < f.theFrameArray.size(); i++)
         {
-            Button frameButt = new Button(String.valueOf(f.theFrameArray.get(i).getLetter()));
+            Button frameButt = new Button(valueOf(f.theFrameArray.get(i).getLetter()));
             frameButt.setPrefSize(92, 92f);
             frameButt.setPrefHeight(130);
 
@@ -515,6 +517,33 @@ public class UI extends Application
                         endGame(currentPlayer);
                     }
                 }
+                else if(parsedInput[0].equals("NAME")){
+                    if(parsedInput.length==1){
+                        Alert error = new Alert(Alert.AlertType.ERROR);
+                        error.initOwner(curr_window);
+                        error.setHeaderText("Error");
+                        error.setContentText("The name can't be blank");
+                        error.showAndWait();
+                    }
+                    else if (parsedInput.length<5){
+                        String tmp = new String();
+                        for(int i=1; i<parsedInput.length;i++){
+                            parsedInput[i] = parsedInput[i].toLowerCase();
+                            parsedInput[i] = parsedInput[i].replaceFirst(String.valueOf(parsedInput[i].charAt(0)),String.valueOf(Character.toUpperCase(parsedInput[i].charAt(0))));
+                            tmp=tmp.concat(parsedInput[i]+" ");
+                        }
+                        currentPlayer.setName(tmp);
+                        currPlayer.setText("Current Player: " + currentPlayer.getName());
+                    }
+                    else{
+                        Alert error = new Alert(Alert.AlertType.ERROR);
+                        error.initOwner(curr_window);
+                        error.setHeaderText("Error");
+                        error.setContentText("The name can't be more than 3 words");
+                        error.showAndWait();
+                    }
+                }
+
 
                 //if none of the above, assume player is trying to placeword
                 else
