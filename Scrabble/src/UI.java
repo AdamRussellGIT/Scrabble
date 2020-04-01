@@ -495,6 +495,7 @@ public class UI extends Application
                             "your opponent is invalid and not in the SOWPODS dictionary you can \n challenge the  other player. The format for calling Challenge is \"CHALLENGE\" if the challenge is unsuccessful you miss \n your turn and " +
                             "the turn changes over to your opponent. However if the challenge was successful your opponent will have \n their score redacted to their previous score and the board is updated to the previous board " +
                             "before the challenged \n word was placed. Your opponent receives his placed tiles from the challenged word and you continue your turn. \n " +
+                            "\n TO UPDATED YOUR NAME: \n If you want to change your name during the game, type \"NAME\" followed by up the three other words, that will constitute your \n name." +
                             "\n\n TO QUIT THE GAME: \n If you wish to quit the game type in \"QUIT\" \n\n Game End Conditions: \n 1.When QUIT is typed in \n 2.PASS/EXCHANGE exceeds 6 continuous occurances \n 3.No more letters" +
                             "are left in either the Pool/Frame \n 4.No more words can be placed in the board.");
                     helpAlert.initOwner(curr_window);
