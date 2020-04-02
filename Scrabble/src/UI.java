@@ -73,7 +73,7 @@ public class UI extends Application
 
     int turn = -1;
     Player currentPlayer;
-    String choice;
+    boolean haveChallenged;
 
     String[] dictionary;
 
@@ -82,6 +82,7 @@ public class UI extends Application
     int previousScore = 0;
     Board previousBoard;
     ArrayList<Word> foundWords = new ArrayList<>();
+    ArrayList<Tile> previousFrame;
 
     public UI() throws FileNotFoundException
     {
@@ -374,6 +375,16 @@ public class UI extends Application
                     alert.showAndWait();
                 }
 
+                else if (haveChallenged)
+                {
+                    Alert alert = new Alert(Alert.AlertType.ERROR);
+                    alert.setHeaderText("Not Allowed!");
+                    alert.setContentText("You have already challenged successfully, you many not challenge again on this turn!");
+                    alert.initOwner(curr_window);
+
+                    alert.showAndWait();
+                }
+
                 else
                 {
                     if (foundWords.isEmpty())
@@ -406,10 +417,17 @@ public class UI extends Application
                             for (int i = 0; i < 15; i++) {
                                 for (int j = 0; j < 15; j++) {
                                     if (gameBoard.board[i][j][0] != previousBoard.board[i][j][0]) {
-                                        previousPlayer.frame.theFrameArray.add(gameBoard.board[i][j][0]);
+                                        //previousPlayer.frame.theFrameArray.add(gameBoard.board[i][j][0]);
                                         gameBoard.board[i][j][0] = previousBoard.board[i][j][0];
                                     }
                                 }
+                            }
+
+                            previousPlayer.frame.theFrameArray.clear();
+                            for (int i = 0; i < previousFrame.size(); i++)
+                            {
+                                Tile t = new Tile(previousFrame.get(i).getLetter(), previousFrame.get(i).getValue());
+                                previousPlayer.frame.theFrameArray.add(t);
                             }
 
                             updateBoard(gameBoard);
@@ -425,6 +443,8 @@ public class UI extends Application
                         }
                     }
                 }
+
+                haveChallenged = true;
             }
 
             else{
@@ -570,6 +590,14 @@ public class UI extends Application
                            char direction = parsedInput[2].charAt(0);
                            String word = parsedInput[3];
 
+                           previousFrame = new ArrayList<>();
+
+                           for (int i = 0; i < currentPlayer.frame.theFrameArray.size(); i++)
+                           {
+                               Tile t = new Tile(currentPlayer.frame.theFrameArray.get(i).getLetter(), currentPlayer.frame.theFrameArray.get(i).getValue());
+                               previousFrame.add(t);
+                           }
+
                            //run checks and placeword etc otherwise throw error
                            if (gameBoard.wordPlacementCheck(row, column, direction, word, currentPlayer)) {
                                //update previous board
@@ -704,6 +732,7 @@ public class UI extends Application
         currScore.setText("Current Score: " + currentPlayer.getScore());
         turnText.setText("Turn: " + (turn + 1));
         currentPlayer.frame.refillFrame(gamePool);
+        haveChallenged = false;
         updateFrame(currentPlayer.frame);
         updateBoard(gameBoard);
         hasGameEnded();
