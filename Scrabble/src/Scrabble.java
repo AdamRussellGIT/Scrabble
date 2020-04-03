@@ -221,15 +221,16 @@ public class Scrabble
 
     public boolean challenge(ArrayList<Word> foundWords, String[] dictionary)
     {
-        for (int i = 0; i < foundWords.size(); i++) {
+        for (int i = 0; i < foundWords.size(); i++) {       //for each word the last player got points for
 
-            if (!binarySearch(foundWords.get(i).getWord(), dictionary, 0, dictionary.length - 1)) {
+            if (!binarySearch(foundWords.get(i).getWord(), dictionary, 0, dictionary.length - 1)) {    //if it isn't found in the dictionary the challenge was sucessfull
                 return true;
             }
         }
-        return false;
+        return false;  //only called if all the words were found
     }
 
+    //iterative binarySearch
     public static boolean binarySearch(String word, String[] dictionary, int begin, int last){
         while (begin <= last)
         {

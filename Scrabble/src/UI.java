@@ -539,7 +539,7 @@ public class UI extends Application
                     }
                 }
                 else if(parsedInput[0].equals("NAME")){
-                    if(parsedInput.length==1){
+                    if(parsedInput.length==1){              //if the name command isn't followed by a new name
                         Alert error = new Alert(Alert.AlertType.ERROR);
                         error.initOwner(curr_window);
                         error.setHeaderText("Error");
@@ -550,7 +550,7 @@ public class UI extends Application
                         String tmp = new String();
                         for(int i=1; i<parsedInput.length;i++){
                             parsedInput[i] = parsedInput[i].toLowerCase();
-                            parsedInput[i] = parsedInput[i].replaceFirst(String.valueOf(parsedInput[i].charAt(0)),String.valueOf(Character.toUpperCase(parsedInput[i].charAt(0))));
+                            parsedInput[i] = parsedInput[i].replaceFirst(String.valueOf(parsedInput[i].charAt(0)),String.valueOf(Character.toUpperCase(parsedInput[i].charAt(0))));     //makes the name lowercase and capitalizes the first letter in each word
                             tmp=tmp.concat(parsedInput[i]+" ");
                         }
                         currentPlayer.setName(tmp);
