@@ -545,19 +545,18 @@ public class UI extends Application
                             "\n If the first letter of your word already resides on the Scrabble board, simply enter the coordinates of that letter and type \n in the " +
                             "word fully. \n The format is as follows: (7 7 A dog) *notice the space between the direction and the word for valid input. \n " +
                             "\n\n TO PASS YOUR TURN: \n In the event that you wish to forfeit your turn if you can't think of a suitable word, type in \"PASS\" into " +
-                            "the text-field. \n In the event the game consists of 6 PASS/or Non-Scoring turns the game terminates. \n\n\n TO EXCHANGE A WORD \n " +
+                            "the text-field. \n In the event the game consists of 6 PASS/or Non-Scoring turns the game terminates. \n\n TO EXCHANGE A WORD \n " +
                             "If you wish to exchange certain letters in your frame from the pool you must enter the desired letters in the textfield in the " +
                             "\n following format: (Exchange a b c). \n *Note the " +
                             "letters must be in your frame and must have a space between them. If you have duplicate letters the same procedure \n  follows e.g. (a a). " +
                             "Once you have exchanged your letters they will appear in your frame and the turn will be tunred over to your \n  opponent. \n *In the event " +
                             "the game consists of 6 EXCHANGE/or Non-Scoring turns the game terminates." +
-                            "\n\n\n TO CHALLENGE A WORD \n If you believe that the word placed down by " +
+                            "\n\n TO CHALLENGE A WORD \n If you believe that the word placed down by " +
                             "your opponent is invalid and not in the SOWPODS dictionary you can \n challenge the  other player. The format for calling Challenge is \"CHALLENGE\" if the challenge is unsuccessful you miss \n your turn and " +
                             "the turn changes over to your opponent. However if the challenge was successful your opponent will have \n their score redacted to their previous score and the board is updated to the previous board " +
                             "before the challenged \n word was placed. Your opponent receives his placed tiles from the challenged word and you continue your turn. \n " +
                             "\n TO UPDATED YOUR NAME: \n If you want to change your name during the game, type \"NAME\" followed by up the three other words, that will constitute your \n name." +
-                            "\n\n TO QUIT THE GAME: \n If you wish to quit the game type in \"QUIT\" \n\n Game End Conditions: \n 1.When QUIT is typed in \n 2.PASS/EXCHANGE exceeds 6 continuous occurances \n 3.No more letters" +
-                            "are left in either the Pool/Frame \n 4.No more words can be placed in the board.");
+                            "\n\nTO CHANGE YOUR NAME: \n Type in \"Name Jimmy McGill\" with spaces as seen here. \n Changing your name doesn't cause you to forfeit your turn. \n\nTO QUIT THE GAME: \n If you wish to quit the game type in \"QUIT\".");
                     helpAlert.initOwner(curr_window);
                     helpAlert.setTitle("Help");
                     helpAlert.setHeaderText("Help Information");
