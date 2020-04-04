@@ -3,6 +3,11 @@
 import java.util.Scanner;
 public class BoardTest
 {
+    //Basic Simulation of the Board
+    //in which different combinations and actions
+    //that can be taken in the game are tested
+    //in order to showcase their full and
+    //correct functionality
     public static void main(String[] args)
     {
         Board board = new Board();

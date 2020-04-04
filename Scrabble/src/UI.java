@@ -40,30 +40,42 @@ import static java.lang.String.valueOf;
 
 public class UI extends Application
 {
+    //Setting up the appropriate GUI Elements
+    //The stage and framePane divided into a grid and
+    //right pane
     Stage curr_window;
     GridPane gridPane;
     GridPane framePane;
     GridPane rightPane;
 
+    //Text field to input the playable commands
     TextField input;
     Label currPlayer;
     Label currScore;
     Label turnText;
     Label helpHint;
 
+    //Button imitating the visual
+    //representation of the frame
     Button frameBoxButton;
 
+    //Labels for the special Board tiles
     Label colourKey;
     Label doubleLetterScore;
     Label tripleLetterScore;
     Label doubleWordScore;
     Label tripleWordScore;
 
+    //Buttons for the special Board tiles
     Button doubleLetterScoreButton;
     Button tripleLetterScoreButton;
     Button doubleWordScoreButton;
     Button tripleWordScoreButton;
 
+    //Objects representing both players,
+    //the previous player,
+    //game Logic, game Pool and
+    //game Board
     Player playerOne;
     Player playerTwo;
     Player previousPlayer;
@@ -71,17 +83,32 @@ public class UI extends Application
     Pool gamePool;
     Board gameBoard;
 
+    //variable to store the game's turn
     int turn = -1;
+    //current player object
     Player currentPlayer;
+    //boolean variable to store if the
+    //challenge command was initiated
     boolean haveChallenged;
 
+    //dictionary array which
+    //stores all the valid words
     String[] dictionary;
 
+    //endcounter variable indicating
+    //the end
     int endcounter = 0;
 
+    //previous score variable
+    //to store the scores in the event of a challenge
     int previousScore = 0;
+    //Previous Board which stores the previous board (current turn - 1)
+    //used in case the challenge is initiated
     Board previousBoard;
+    //Used to hold the found Words in the event of a challenge
     ArrayList<Word> foundWords = new ArrayList<>();
+    //Previous frame Array List that stores the frame as it was
+    //before the current turn, and used in the event of a challenge
     ArrayList<Tile> previousFrame;
 
     public UI() throws FileNotFoundException
@@ -101,6 +128,7 @@ public class UI extends Application
         }
     }
 
+    //Removing tiles from the special squares
     private void removeSpecialSquares(Board gameBoard)
     {
         for (int i = 0; i < 15; i++)
@@ -115,6 +143,8 @@ public class UI extends Application
         }
     }
 
+    //Updating the board in accordance with all the valid moves that have been committed
+    //by the players
     public void updateBoard(Board gameBoard)
     {
         for (int i = 0; i < 15; i++)
@@ -176,6 +206,7 @@ public class UI extends Application
         }
     }
 
+    //Updating the frame based on the valid moves committed by each player
     public void updateFrame(Frame f)
     {
         for (int i = 0; i < f.theFrameArray.size(); i++)
@@ -210,6 +241,7 @@ public class UI extends Application
     @Override
     public void start(Stage Scrabble) throws FileNotFoundException
     {
+        //Setting up the Stage and GUI
         Dimension screenRes = Toolkit.getDefaultToolkit().getScreenSize();
         gameLogic = new Scrabble();
         gameBoard = new Board();
@@ -235,30 +267,33 @@ public class UI extends Application
 
         VBox playerInfo = new VBox(2);
 
+        //Indicating the current player
         currPlayer = new Label("Current Player: ");
         currPlayer.setFont(new Font(30));
         currPlayer.setStyle("-fx-font-weight: bold");
 
-
+        //Indicating the current player's score
         currScore = new Label("Current Score: ");
         currScore.setFont(new Font(30));
         currScore.setStyle("-fx-font-weight: bold");
 
+        //Indicating the turn the game is on
         turnText = new Label("Turn: ");
         turnText.setFont(new Font(30));
         turnText.setStyle("-fx-font-weight: bold");
-
 
         //setting up key
         colourKey = new Label("Board Colour Key: ");
         colourKey.setFont(new Font(18));
         colourKey.setStyle("-fx-font-weight: bold");
 
+        //special tile buttons set up
         doubleLetterScoreButton = new Button(" ");
         tripleLetterScoreButton = new Button(" ");
         doubleWordScoreButton = new Button(" ");
         tripleWordScoreButton = new Button(" ");
 
+        //Adding appropriate visuals to the Special Board tiles
         doubleLetterScore = new Label("Double Letter Score" );
         doubleLetterScore.setGraphic(doubleLetterScoreButton);
         doubleLetterScoreButton.setStyle("-fx-border-color: #fdf4ff; -fx-border-width: 2px");
@@ -283,20 +318,25 @@ public class UI extends Application
         tripleWordScoreButton.setStyle("-fx-border-color: #fdf4ff; -fx-border-width: 2px");
         tripleWordScoreButton.setStyle("-fx-background-color:#f35f49");
 
+        //adding all the variables into the Player info Vbox
         playerInfo.getChildren().addAll(currPlayer,currScore,turnText,colourKey,doubleLetterScore,tripleLetterScore,doubleWordScore,tripleWordScore);
+        //frame Vbox to holf the player's frame visual representation
         VBox frameBox = new VBox(2);
 
+        //The frame representation propping up the tiles in the frame
         frameBoxButton = new Button("");
         frameBoxButton.setTranslateX(20);
         frameBoxButton.setStyle("-fx-background-color: #666666; -fx-border-width: 2px");
         frameBoxButton.setMaxHeight(70);
         frameBoxButton.setMaxWidth(710);
 
+        //frame Pane inside the framebox
         framePane = new GridPane();
         framePane.setHgap(11);
         framePane.setPadding(new Insets(0, 0, 0, 20));
         frameBox.getChildren().addAll(framePane,frameBoxButton);
 
+        //input Vbox containing the input text field and the small hint label "HELP"
         VBox inputBox = new VBox(2);
 
         helpHint = new Label("Type \"HELP\" for help");
@@ -494,7 +534,7 @@ public class UI extends Application
                 else if (parsedInput[0].equals("HELP"))
                 {
                     Alert helpAlert = new Alert(Alert.AlertType.INFORMATION);
-
+                    //Help alert which contains detailed descriptions of how to use relevant commands to play this Scrabble implementation
                     helpAlert.setContentText(" INSTRUCTIONS: \n  How to PLAY: \n *Both lower and UPPERCASE input is acceptable " +
                             "\n *Blank tile in the frame constitutes a blank tile \n  that can be substituted for any letter in a word you wish to place\n\n " +
                             "TO PLACE A WORD: \n Input Format: (coordinates, direction, word) \n Coordinates: \n Coordinates range from 0 - 14 and should have " +
@@ -527,7 +567,7 @@ public class UI extends Application
                     gridPane.requestFocus();
 
                 }
-
+                //Command to quit the game
                 else if (parsedInput[0].equals("QUIT"))
                 {
                     Alert quit = new Alert(Alert.AlertType.CONFIRMATION, "Do you really wish to quit? you'll lose the game", ButtonType.YES, ButtonType.NO);
@@ -538,6 +578,7 @@ public class UI extends Application
                         endGame(currentPlayer);
                     }
                 }
+                //Changing name command
                 else if(parsedInput[0].equals("NAME")){
                     if(parsedInput.length==1){              //if the name command isn't followed by a new name
                         Alert error = new Alert(Alert.AlertType.ERROR);
@@ -654,6 +695,8 @@ public class UI extends Application
             gridPane.requestFocus();
         });
 
+
+        //Setting up the left and Right Pane with the appropriate variables and values
         rightPane.getChildren().addAll(playerInfo, frameBox, inputBox);
         rightPane.setRowIndex(playerInfo, 0);
         rightPane.setColumnIndex(playerInfo, 0);
@@ -664,7 +707,7 @@ public class UI extends Application
         rightH.getChildren().add(rightPane);
         leftH.getChildren().addAll(gridPane,rightH);
 
-
+        //Setting up the Stage
         Scene scene = new Scene(leftH, 1920, 1080);
         curr_window.setFullScreen(true);
         curr_window.setResizable(false);
@@ -672,6 +715,7 @@ public class UI extends Application
         Scrabble.show();
     }
 
+    //Relevant conditions for checking if the game has ended
     void hasGameEnded(){
         if(gamePool.poolSize()==0 || endcounter>=6){
             if(playerOne.frame.checkEmptyFrame() || playerTwo.frame.checkEmptyFrame() || endcounter>=6){
@@ -715,7 +759,7 @@ public class UI extends Application
     }
     
 
-
+    //Function for changing the current player
     public void changeCurrentPlayer()
     {
         turn++;
@@ -738,6 +782,7 @@ public class UI extends Application
         hasGameEnded();
     }
 
+    //Dictionary set up function
     public void setUpDictionary() throws FileNotFoundException
     {
         InputStream txt = this.getClass().getResourceAsStream("sowpods.txt");
@@ -753,6 +798,7 @@ public class UI extends Application
         dictionary = data.toArray(new String[]{});
     }
 
+    //Function in the event the game has ended
     void endGame(Player winner){
 
         if(winner!=null) {

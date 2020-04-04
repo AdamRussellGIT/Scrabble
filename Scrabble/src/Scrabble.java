@@ -70,6 +70,9 @@ public class Scrabble
     }
 
 
+    //Exchange method that exchanges desired words from the players frame and passes the trun
+    //to their opponent. The exchanged letters are thrown into the pool after a new set
+    //of letters are selected in their stead (avoids return of the same letters)
     public boolean exchange(Pool gamePool, Player currentPlayer, String[] parsedInput)
     {
         ArrayList<Tile> tmpExchange = new ArrayList<>();
@@ -104,6 +107,9 @@ public class Scrabble
         return true;
     }
 
+    //Calculating score based on the combined value of letters placed to create
+    //a valid word. Also taking into account the special board tiles which
+    //augment the score in the player's favour if a letter is placed upon them
     public int calculateScore(ArrayList<Word> wordsArray, Player currentPlayer, Board gameBoard)
     {
         int score = 0;
@@ -219,6 +225,11 @@ public class Scrabble
         return score;
     }
 
+    //Challenge which uses binary search to check if the word that was challenged by the player exists
+    //The word is searched in the dictionary and if successful causes all the tiles ("letters") of that
+    //invalid word to be returned to the player; leaving you to continue your turn.
+
+    //However if challenge is unsuccessful the turn updates leaving you to forfeit your turn as a result.
     public boolean challenge(ArrayList<Word> foundWords, String[] dictionary)
     {
         for (int i = 0; i < foundWords.size(); i++) {       //for each word the last player got points for
@@ -231,6 +242,10 @@ public class Scrabble
     }
 
     //iterative binarySearch
+    //Searches iteratively through the provided dictionary array
+    //containing all the valid words in our Scrabble version
+    //returning true if the word passed in is valid and false if it's invalid.
+
     public static boolean binarySearch(String word, String[] dictionary, int begin, int last){
         while (begin <= last)
         {

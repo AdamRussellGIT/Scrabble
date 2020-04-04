@@ -6,6 +6,12 @@
 import java.util.Scanner;
 public class PlayerTest 
 {
+
+	//Basic Player test implementation in order to
+	//showcase that each parts of the
+	//designed program function appropriately an with
+	//accordance with the specifications presented in each "Sprint
+	//Assignment"
 	public static void main(String[] args)
 	{
 		Pool p = new Pool();

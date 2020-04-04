@@ -8,7 +8,9 @@ import java.util.ArrayList;
 public class Board
 {	
 	Tile[][][] board;
-	
+
+	//Board constructor which includes functions for
+	//board rest and board set up
 	public Board()
 	{
 		board = new Tile[15][15][2];
@@ -16,6 +18,10 @@ public class Board
 		this.setUpBoard();
 	}
 
+	//Board set up uses a double for loop
+	//to iterate through the board in which the
+	//special tiles are appropriately placed in accordance
+	//with the Scrabble specification
 	public void setUpBoard()
     {
         for (int i = 0; i < board.length; i++)
@@ -58,7 +64,9 @@ public class Board
             }
         }
     }
-	
+
+    //Reset board iterates through the set up board
+	//removing any placed tiles that lay upons it
 	public void resetBoard()
 	{
 		for(int i = 0;i < board.length;i++)
