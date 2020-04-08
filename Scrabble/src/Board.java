@@ -299,37 +299,6 @@ public class Board
             }
         }
 
-
-		/*if(!first){
-			if(dir=='D' || dir=='d'){
-				if(board[row-1][col][0]!=null || board[row+word.length()][col][0]!=null){
-					connected=true;
-				}
-				else {
-					for (int i = 0; i < word.length(); i++) {
-						if (board[row + i][col - 1][0] != null || (col-1)  < 0 || board[row + i][col + 1][0] != null || (col+i) > 14 || board[row+i][col][0] != null) {
-							connected = true;
-						}
-					}
-				}
-			}
-			else if(dir=='A' || dir=='a'){
-				if(board[row][col-1][0]!=null || board[row][col+word.length()][0]!=null){
-					connected=true;
-				}
-				else{
-					for(int i=0; i<word.length(); i++){
-						if(board[row-1][col+i][0]!=null || (row-1) < 0 || board[row+1][col+i][0]!=null || (row+1) > 14 || board[row][col+i][0] != null){
-							connected = true;
-						}
-					}
-				}
-			}
-			if(!connected) {
-				return connected;
-			}
-		}*/
-
 		//if placement uses at least one letter from rack
 		boolean usesRack = false;
 		for(int i=0; i<word.length(); i++){
