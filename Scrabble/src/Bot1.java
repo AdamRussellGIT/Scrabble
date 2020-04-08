@@ -1,6 +1,6 @@
 //Team: Camel-Bois
 //Members: Adam Russell - 18328861
-//         Carlo Motteran -
+//         Carlo Motteran - 18717341
 //         Karol Wojcik - 18322146
 
 public class Bot1 implements BotAPI {
