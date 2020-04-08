@@ -1,113 +1,126 @@
-//Karol Wojcik 18322146
-//Adam Russell 18328861
-//Carlo Motteran 18717341
-
-//Team: Camel Bois
-//Assignment 1
-
 import java.util.ArrayList;
 
-public class Frame 
-{
-	ArrayList<Tile> theFrameArray;
-	Pool gamePool;
-	
-	//Frame Constructor
-	public Frame(Pool p)
-	{
-		theFrameArray = new ArrayList<Tile>();
-		
-		refillFrame(p);
-	}
-	
-	//Remove letters method
-	public Tile removeLettersFrame(char removeLetter)
-	{
-		char ch = Character.toUpperCase(removeLetter);
-		Tile r = new Tile(' ', 0);
-		boolean found = false;
-		//Loops through the Array
-		for(int i =0; i<theFrameArray.size();i++)
-		{
-			//Checks if the chosen letter to remove is equal to
-			//any letter present within the Frame
-			if(theFrameArray.get(i).getLetter() == ch)
-			{
-				r = theFrameArray.get(i);
-				theFrameArray.remove(i);
-				found = true;
-				break;
-			}
-		}
+public class Frame {
 
-		if (!found)
-		{
-			throw new IllegalArgumentException("Tile not in  Pool!");
-		}
-		
-		return r;
+	public static final int MAX_TILES = 7;
+	public static final int EXCHANGE_NOT_AVAILABLE = 0;
+	public static final int EXCHANGE_NOT_ENOUGH_IN_POOL = 1;
+
+	private ArrayList<Tile> tiles;
+	int errorCode;
+
+	Frame() {
+		tiles = new ArrayList<>();
 	}
-	
-	//Checking if the letter is contained within the Frame
-	public Boolean checkLettersFrame(char letter)
-	{
-		char ch = Character.toUpperCase(letter);
-		for(int i =0; i<theFrameArray.size();i++)
-		{
-			if((theFrameArray.get(i).letter) == (ch))
-			{
-				return true;
+
+	public int size() {
+		return(tiles.size());
+	}
+
+	public boolean isEmpty() {
+		return tiles.isEmpty();
+	}
+
+	public boolean isFull() {
+		return tiles.size() == MAX_TILES;
+	}
+
+	public boolean isAvailable(String letters) {
+		boolean found = true;
+		if (letters.length() > tiles.size()) {
+			found = false;
+		}
+		else {
+			ArrayList<Tile> copyTiles = new ArrayList<>(tiles);
+			for (int i=0; i<letters.length() && found; i++) {
+				Tile tileSought = new Tile(letters.charAt(i));
+				if (copyTiles.contains(tileSought)) {
+					copyTiles.remove(tileSought);
+				}
+				else {
+					found = false;
+				}
 			}
 		}
-		return false;	
+		return found;
 	}
-	
-	//Accesses the Frame
-	public ArrayList<Tile> accessLettersFrame(ArrayList<Tile> theFrameArray)
-	{
-		return theFrameArray;
+
+	// remove precondition: isAvailable(letters) is true
+	public void removeTile(Tile tile) {
+		tiles.remove(tile);
 	}
-	
-	//Collaboration with Carlo's Pool class
-	public void refillFrame(Pool p)
-	{	
-		//Runs while the Frame has less than 7 Tiles
-		while(theFrameArray.size() != 7 && p.poolSize() > 0)
-		{
-			//Calling draw class from the Pool class in order to draw a new Tile into the Frame from the Pool
-			theFrameArray.add(p.draw());	
+
+	// remove precondition: isAvailable(letters) is true
+	public void removeTiles(ArrayList<Tile> tiles) {
+		for (Tile tile : tiles) {
+			this.tiles.remove(tile);
 		}
 	}
-	
-	//Checks if the Frame is Empty
-	public Boolean checkEmptyFrame()
-	{
-		return theFrameArray.isEmpty();
+
+	// getTile precondition: isAvailable(letters) is true
+	public Tile getTile(Character letter) {
+		int index = tiles.indexOf(new Tile(letter));
+		return tiles.get(index);
 	}
-	
-	//To String that prints out the Frame in an appropriate format
-	public String toString()
-	{
-		//return "[" + theFrameArray.get(0).letter + " " + theFrameArray.get(1).letter + "" + " " + theFrameArray.get(2).letter + " " + theFrameArray.get(3).letter + "" + " " + theFrameArray.get(4).letter + " " + theFrameArray.get(5).letter + "" + " " + theFrameArray.get(6).letter + "]" + "\n" + "|" + theFrameArray.get(0).value + " " + theFrameArray.get(1).value + "" + " " + theFrameArray.get(2).value + " " + theFrameArray.get(3).value + "" + " " + theFrameArray.get(4).value + " " + theFrameArray.get(5).value + " " + theFrameArray.get(6).value + "|";
-		String f = "";
-		f += "[ ";
-		for(int i = 0; i < theFrameArray.size(); i++)
-		{
-			f += (theFrameArray.get(i).letter + " ");
+
+	// remove precondition: isAvailable(letters) is true
+	public ArrayList<Tile> getTiles(String letters) {
+		ArrayList<Tile> tiles = new ArrayList<>();
+		for (int i=0; i<letters.length(); i++) {
+			tiles.add(getTile(letters.charAt(i)));
 		}
-		f += "]\n[ ";
-		
-		for (int j = 0; j < theFrameArray.size(); j++)
-		{
-			f += (theFrameArray.get(j).value + " ");
-		}
-		f += "]";
-		
-		return f;
+		return tiles;
 	}
-	
-	
+
+	public ArrayList<Tile> getTiles() {
+		return tiles;
+	}
+
+	public ArrayList<Tile> refill(Pool pool) {
+		int numTilesToDraw = MAX_TILES - tiles.size();
+		ArrayList<Tile> draw = pool.drawTiles(numTilesToDraw);
+		tiles.addAll(draw);
+		return draw;
+	}
+
+	public void returnToPool(Pool pool, ArrayList<Tile> tilesToReturn) {
+		tiles.removeAll(tilesToReturn);
+		pool.addTiles(tilesToReturn);
+	}
+
+	public boolean isLegalExchange(Pool pool, String letters) {
+		boolean isLegal;
+		if (!isAvailable(letters)) {
+			errorCode = EXCHANGE_NOT_AVAILABLE;
+			isLegal = false;
+		} else if (pool.size() < letters.length()) {
+			errorCode = EXCHANGE_NOT_ENOUGH_IN_POOL;
+			isLegal = false;
+		} else {
+			isLegal = true;
+		}
+		return isLegal;
+	}
+
+	public int getErrorCode() {
+		return errorCode;
+	}
+
+	// exchange precondition: isLegalExchange(pool, letters) is true
+	public void exchange(Pool pool, String letters) {
+		ArrayList<Tile> tilesToExchange = getTiles(letters);
+		pool.addTiles(tilesToExchange);
+		removeTiles(tilesToExchange);
+		refill(pool);
+	}
+
+	public void addTiles(ArrayList<Tile> tiles) {
+		this.tiles.addAll(tiles);
+	}
+
+	@Override
+	public String toString() {
+		return tiles.toString();
+	}
+
 }
-
-
-

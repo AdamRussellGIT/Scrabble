@@ -1,65 +1,65 @@
-//Team: Camel Bois
-//Members: Adam Russell - 18328861
-//		   Carlo Motteran - 18717341
-//		   Karol Wojcik - 18322146
+import java.util.ArrayList;
 
+public class Player implements PlayerAPI, OpponentAPI {
 
+	private int id;
+	private String name;
+	private int score;
+	private Frame frame;
 
-public class Player 
-{
-	private String name = null; //variable to hold name
-	private int score = 0; // variable to hold score
-	Frame frame; // variable to store the players frame
-	
-	public Player(String name, Pool p)
-	{
-		setName(name); // sets the name for the player
-		setScore(0); // sets the intial score for the player
-		setFrame(p); // assigns a frame to the player
+	Player(int id)  {
+		this.id = id;
+		name = "";
+		score = 0;
+		frame = new Frame();
 	}
-	
-	//resets player varaibles
-	public void resetPlayer(String name, Pool p)
-	{
-		setName(name);
-		setScore(0);
-		setFrame(p);
+
+	public int getPrintableId() {
+		return id+1;
 	}
-	
-	//assigns a new frame to the player
-	private void setFrame(Pool p)
-	{
-		this.frame = new Frame(p);
+
+	public void setName(String text) {
+		name = text;
 	}
-	
-	
-	//sets the name of the player
-    void setName(String name)
-	{
-			this.name = name;
+
+	public String getName() {
+		return name;
 	}
-	
-	//adds to the current players score
-	public void setScore(int score)
-	{
-		this.score += score;
+
+	public void addPoints(int increase) {
+		score = score + increase;
 	}
-	
-	//returns the name of the current player
-	public String getName()
-	{
-		return this.name;
+
+	public void subtractPoints(int decrease) {
+		score = score - decrease;
 	}
-	
-	//returns the score of the current player
-	public int getScore()
-	{
-		return this.score;
+
+	public int getScore() {
+		return score;
 	}
-	
-	//prints the players rack
-	public String toString()
-	{
-		return this.frame.toString();
+
+	public Frame getFrame() {
+		return frame;
 	}
+
+	public String getFrameAsString() {return frame.toString();}
+
+	public void adjustScore() {
+		int unused = 0;
+		ArrayList<Tile> tiles = frame.getTiles();
+		for (Tile tile : tiles) {
+			unused = unused + tile.getValue();
+		}
+		score = score - unused;
+	}
+
+	public String toString() {
+
+		if (name.isEmpty()) {
+			return "Player " + getPrintableId();
+		} else {
+			return name;
+		}
+	}
+
 }

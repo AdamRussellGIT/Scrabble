@@ -1,51 +1,101 @@
 public class Word {
-    private int startRow;
-    private int startColumn;
-    private char direction;
-    private String word;
 
-    public Word(int startRow, int startColumn, char direction, String word) {
-        this.startRow = startRow;
-        this.startColumn = startColumn;
-        this.direction = direction;
-        this.word = word;
+    private int row, column; // first letter position
+    private boolean isHorizontal;  // true = horizontal, false = vertical
+    private String letters;
+    private String designatedLetters;
+
+    Word(int row, int column, boolean isHorizontal, String letters) {
+        this.row = row;
+        this.column = column;
+        this.isHorizontal = isHorizontal;
+        this.letters = letters;
+        this.designatedLetters = letters;
     }
 
-    public void clear(){
-        setStartRow(0);
-        setStartColumn(0);
-        setWord(null);
+    Word(int row, int column, boolean isHorizontal, String letters, String blankDesignations) {
+        this.row = row;
+        this.column = column;
+        this.isHorizontal = isHorizontal;
+        this.letters = letters;
+        // merge blank designations into the letters
+        StringBuilder designatedLettersBuilder = new StringBuilder(letters);
+        int j =0 ;
+        for (int i=0; i<letters.length(); i++) {
+            if (letters.charAt(i) == Tile.BLANK) {
+                designatedLettersBuilder.setCharAt(i,blankDesignations.charAt(j));
+                j++;
+            }
+        }
+        designatedLetters = designatedLettersBuilder + "";
     }
 
-    public int getStartRow() {
-        return this.startRow;
+    // getRow pre-condition: isHorizontal is true
+    public int getRow() {
+        return row;
     }
 
-    public int getStartColumn() {
-        return this.startColumn;
+    // getColumn pre-condition: isHorizonal is flase
+    public int getColumn() {
+        return column;
     }
 
-    public char getDirection() {
-        return this.direction;
+    public int getFirstRow() {
+        return row;
     }
 
-    public String getWord() {
-        return this.word;
+    public int getLastRow() {
+        if (isHorizontal) {
+            return row;
+        } else {
+            return row + letters.length() - 1;
+        }
     }
 
-    public void setStartRow(int startRow) {
-        this.startRow = startRow;
+    public int getFirstColumn() {
+        return column;
     }
 
-    public void setStartColumn(int startColumn) {
-        this.startColumn = startColumn;
+    public int getLastColumn() {
+        if (!isHorizontal) {
+            return column;
+        } else {
+            return column + letters.length() - 1;
+        }
     }
 
-    public void setDirection(char direction) {
-        this.direction = direction;
+    public String getLetters() {
+        return letters;
     }
 
-    public void setWord(String word) {
-        this.word = word;
+    public char getLetter(int i) {
+        return letters.charAt(i);
     }
+
+    public String getDesignatedLetters() {
+        return designatedLetters;
+    }
+
+    public char getDesignatedLetter(int index) {
+        return designatedLetters.charAt(index);
+    }
+
+    public int length() {
+        return letters.length();
+    }
+
+    public boolean isHorizontal() {
+        return isHorizontal;
+    }
+
+    public boolean isVertical() {
+        return !isHorizontal;
+    }
+
+    @Override
+    public String toString() {
+        return letters;
+    }
+
+
 }
