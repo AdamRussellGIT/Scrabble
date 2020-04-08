@@ -5,7 +5,7 @@ import java.util.Scanner;
 
 public class Dictionary implements DictionaryAPI {
 
-    private static String inputFileName = "sowpods.txt";
+    private static String inputFileName = "csw.txt";
     private Node root;
 
     Dictionary() throws FileNotFoundException {
@@ -13,7 +13,7 @@ public class Dictionary implements DictionaryAPI {
         File inputFile = new File(inputFileName);
         Scanner in = new Scanner(inputFile);
         while (in.hasNextLine()) {
-            String word = in.nextLine().toUpperCase();
+            String word = in.nextLine();
             Node currentNode = root;
             for (int i=0; i<word.length(); i++) {
                 char currentLetter = word.charAt(i);
