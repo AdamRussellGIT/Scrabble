@@ -1,0 +1,10 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="FinishedGameTest">
+    <output-path>$PROJECT_DIR$/out/artifacts/FinishedGameTest</output-path>
+    <root id="archive" name="FinishedGameTest.jar">
+      <element id="archive" name="Camel_bois.jar">
+        <element id="module-output" name="Camel-bois" />
+      </element>
+    </root>
+  </artifact>
+</component>

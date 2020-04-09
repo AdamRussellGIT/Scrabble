@@ -1,0 +1,20 @@
+<component name="ArtifactManager">
+  <artifact type="javafx" name="Camel-bois_Scrabble">
+    <output-path>$PROJECT_DIR$/out/artifacts/Camel_bois_Scrabble</output-path>
+    <properties id="javafx-properties">
+      <options>
+        <option name="appClass" value="UI" />
+        <option name="description" value="" />
+        <option name="htmlPlaceholderId" value="" />
+        <option name="title" value="" />
+        <option name="vendor" value="" />
+        <option name="version" value="" />
+      </options>
+    </properties>
+    <root id="root">
+      <element id="archive" name="Camel_bois.jar">
+        <element id="module-output" name="Camel-bois" />
+      </element>
+    </root>
+  </artifact>
+</component>
