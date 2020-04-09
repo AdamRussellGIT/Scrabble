@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<jnlp spec="1.0" xmlns:jfx="http://javafx.com" href="Camel_bois.jnlp">
+  <information>
+    <title>Game_a3</title>
+    <vendor>Unknown</vendor>
+    <description>Game_a3</description>
+    <offline-allowed/>
+  </information>
+  <resources>
+    <j2se version="1.6+" href="http://java.sun.com/products/autodl/j2se"/>
+    <jar href="Camel_bois.jar" size="25250" download="eager" />
+  </resources>
+  <jfx:javafx-desc  width="600" height="400" main-class="UI"  name="Game_a3" />
+  <update check="background"/>
+</jnlp>
