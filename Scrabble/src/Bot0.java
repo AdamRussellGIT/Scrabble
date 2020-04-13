@@ -39,55 +39,322 @@ public class Bot0 implements BotAPI {
 
     public String getCommand() {
 
-        if (firstTurn)
-        {
-            Node root = new Node();
-            try
-            {
-                File f = new File("csw.txt");
-                Scanner in = new Scanner(f);
-
-                while (in.hasNextLine()) {
-                    String word = in.nextLine();
-                    Node currentNode = root;
-                    for (int i=0; i<word.length(); i++) {
-                        char currentLetter = word.charAt(i);
-                        if (currentNode.isChild(currentLetter)) {
-                            currentNode = currentNode.getChild(currentLetter);
-                        }
-                        else {
-                            currentNode = currentNode.addChild(currentLetter);
-                        }
-                    }
-                    currentNode.setEndOfWord();
-                }
-                in.close();
-            }
-            catch(FileNotFoundException f)
-            {
-                System.out.println("Error!");
-            }
-        }
-
-        //find all possible word combinations that could be placed on this turn
+        //find possible word combinations that could be placed on this turn
         possibleWords = new ArrayList<>();
         possibleWords = findPossibleWords();
 
-        //find best possible play from possiblePlays and return it
-        command = bestPossiblePlay(possibleWords);
+        for (String s : possibleWords)
+        {
+            System.out.println(s);
+        }
 
         return command;
     }
 
-    private String bestPossiblePlay(ArrayList<String> possibleWords)
-    {
-        String bestPlay = "";
-
-        return bestPlay;
-    }
-
     private ArrayList<String> findPossibleWords()
     {
+        word = "";
+        possiblePlacement = "";
+        int countUp;
+
+        //go through the board
+        for (int i = 0; i < 15; i++)
+        {
+            for (int j = 0; j < 15; j++)
+            {
+                //if we find an occupied square
+                if (board.getSquareCopy(i, j).isOccupied())
+                {
+                    //if square to left has tile, already added, break
+                    if ((board.getSquareCopy(i - 1, j).isOccupied() || i-1 < 0) && (board.getSquareCopy(i, j - 1).isOccupied() || j-1 < 0))
+                    {
+                        break;
+                    }
+
+                    //only need to check down
+                    else if ((i-1 >= 0) && board.getSquareCopy(i-1, j).isOccupied())
+                    {
+                        /*
+                        MAKE THIS i-1 TO NOT RE ADD LETTER
+                        */
+                        int findTop = i - 1;
+
+                        countUp = 0;
+
+                        //find top most index
+                        //either be top of the board, or countUp = 7, which will help us move down the board finding all possible word placements
+                        while (findTop >= 0 && countUp < 7)
+                        {
+                            //if empty, could be any letter
+                            if (!board.getSquareCopy(findTop, j).isOccupied()) {
+                                word = "*".concat(word);
+                            }
+
+                            //if not empty, add letter found to word
+                            else {
+                                //TODO
+                                /*
+                                   ADD AS LOWER CASE FOR FUTURE PERMUTING?
+                                */
+                                word = String.valueOf(board.getSquareCopy(findTop, j).getTile().getLetter()).concat(word);
+                            }
+
+                            //checks to find the top/start
+                            countUp++;
+                            findTop--;
+                        }
+
+                        //find bottom of word
+                        countUp = 0;
+                        int findBottom = i;
+
+                        while (findBottom <= 14 && countUp < 7)
+                        {
+                            //if empty, could be any letter
+                            if (!board.getSquareCopy(findBottom, j).isOccupied()) {
+                                word = word.concat("*");
+                            }
+
+                            //if not empty, add letter found to word
+                            else {
+                                //TODO
+                                /*
+                                   ADD AS LOWER CASE FOR FUTURE PERMUTING?
+                                */
+                                word = word.concat(String.valueOf(board.getSquareCopy(findTop, j).getTile().getLetter()));
+                            }
+
+                            //checks to find the top/start
+                            countUp++;
+                            findBottom++;
+                        }
+
+                        //prevent findTop from being -1 when checking near top
+                        int colin = findTop + 66;
+                        char colch = (char) colin;
+                        possiblePlacement += (String.valueOf(colch) + String.valueOf(j) + " D " + word);
+                        possibleWords.add(possiblePlacement);
+                        possiblePlacement = "";
+                        word = "";
+                    }
+
+                    //only need to check across
+                    else if ((j-1 >= 0) && board.getSquareCopy(i, j-1).isOccupied())
+                    {
+                        /*
+                        MAKE THIS i-1 TO NOT RE ADD LETTER
+                        */
+                        int findLeft = j - 1;
+
+                        countUp = 0;
+
+                        //find top most index
+                        //either be top of the board, or countUp = 7, which will help us move down the board finding all possible word placements
+                        while (findLeft >= 0 && countUp < 7)
+                        {
+                            //if empty, could be any letter
+                            if (!board.getSquareCopy(i, findLeft).isOccupied()) {
+                                word = "*".concat(word);
+                            }
+
+                            //if not empty, add letter found to word
+                            else {
+                                //TODO
+                                /*
+                                   ADD AS LOWER CASE FOR FUTURE PERMUTING?
+                                */
+                                word = String.valueOf(board.getSquareCopy(i, findLeft).getTile().getLetter()).concat(word);
+                            }
+
+                            //checks to find the top/start
+                            countUp++;
+                            findLeft--;
+                        }
+
+                        //find bottom of word
+                        countUp = 0;
+                        int findRight = j;
+
+                        while (findRight <= 14 && countUp < 7)
+                        {
+                            //if empty, could be any letter
+                            if (!board.getSquareCopy(i, findRight).isOccupied()) {
+                                word = word.concat("*");
+                            }
+
+                            //if not empty, add letter found to word
+                            else {
+                                //TODO
+                                /*
+                                   ADD AS LOWER CASE FOR FUTURE PERMUTING?
+                                */
+                                word = word.concat(String.valueOf(board.getSquareCopy(i, findRight).getTile().getLetter()));
+                            }
+
+                            //checks to find the top/start
+                            countUp++;
+                            findRight++;
+                        }
+
+                        //prevent findTop from being -1 when checking near top
+                        int colin = findLeft + 66;
+                        char colch = (char) colin;
+                        possiblePlacement += (String.valueOf(colch) + String.valueOf(j) + " A " + word);
+                        possibleWords.add(possiblePlacement);
+                        possiblePlacement = "";
+                        word = "";
+                    }
+
+                    //need to do both down AND across
+                    else
+                    {
+                        /*
+                        MAKE THIS i-1 TO NOT RE ADD LETTER
+                        */
+                        int findTop = i - 1;
+
+                        countUp = 0;
+
+                        //find top most index
+                        //either be top of the board, or countUp = 7, which will help us move down the board finding all possible word placements
+                        while (findTop >= 0 && countUp < 7)
+                        {
+                            //if empty, could be any letter
+                            if (!board.getSquareCopy(findTop, j).isOccupied()) {
+                                word = "*".concat(word);
+                            }
+
+                            //if not empty, add letter found to word
+                            else {
+                                //TODO
+                                /*
+                                   ADD AS LOWER CASE FOR FUTURE PERMUTING?
+                                */
+                                word = String.valueOf(board.getSquareCopy(findTop, j).getTile().getLetter()).concat(word);
+                            }
+
+                            //checks to find the top/start
+                            countUp++;
+                            findTop--;
+                        }
+
+                        //find bottom of word
+                        countUp = 0;
+                        int findBottom = i;
+
+                        while (findBottom <= 14 && countUp < 7)
+                        {
+                            //if empty, could be any letter
+                            if (!board.getSquareCopy(findBottom, j).isOccupied()) {
+                                word = word.concat("*");
+                            }
+
+                            //if not empty, add letter found to word
+                            else {
+                                //TODO
+                                /*
+                                   ADD AS LOWER CASE FOR FUTURE PERMUTING?
+                                */
+                                word = word.concat(String.valueOf(board.getSquareCopy(findTop, j).getTile().getLetter()));
+                            }
+
+                            //checks to find the top/start
+                            countUp++;
+                            findBottom++;
+                        }
+
+                        //prevent findTop from being -1 when checking near top
+                        int colin = findTop + 66;
+                        char colch = (char) colin;
+                        possiblePlacement += (String.valueOf(colch) + String.valueOf(j) + " D " + word);
+                        possibleWords.add(possiblePlacement);
+                        possiblePlacement = "";
+                        word = "";
+
+                        //going across
+                        /*
+                        MAKE THIS i-1 TO NOT RE ADD LETTER
+                        */
+                        int findLeft = j - 1;
+
+                        countUp = 0;
+
+                        //find top most index
+                        //either be top of the board, or countUp = 7, which will help us move down the board finding all possible word placements
+                        while (findLeft >= 0 && countUp < 7)
+                        {
+                            //if empty, could be any letter
+                            if (!board.getSquareCopy(i, findLeft).isOccupied()) {
+                                word = "*".concat(word);
+                            }
+
+                            //if not empty, add letter found to word
+                            else {
+                                //TODO
+                                /*
+                                   ADD AS LOWER CASE FOR FUTURE PERMUTING?
+                                */
+                                word = String.valueOf(board.getSquareCopy(i, findLeft).getTile().getLetter()).concat(word);
+                            }
+
+                            //checks to find the top/start
+                            countUp++;
+                            findLeft--;
+                        }
+
+                        //find bottom of word
+                        countUp = 0;
+                        int findRight = j;
+
+                        while (findRight <= 14 && countUp < 7)
+                        {
+                            //if empty, could be any letter
+                            if (!board.getSquareCopy(i, findRight).isOccupied()) {
+                                word = word.concat("*");
+                            }
+
+                            //if not empty, add letter found to word
+                            else {
+                                //TODO
+                                /*
+                                   ADD AS LOWER CASE FOR FUTURE PERMUTING?
+                                */
+                                word = word.concat(String.valueOf(board.getSquareCopy(i, findRight).getTile().getLetter()));
+                            }
+
+                            //checks to find the top/start
+                            countUp++;
+                            findRight++;
+                        }
+
+                        //prevent findTop from being -1 when checking near top
+                        colin = findLeft + 66;
+                        colch = (char) colin;
+                        possiblePlacement += (String.valueOf(colch) + String.valueOf(j) + " A " + word);
+                        possibleWords.add(possiblePlacement);
+                        possiblePlacement = "";
+                        word = "";
+                    }
+                }
+            }
+        }
+
+        return possibleWords;
+    }
+
+
+
+    //LEGACY CODE, MAY NEED PARTS OF IT IN FUTURE PERHAPS
+
+//    private String bestPossiblePlay(ArrayList<String> possibleWords)
+//    {
+//        String bestPlay = "";
+//
+//        return bestPlay;
+//    }
+//
+//    private ArrayList<String> findPossibleWords()
+//    {
 //        word = "";
 //        possiblePlacement = "";
 //
@@ -348,7 +615,5 @@ public class Bot0 implements BotAPI {
 //        }
 //
 //        return possibleWords;
-
-        return null;
-    }
+//    }
 }
