@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<jnlp spec="1.0" xmlns:jfx="http://javafx.com" href="Camel_bois.jnlp">
+  <information>
+    <title>Testa4_1</title>
+    <vendor>Unknown</vendor>
+    <description>Testa4_1</description>
+    <offline-allowed/>
+  </information>
+  <resources>
+    <j2se version="1.6+" href="http://java.sun.com/products/autodl/j2se"/>
+    <jar href="Camel_bois.jar" size="719920" download="eager" />
+  </resources>
+  <jfx:javafx-desc  width="600" height="400" main-class="UI"  name="Testa4_1" />
+  <update check="background"/>
+</jnlp>
