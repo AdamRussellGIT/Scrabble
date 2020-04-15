@@ -74,7 +74,7 @@ public class Bot0 implements BotAPI {
             char[] tmp = new char[frame.length-1];
             for (int j = 0; j < frame.length-1; j++)
             {
-                tmp[j] = frame[j];
+                tmp[j] = frame[frame.length-j];
             }
             //worry about column-1
             findPrefix(row, column-1, root, prefixList, tmp);
