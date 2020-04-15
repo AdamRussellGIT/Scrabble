@@ -49,35 +49,45 @@ public class Bot0 implements BotAPI {
                 if (isAnchorSquare(i, j))
                 {
                     ArrayList<String> prefixList = new ArrayList<>();
-                    findPrefix(i, j, root, prefixList);
+                    char[] frameArr;
+                    frameArr = this.me.getFrameAsString().replace("[","").replace("]","").replaceAll(", ","").toCharArray();
+                    findPrefix(i, j, root, prefixList, frameArr);
                 }
             }
         }
 
         return command;
     }
-
-    private void findPrefix(int row, int column, Node root, ArrayList<String prefixList>)
+                                                                                            //is the frame on the first call
+    private void findPrefix(int row, int column, Node root, ArrayList<String> prefixList, char[] frame)
     {
-        char currLetter = frame.romve(0);
+        if (frame.length==0){
+            return;
+        }
+        char currLetter = frame[0];
 
-        if (corssCheck(row, column, root, currLetter) && root.isChild(currLetter))
+        if (crossCheck(row, column, currLetter, root) && root.isChild(currLetter))
         {
-            prefixList.add(currLetter);
+            prefixList.add(String.valueOf(currLetter));
 
             root = root.getChild(currLetter);
-            ArrayList<Tile> tmp = new ArrayList<>();
-            for (int j = 0; j < frame.size()-1; j++)
+            char[] tmp = new char[frame.length-1];
+            for (int j = 0; j < frame.length-1; j++)
             {
-                tmp.add(me.frame.get(j));
+                tmp[j] = frame[j];
             }
             //worry about column-1
-            findPrefix(row, column-1, root);
+            findPrefix(row, column-1, root, prefixList, tmp);
 
             for (String prefix : prefixList)
             {
-                prefix = currLetter.concat(prefix);
+                prefix = String.valueOf(currLetter).concat(prefix);
+
+                prefixList.add(prefix);
             }
+        }
+        else{
+            return;
         }
     }
 
