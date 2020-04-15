@@ -127,6 +127,7 @@ public class Bot0 implements BotAPI {
             while ((findRow <= 14) && (board.getSquareCopy(findRow, column).isOccupied()))
             {
                 wordCheck = wordCheck.concat(String.valueOf(board.getSquareCopy(findRow, column).getTile().getLetter()));
+                findRow++;
             }
 
             //check trie to see if word is there with given letter
