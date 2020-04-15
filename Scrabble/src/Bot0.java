@@ -24,6 +24,7 @@ public class Bot0 implements BotAPI {
     private int turnCount;
     private String command;
     private boolean firstTurn = true;
+    private Node root;
 
     Bot0(PlayerAPI me, OpponentAPI opponent, BoardAPI board, UserInterfaceAPI ui, DictionaryAPI dictionary) {
         this.me = me;
@@ -37,7 +38,7 @@ public class Bot0 implements BotAPI {
     public String getCommand() {
         if (firstTurn) //to see if we have first turn
         {
-            Node root = createTrie();
+            root = createTrie();
         }
 
         //find anchor squares
@@ -47,13 +48,42 @@ public class Bot0 implements BotAPI {
             {
                 if (isAnchorSquare(i, j))
                 {
-                    //TODO
-                    //move generation (prefix/suffix stuff)
+                    ArrayList<String> prefixList = new ArrayList<>();
+                    findPrefix(i, j, root, prefixList);
                 }
             }
         }
 
         return command;
+    }
+
+    private void findPrefix(int row, int column, Node root, ArrayList<String prefixList>)
+    {
+        char currLetter = frame.romve(0);
+
+        if (corssCheck(row, column, root, currLetter) && root.isChild(currLetter))
+        {
+            prefixList.add(currLetter);
+
+            root = root.getChild(currLetter);
+            ArrayList<Tile> tmp = new ArrayList<>();
+            for (int j = 0; j < frame.size()-1; j++)
+            {
+                tmp.add(me.frame.get(j));
+            }
+            //worry about column-1
+            findPrefix(row, column-1, root);
+
+            for (String prefix : prefixList)
+            {
+                prefix = currLetter.concat(prefix);
+            }
+        }
+    }
+
+    private void findSuffix()
+    {
+
     }
 
     private boolean isAnchorSquare(int row, int column)
