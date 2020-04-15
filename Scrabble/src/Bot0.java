@@ -35,7 +35,7 @@ public class Bot0 implements BotAPI {
     }
 
     public String getCommand() {
-        if (firstTurn)
+        if (firstTurn) //to see if we have first turn
         {
             Node root = createTrie();
         }
@@ -154,6 +154,7 @@ public class Bot0 implements BotAPI {
             return true;
         }
     }
+
 
     private Node createTrie()
     {
