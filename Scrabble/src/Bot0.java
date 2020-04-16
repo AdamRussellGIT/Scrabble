@@ -55,7 +55,6 @@ public class Bot0 implements BotAPI {
                 }
             }
         }
-
         return command;
     }
                                                                                             //is the frame on the first call
@@ -86,7 +85,7 @@ public class Bot0 implements BotAPI {
                 prefixList.add(prefix);
             }
         }
-        else{
+        else {
             return;
         }
     }
@@ -128,7 +127,7 @@ public class Bot0 implements BotAPI {
             return true;
         }
 
-        //square is not an anchor sqaure
+        //square is not an anchor square
         else
         {
             return false;
