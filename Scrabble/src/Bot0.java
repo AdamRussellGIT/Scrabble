@@ -36,7 +36,7 @@ public class Bot0 implements BotAPI {
     }
 
     public String getCommand() {
-        if (firstTurn)
+        if (firstTurn) //to see if we have first turn
         {
             root = createTrie();
         }
@@ -49,17 +49,17 @@ public class Bot0 implements BotAPI {
                 if (isAnchorSquare(i, j))
                 {
                     ArrayList<String> prefixList = new ArrayList<>();
+                    ArrayList<String> suffixList = new ArrayList<>();
                     char[] frameArr;
                     frameArr = this.me.getFrameAsString().replace("[","").replace("]","").replaceAll(", ","").toCharArray();
-                    findPrefix(i, j, root, prefixList, frameArr);
+                    findPrefix(i, j, root, prefixList, suffixList, frameArr);
                 }
             }
         }
-
         return command;
     }
                                                                                             //is the frame on the first call
-    private void findPrefix(int row, int column, Node root, ArrayList<String> prefixList, char[] frame)
+    private void findPrefix(int row, int column, Node root, ArrayList<String> prefixList,ArrayList<String> suffixList, char[] frame)
     {
         if (frame.length==0){
             return;
@@ -74,10 +74,10 @@ public class Bot0 implements BotAPI {
             char[] tmp = new char[frame.length-1];
             for (int j = 0; j < frame.length-1; j++)
             {
-                tmp[j] = frame[j];
+                tmp[j] = frame[frame.length-j];
             }
             //worry about column-1
-            findPrefix(row, column-1, root, prefixList, tmp);
+            findPrefix(row, column-1, root, prefixList, suffixList, tmp);
 
             for (String prefix : prefixList)
             {
@@ -85,15 +85,76 @@ public class Bot0 implements BotAPI {
 
                 prefixList.add(prefix);
             }
+            //Potential implementation of suffix generation start
+//          1.Let T be the trie node where prefix generation left off.
+//          2.Let F be the full player rack.  Let R be F minus the tiles used in
+//          the prefix plus the tile at the current position, it the current position is not blank.
+            if(currLetter != ' ')
+            {
+                for(int i = 0; i < frame.length;i++)
+                {
+                    if(frame[i] == ' ')
+                    {
+                        frame[i] = currLetter;
+                        return;
+                    }
+                    else
+                    {
+                        ;
+                    }
+                }
+                //3.Given a root of a trie T and a rack R, initialize the list of prefixes to NULL
+                prefixList.clear();
+                findSuffix(row, column, root, frame, suffixList);
+            }
+            else
+            {
+                return;
+            }
         }
-        else{
+        else {
             return;
         }
     }
 
-    private void findSuffix()
+    private void findSuffix(int row, int column, Node root, char[] frame, ArrayList<String> suffixList)
     {
+        // 8.Go to Step 2 as long as we have elements in R that have not been selected
+        if(frame.length == 0)
+        {
+            return;
+        }
+        //4.We select an element X from the rack R
+        char currLetter = frame[0];
 
+        //5.If X is not child of T or fails crosscheck got to step 8.
+
+        if (crossCheck(row, column, currLetter, root) || !root.isChild(currLetter))
+        {
+            return;
+        }
+        else //5.Else, if X is a valid node and add X to the list of suffixes.
+        {
+            //6.Recursively generate valid suffixes with T.Children[X] as the new root, and R - X as the new rack
+            //7.Concatenate X to the beginning of each suffix generated in 3, and add the new list to the existing list of suffixes
+            suffixList.add(String.valueOf(currLetter));
+
+            root = root.getChild(currLetter);
+            char[] tmp = new char[frame.length-1];
+            for (int j = 0; j < frame.length-1; j++)
+            {
+                tmp[j] = frame[frame.length-j];
+            }
+            //worry about column-1
+            findSuffix(row, column-1, root, tmp, suffixList);
+
+            for (String suffix : suffixList)
+            {
+                suffix = String.valueOf(currLetter).concat(suffix);
+
+                suffixList.add(suffix);
+            }
+        }
     }
 
     private boolean isAnchorSquare(int row, int column)
@@ -128,7 +189,7 @@ public class Bot0 implements BotAPI {
             return true;
         }
 
-        //square is not an anchor sqaure
+        //square is not an anchor square
         else
         {
             return false;
@@ -195,6 +256,7 @@ public class Bot0 implements BotAPI {
             return true;
         }
     }
+
 
     private Node createTrie()
     {
