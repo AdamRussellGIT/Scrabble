@@ -8,7 +8,7 @@ import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-public class Bot0 implements BotAPI {
+public class CamelBois implements BotAPI {
 
     // The public API of Bot must not change
     // This is ONLY class that you can edit in the program
@@ -26,7 +26,7 @@ public class Bot0 implements BotAPI {
     private boolean firstTurn = true;
     private Node root;
 
-    Bot0(PlayerAPI me, OpponentAPI opponent, BoardAPI board, UserInterfaceAPI ui, DictionaryAPI dictionary) {
+    CamelBois(PlayerAPI me, OpponentAPI opponent, BoardAPI board, UserInterfaceAPI ui, DictionaryAPI dictionary) {
         this.me = me;
         this.opponent = opponent;
         this.board = board;
@@ -38,7 +38,10 @@ public class Bot0 implements BotAPI {
     public String getCommand() {
         if (firstTurn) //to see if we have first turn
         {
+            firstTurn = false;
             root = createTrie();
+            command = "NAME CamelBois";
+            return command;
         }
 
         //find anchor squares
